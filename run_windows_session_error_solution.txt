@@ -1,0 +1,7 @@
+Add this code
+
+#[\ReturnTypeWillChange]
+
+to All methods (open, read, write, close, destory an gc) in Session_files_driver.php file.
+
+Click on system > libraries > Session > drivers > Session_files_driver.php

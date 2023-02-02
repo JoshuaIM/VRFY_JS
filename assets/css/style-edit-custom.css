@@ -1,0 +1,602 @@
+/* 
+* Template Name: Joshua Custom
+* Author: 2c
+*/
+
+	#sidebar {
+		width: 160px;
+		height: 100%;
+		position: fixed;
+		/* default
+		background: #2f323a;
+			ver-1 ????��
+		background: #36589C;
+		background: #79a8a9;
+		background: #3f4040;
+		background: #3d3d3d;
+		*/
+		background: #52616a;
+	}
+	
+	ul.sidebar-menu li ul.sub li a {
+	    line-height: 31px;
+	    height: 31px;
+	}
+  
+  
+/* add sidebar sub-bar joshua navigation */
+    #sidebar_sub {
+    	margin-left: 0px;
+    	/* def 2019-09-26
+        width: 230px;
+        */
+        width: 200px;
+        height: 100%;
+        position: fixed;
+		/* ver-1
+		background: white;
+		background: #aacfd0;
+		background: #5e5e5f;
+		background: #525252;
+		*/
+        background: #c9d6de;
+        overflow: auto;
+    }
+    
+    #sidebar_sub h5 {
+    	color: #f2f2f2;
+    	font-weight: 700;
+    }
+    
+    #sidebar_sub ul li {
+        position: relative;
+    }
+    
+    #sidebar_sub .sub-menu > .sub li  {
+        padding-left: 32px;
+    }
+    
+    #sidebar_sub .sub-menu > .sub li:last-child {
+        padding-bottom: 10px;
+    }
+    
+/* add sidebar sub-bar joshua navigation END*/
+    .wrapper {
+    	/* joshua add margin-left */
+    	/* def 2019-09-26
+    	margin-left: 230px;
+    	*/
+        margin-top: 0px;
+        margin-left: 200px;
+        padding-left: 0px;
+        
+        width: 87%;
+        /*
+        width: 89%;
+        */
+        overflow: auto;
+    }
+    .top_wrapper {
+    	/* joshua add margin-left */
+        margin-left: 230px;
+    }
+
+
+    .eleSelBox {
+    	margin-left: 10%;
+        width: 80%;
+        height: 24px;
+    }
+
+  
+    .total-row {
+      font-weight: bold;
+      background: #f5f5f5;
+      /*color : #000000;*/
+      color : #000000;
+    }
+    .total-row td {
+      border-top: 2px solid #efefef;
+      color : #000000;
+    }
+    
+    .logoImg {
+        float:left;
+        margin-right: 3px;
+        margin-top: -3px;
+    }
+    .subMenu_nav {
+        margin-top: 10px;
+        text-align: center;
+    }
+    .subMenu_nav b {
+        font-size: 16px;
+        color: #52616a;
+    }
+    .chk_select input {
+        margin-left: 20px;
+        width: 20px;
+        height: 20px;
+        vertical-align:-5px;
+    }
+    .sub_menu_area {
+        display: none;
+        margin-top: 5px;
+		/*border:1px solid black;*/
+        padding-left:10px;
+    }
+    .js_hr {
+		/*border: solid 0.5px #52616a;*/
+        border: solid 0.5px #f0f5f9;
+    }
+    .submenu_p {
+        margin-left: 10px;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #52616a;
+    }
+    .submenu_hr {
+		/*border: solid 0.5px #52616a;*/
+        border: solid 1.5px #c9d6de;
+        margin: 5px auto;
+    }
+    .dateSelect {
+        float: left;
+        margin-top: 10px;
+        height: 30px;
+        width: 100%;
+    }
+    .dateSelBox {
+        height: 24px;
+    }
+	.btn-group {
+		margin-top: -5px;
+	}
+    .dateBox {
+        height: 24px;
+        padding-left: 5px;
+    }
+    .dateBtn {
+        height: 24px;
+    }
+    .date_wave {
+        margin-left:5px; 
+        margin-right:5px;
+    }
+    .chartName {
+        color: white;
+    }
+    .vrfyName {
+        color: white;
+    }
+    .selectMainLoc {
+    	margin-left: 5px;
+        width: 95%;
+        height: 24px;
+    }
+    .selectMulti {
+        margin-left: 5px;
+        margin-top: 5px;
+        width: 95%;
+        height: 80px;
+        background-color: #c9d6de;
+    }
+    .selectMulti option {
+        background-color: #c9d6de;
+    }
+    
+
+    .subsub {
+        margin-left: 25px;
+    }
+    
+    
+    
+/* ???? ??? ?? + ???? ???? */
+	/*
+	#plotBtn {
+		margin-left: 20px;
+		background-color: #6d819c;
+		color: white;
+	}
+	*/
+
+	/* ???? ???? ???? */
+	.verifIndexArea {
+        float: left;
+        margin-top: 3px;
+        height: 30px;
+        font-size: 15px;
+    }
+	/* ???? ???? ?? ??? */
+	.verifIndexArea input {
+		margin-left: 20px;
+        width: 17px;
+        height: 17px;
+        vertical-align:-3px;
+    }
+    
+    
+/*Joshua ver1 Panel*/
+	.js1-panel {
+		/*
+		text-align: center;
+		background: #CADBE9;?????
+		background: #E2EBF3;????? ?? ??????
+		*/
+		background: #D9E2E8;
+		
+		width:93%; 
+		/* 2021-06-01 �ʱ�ð� 00-12UTC ���� ���� Default
+		height:130px; 
+		*/
+		height:100px; 
+		margin:auto; 
+		margin-top:10px; 
+		margin-bottom:20px; 
+		/*padding-left:10px;*/ 
+		padding-top:10px;
+	}
+	.js1-panel .js1-header {
+		background: #ccd1d9;
+		padding: 3px;
+		margin-bottom: 15px;
+	}
+	.js1-panel h6 {
+		font-weight: 800;
+		margin-top: 10px;
+	}
+	
+/*Joshua ver2 Panel*/
+	.js2-panel {
+		/*text-align: center;*/
+		background: #D9E2E8;
+		
+		width:93%; 
+		height:250px; 
+		margin:auto; 
+		margin-top:10px; 
+		margin-bottom:20px; 
+		/*padding-left:10px;*/ 
+		padding-top:10px;
+	}
+	.js2-panel .js2-header {
+		background: #ccd1d9;
+		padding: 3px;
+		margin-bottom: 15px;
+	}
+	.js2-panel h6 {
+		font-weight: 800;
+		margin-top: 10px;
+	}
+
+/* ??+??? Panel*/
+	/* ??? */
+	.shrtModelTech-panel {
+		/*
+		text-align: center;
+		background: #CADBE9;?????
+		background: #E2EBF3;????? ?? ??????
+		*/
+		background: #D9E2E8;
+		
+		width:93%; 
+		/* 2021-01-28 ???? */
+		/*
+		height:230px;
+		height:270px;
+		*/ 
+		height:320px; 
+		margin:auto; 
+		margin-top:10px; 
+		margin-bottom:20px; 
+		/*padding-left:10px;*/ 
+		padding-top:10px;
+	}
+	.shrtModelTech-panel .modelTech-header {
+		background: #ccd1d9;
+		padding: 3px;
+		margin-bottom: 15px;
+	}
+	.shrtModelTech-panel h6 {
+		font-weight: 800;
+		margin-top: 10px;
+	}
+	
+	/* ??? */
+	.medmModelTech-panel {
+		/*
+		text-align: center;
+		background: #CADBE9;?????
+		background: #E2EBF3;????? ?? ??????
+		*/
+		background: #D9E2E8;
+		
+		width:93%; 
+		height:370px; 
+		margin:auto; 
+		margin-top:10px; 
+		margin-bottom:20px; 
+		/*padding-left:10px;*/ 
+		padding-top:10px;
+	}
+	.medmModelTech-panel .modelTech-header {
+		background: #ccd1d9;
+		padding: 3px;
+		margin-bottom: 15px;
+	}
+	.medmModelTech-panel h6 {
+		font-weight: 800;
+		margin-top: 10px;
+	}
+
+	.modl_td {
+		padding-top:10px;
+		padding-left: 3px;
+	}
+	
+/* Select Box Panel*/
+	.selBoxPn-panel {
+		/*text-align: center;*/
+		background: #D9E2E8;
+		
+		width:93%; 
+		height:70px; 
+		margin:auto; 
+		margin-top:10px; 
+		margin-bottom:20px; 
+		/*padding-left:10px;*/ 
+		padding-top:10px;
+	}
+	.selBoxPn-panel .selBoxPn-header {
+		background: #ccd1d9;
+		padding: 3px;
+		margin-bottom: 15px;
+	}
+	.selBoxPn-panel h6 {
+		font-weight: 800;
+		margin-top: 10px;
+	}
+	.selBoxPn-panel select {
+		
+	}
+	
+/* ????? ????? ?��? */
+	#div_ajax_load_image {
+		background: #f0f5f9;
+		width: 100px; 
+		height: 100px; 
+		z-index: 9999;
+		filter: alpha(opacity=50); 
+		opacity: alpha*0.5; 
+		margin-left: 10%; 
+		margin-top: 6%; 
+		padding:0;
+	}
+	#img_load {
+		width:100px; 
+		height:100px;
+	}
+	
+	
+	
+/******************************************************	
+/*****  ??? ????  ****************************************/
+/******************************************************	
+	/* ??? ????? ???? */
+	.fcstTable {
+	    width: 99.5%;
+	    font-weight: bold;
+	    border-collapse: collapse;
+	    margin: 0 auto;
+	    margin-bottom: 10px;
+	}
+	.fcstTable td {
+	    /*width: 3%;*/
+	    border: 1px solid #D8E6E7;
+	    padding-top: 3px;
+	    text-align: center;
+	}
+	.monTable {
+	    width: 99.5%;
+	    font-weight: bold;
+	    border-collapse: collapse;
+	    margin: 0 auto;
+	    margin-bottom: 10px;
+	}
+	.monTable td {
+	    /*width: 3%;*/
+	    border: 1px solid #D8E6E7;
+	    padding-top: 3px;
+	    text-align: center;
+	}
+	/* ??? ????????? ???, utc, ??-???, ???? ?????? td???? ??? */
+	.td_lg {
+		/*
+	    width: 3%;
+		*/
+	    width: 1.3%;
+	}
+	/* ??? ????????? ???, utc, ??-???, ???? ????? td???? ??? */
+	.td_sm {
+	    /*
+		width: 1%;
+		*/
+		width: .7%;
+	}
+	.tb_head {
+	    font-size: 11px;
+	    background: #f0f5f9;
+	}
+	.tb_data {
+	    font-size: 13px;
+	}
+	.data3H {
+	    font-size: 13px;
+	}
+	.data1H {
+	    font-size: 11px;
+	}
+	.tdinfo_txt {
+	    font-size: 9px;
+	}
+	/*
+	.tb_name {
+	    font-size: 15px;
+	    background:#6d819c;
+	    color:white;
+	}
+	.tb_head {
+	    font-size: 8px;
+	    background:#6d819c;
+	    color:white;
+	}
+	.tb_data {
+	    font-size: 11px;
+	}
+	.date_data {
+	    font-size: 12px;
+	}
+	*/
+	
+	.cht_div {
+	    /* 2021-01-25 default
+	    width: 97%;
+	    */ 
+	    width: 100%; 
+	    height: 300px; 
+	    margin: 0 auto;
+	}
+	/* ??? ????? ?? */
+
+	/* ???????? ??? ?????��? ????? ?? ???? */
+		.map_utc_table {
+        border-collapse: separate; 
+        border-spacing: 5px;
+        /*margin: 0 auto;*/
+        margin-left: 5px;
+        margin-bottom: 15px;
+	}
+    .slider {
+      cursor: pointer;
+      width: 45px;
+      height: 10px;
+      background-color: #D8E6E7;
+      border: 1px solid #52616a;
+      /*#274c5e*/
+    }
+    /*
+    TODO: 2021-03-02 add.
+    */
+    .sl_black {
+      cursor: pointer;
+      width: 45px;
+      height: 10px;
+      background-color: #52616a;
+      border: 1px solid #52616a;
+      /*#274c5e*/
+    }
+    .sliderLabel {
+        height: 15px;
+        text-align: center;
+        font-weight: bold;
+        width: 30px;
+        font-size: 10px;
+    }
+    .sliderSelected {
+        background-color: #4ECDC4;
+    }
+    .img_area {
+    	/* 2021-03-02 edit.
+        height: 530px;
+        margin-top: 3px;
+    	*/
+    	height: 100%;
+        margin-bottom: 20px;
+    }
+    .map_header {
+        height: 4%;
+        margin-bottom: 3px;
+        padding-top: 1px;
+        background-color: #52616a;
+        color: #f0f5f9;
+        text-align: center;
+        font-weight: bold;
+    }
+    .map_content img {
+        width: 100%;
+        /* 2021-06-09 edit (fix height[492px] for all images)
+		height: 100%;
+		*/
+		height: 492px;
+    }
+   	/* ???????? ??? ?????��? ????? ?? ?? */
+    
+    #canvas {
+    	cursor: crosshair;
+    }
+    
+    
+/*
+	????-?����
+*/
+    .box {
+        display: block;
+        /* z-index: 1999; */
+        position: relative;
+        /*  border: 1px solid #ccc; */
+        background: transparent;
+        margin-bottom: 20px;
+    }
+    
+    .box-header {
+        color: #f0f5f9;
+        position:relative;
+        overflow: hidden;
+        height: 24px;
+        background-color: #6d819c;
+        font-weight: bold;
+        /*   border-bottom: 1px solid #ccc; */
+        /*   background-color: #353535; */
+        /* 
+        background-image: -webkit-linear-gradient(top, #eaeaea, #e0e0e0);
+        background-image:    -moz-linear-gradient(top, #eaeaea, #e0e0e0);
+        background-image:     -ms-linear-gradient(top, #eaeaea, #e0e0e0);
+        background-image:      -o-linear-gradient(top, #eaeaea, #e0e0e0);
+        background-image:         linear-gradient(to bottom, #eaeaea, #e0e0e0);
+        */
+    }
+    
+    .box-name, .modal-header-name {
+        padding-left: 15px;
+        line-height: 24px;
+    }
+
+    .box-content {
+        position: relative;
+        padding: 5px;
+        border: 1px solid #353535;
+        /*  background: #FBFBF0;*/
+        /*       background: #ffffff; */
+    }
+
+    #tileMap {
+        position: relative;
+    }
+    #tileMap #canvas, mapOverlay {
+        position: absolute;
+    }
+    
+    .xyInput {
+    	position: absolute;
+        top: 0;
+        padding-left: 110px;
+        /* right: 20; */
+        /*z-index: 9;*/
+    }
+    .xyInputText{
+    	width:45px;
+    	margin:1px 2px;
+    	height: 23px;
+    	color: black;
+    }
