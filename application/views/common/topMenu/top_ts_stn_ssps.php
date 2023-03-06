@@ -90,25 +90,14 @@ var changeDateFormat = "2020-12-01";
 <section class="top_wrapper">
     <div class="containter" style="height:100%;">
         <div class="dateSelect" >
-        	<select id="data_period" name="PERIOD" class="dateSelBox" onChange="changeBangjaeType(this.value); getDataArray();">
+        	<select id="data_period" name="PERIOD" class="dateSelBox" onChange="getDataArray();">
         		<option value="FCST" selected>예측기간(월별)</option>	
         		<option value="MONTH">월별</option>	
-        		<!-- <option value="SPRING">방재기간(여름철)</option>	
-        		<option value="WINTER">방재기간(겨울철)</option>	 -->
         	</select>
-
-			<!-- 방재기간 선택 시 ON -->
-        	<!-- <select id="sel_year" name="SELYEAR" class="dateSelBox bangjae_date" onChange="getDataArray();">
-			</select>
-            <div class="btn-group  bangjae_date" >
-            	<input class="dateBox" id="bangjae_startD" type="text" style="width:85px; background:#E0E3DA" value="readonly" readonly />
-            </div> -->
-			<!-- 방재기간 선택 시 ON -->
-
-            <div class="btn-group original_date" >
+            <div class="btn-group" >
             	<input class="dateBox" id="sInitDate" name="sInitDate" type="text" onChange="chkCalendar(this);" style="width:85px;" />
             </div>
-            <div class="btn-group original_date" >
+            <div class="btn-group" >
             	<button class="dateBtn" type="button" id="innerBtn" onclick="openSCalendar();" >
             		<i class="glyphicon glyphicon-calendar" ></i>
         		</button>
@@ -116,22 +105,16 @@ var changeDateFormat = "2020-12-01";
         
         	<b class="date_wave">~</b>
         
-			<!-- 방재기간 선택 시 ON -->
-            <!-- <div class="btn-group  bangjae_date" >
-            	<input class="dateBox" id="bangjae_endD" type="text" style="width:85px; background:#E0E3DA" value="readonly" readonly />
-            </div> -->
-			<!-- 방재기간 선택 시 ON -->
-
-            <div class="btn-group original_date">
+            <div class="btn-group">
             	<input class="dateBox" id="eInitDate" name="eInitDate" type="text" onChange="chkCalendar(this);" style="width:85px;" />
             </div>
-            <div class="btn-group original_date" >
+            <div class="btn-group" >
             	<button class="dateBtn" type="button" id="innerBtn" onclick="openECalendar();" >
             		<i class="glyphicon glyphicon-calendar" ></i>
         		</button>
             </div>
             <div class="btn-group">
-            	<button class="nowBtn original_date" type="button" onclick="readyAndNowFunc();">NOW</button>
+            	<button class="nowBtn" type="button" onclick="readyAndNowFunc();">NOW</button>
             	<button class="totalDownBtn" type="button" onclick="makeCSVfile();">DOWNLOAD CSV FILE</button>
             </div>
 			<!--

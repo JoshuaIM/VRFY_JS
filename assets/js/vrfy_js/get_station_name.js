@@ -154,6 +154,40 @@ function get_station_name(stnid) {
 		case "47161" : stn_name = "사천공항";	break;
 		case "47182" : stn_name = "제주공항";	break;
 		
+
+		// gropID 10112 - 산악 (다른 메인페이지)
+		case "10112" : stn_name = "성북";				break;
+		case "10122" : stn_name = "미시령";				break;
+		case "10142" : stn_name = "치악산";				break;
+		case "10151" : stn_name = "계룡산";				break;
+		case "10172" : stn_name = "송계";				break;
+		case "10193" : stn_name = "뱀사골";				break;
+		case "10202" : stn_name = "내장산";				break;
+		case "10211" : stn_name = "설천봉";				break;
+		case "10213" : stn_name = "덕유산";				break;
+		case "10222" : stn_name = "주왕산";				break;
+		case "10262" : stn_name = "성판악";				break;
+		case "10272" : stn_name = "어리목";				break;
+		case "10282" : stn_name = "조선대";				break;
+		case "40262" : stn_name = "뱀사골";				break;
+		case "40281" : stn_name = "진도(레)";			break;
+		case "40497" : stn_name = "삽당령";				break;
+		case "40595" : stn_name = "진부령";				break;
+		case "40980" : stn_name = "신림터널";			break;
+		case "40984" : stn_name = "안흥";				break;
+		case "40990" : stn_name = "구사리재";			break;
+		case "40997" : stn_name = "만항재";				break;
+		case "10252" : stn_name = "고령 문수봉";		break;
+		case "30191" : stn_name = "영취산병봉";			break;
+		case "40321" : stn_name = "양산 금오산";		break;
+		case "40331" : stn_name = "둔철산";				break;
+		case "40979" : stn_name = "춘천 금병산";		break;
+		case "40985" : stn_name = "횡성 태기산";		break;
+		case "40988" : stn_name = "영월 백운산";		break;
+		case "40991" : stn_name = "사자산";				break;
+		case "40995" : stn_name = "정선 꽃밭덩이산";	break;
+		case "40998" : stn_name = "정선 기추목이";		break;
+		case "40999" : stn_name = "갈고개";				break;
 	}
 
 	return stn_name;
@@ -193,6 +227,38 @@ function setSubLocation(selectValue) {
 				}
 			}
 		
+	}
+	
+	$('#subLocation').append(option);
+	
+}
+
+
+function setSubLocationSSPS(selectValue) {
+	
+	var selValue = selectValue.value;
+	var selTxt = selectValue.options[selectValue.selectedIndex].text;
+	
+	// 서브 지점 리스트 삭제(초기화).
+	$('#subLocation').empty();
+
+	var option = "";
+	if ( selValue == "ALL" ) {
+		option += "<option value='" + selValue + "' selected>&#128440; " + selTxt + "</option>";
+	} else {
+		
+		var splitValue = selValue.split("#");
+		
+			for(var sp=0; sp<splitValue.length; sp++) {
+				var l_id = splitValue[sp];
+				var l_txt = get_station_name( splitValue[sp] );
+				
+				if( sp == 0) {
+					option += "<option value='" + l_id + "' selected>&#128440; " + l_txt + "</option>";
+				} else {
+					option += "<option value='" + l_id + "' >&#128440; " + l_txt + "</option>";
+				}
+			}
 	}
 	
 	$('#subLocation').append(option);

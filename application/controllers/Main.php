@@ -13,6 +13,8 @@ class Main extends CI_Controller {
     private $datafile_dir = "./data/DFSD/";
     private $pngfile_dir = "./GIFD/";
     
+    private $bangjae_arr = ["SPRING", "WINTER"];
+
     public function index(){
         $this->shrt_ts_stn();
 
@@ -40,6 +42,11 @@ class Main extends CI_Controller {
         $dataPath = $this->datafile_dir . "SHRT/VRFY"; 
         $data_to_template['dataDate'] = $this->common_func->getDirectoryDate($dataPath);
         
+        // 방재기간(여름철, 겨울철) 추가
+        foreach( $this->bangjae_arr as $br ) {
+            $data_to_template[$br] = $this->getBangjaeYear("SHRT", $br);
+        }
+
         $data_to_template['dataHead'] = $dataHead;
         
         $data_to_template['modltech_info'] = $this->common_func->setModelCheckbox("shrt");
@@ -213,7 +220,71 @@ class Main extends CI_Controller {
     }
     
     
+//======= 지점(산악): 단기 시계열 + 집계표   ===========================
+    public function ssps_shrt_ts_stn($page = 'ssps_ts_stn'){
+        if ( ! file_exists(APPPATH.'views/main/'.$page.'.php')){
+            show_404();
+        }
+        
+        $varName = "T3H";
+        // $varName = "PTY";
+        $vrfyType = 'ssps_shrt_ts_stn';
+        $dataHead = "DFS_SHRT_STN_";
+        
+        $dataPath = $this->datafile_dir . "SHRT/VRFY"; 
+        $data_to_template['dataDate'] = $this->common_func->getDirectoryDate($dataPath);
+        
+        $data_to_template['dataHead'] = $dataHead;
+        
+        $data_to_template['dateType'] = "month";
+        $data_to_template['vrfyType'] = $vrfyType;
+        $data_to_template['vrfyTypeName'] = $this->common_func->getSspsTypeName($vrfyType);
+        
+        $data_to_template['varName'] = $varName;
+        // $data_to_template['varArray'] = ["T1H", "TMX", "TMN", "REH", "VEC", "WSD", "SKY", "PTY", "POP", "RN1", "SN1"];
+        // $data_to_template['varnameArray'] = ["기온", "최고기온", "최저기온", "습도",  "풍향", "풍속", "하늘상태", "강수유무", "강수확률", "시간 강수량", "시간 적설"];
+        $data_to_template['varArray'] = ["T1H", "REH", "VEC", "WSD", "PTY", "RN1"];
+        $data_to_template['varnameArray'] = ["기온", "습도",  "풍향", "풍속", "강수유무", "시간 강수량"];
+        $data_to_template['vrfyTech'] = $this->common_func->getVrfyTech($varName);
+        
+        $this->load->view('common/mainTemplate', $data_to_template);
+    }
     
+    
+//=======  지점: 단기 공간분포  ===========================
+public function ssps_shrt_map_stn($page = 'ssps_map_stn'){
+    if ( ! file_exists(APPPATH.'views/main/'.$page.'.php')){
+        show_404();
+    }
+    
+    $varName = "T3H";
+    $vrfyType = 'ssps_shrt_map_stn';
+    $dataHead = "DFS_SHRT_STN_";
+    
+    $dataPath = $this->pngfile_dir . "SHRT";
+    $data_to_template['dataDate'] = $this->common_func->getDirectoryDate($dataPath);
+    
+    $data_to_template['dataHead'] = $dataHead;
+    
+    // $data_to_template['modltech_info'] = $this->common_func->setModelCheckbox("shrt");
+    
+    $data_to_template['dateType'] = "month";
+    $data_to_template['vrfyType'] = $vrfyType;
+    $data_to_template['vrfyTypeName'] = $this->common_func->getSspsTypeName($vrfyType);
+    
+    $data_to_template['varName'] = $varName;
+    //$data_to_template['varArray'] = ["T3H", "TMX", "TMN", "REH", "VEC", "WSD", "SKY", "PTY", "POP", "RN3", "RN6", "SN3", "SN6"];
+    //$data_to_template['varnameArray'] = ["기온", "최고기온", "최저기온", "습도",  "풍향", "풍속", "하늘상태", "강수유무", "강수확률", "3시간 강수량", "6시간 강수량", "3시간 적설", "6시간 적설"];
+    // $data_to_template['varArray'] = ["T1H", "TMX", "TMN", "REH", "VEC", "WSD", "SKY", "PTY", "POP", "RN1", "SN1"];
+    // $data_to_template['varnameArray'] = ["기온", "최고기온", "최저기온", "습도",  "풍향", "풍속", "하늘상태", "강수유무", "강수확률", "시간 강수량", "시간 적설"];
+    $data_to_template['varArray'] = ["T1H", "REH", "VEC", "WSD", "PTY", "RN1"];
+    $data_to_template['varnameArray'] = ["기온", "습도",  "풍향", "풍속", "강수유무", "시간 강수량"];
+    $data_to_template['vrfyTech'] = $this->common_func->getVrfyTech($varName);
+    
+    $this->load->view('common/mainTemplate', $data_to_template);
+}
+
+
 //=========================================================================
 //=======  사용 메서드      ======================================================
 //=========================================================================
@@ -242,7 +313,7 @@ class Main extends CI_Controller {
         $start_init = $this->input->post('start_init');
         $end_init = $this->input->post('end_init');
         $vrfy_idx = $this->input->post('vrfy_idx');
-        $map_type = $this->input->post('map_type');
+        // $map_type = $this->input->post('map_type');
         
         //$fdir = "./data/DFSD/SHRT/VRFY";
         $fd = $this->datafile_dir;
@@ -261,7 +332,7 @@ class Main extends CI_Controller {
             'rangeMon' => $rangeMon,
             'vrfy_idx' => $vrfy_idx,
             'location' => $location,
-            'map_type' => $map_type
+            // 'map_type' => $map_type
         ];
         
         if( $location[0] == "mean" ) {
@@ -337,6 +408,64 @@ class Main extends CI_Controller {
         
         echo json_encode($finalData);
     }
+
+
+
+//=========================================================================
+//====== 지점 - 시계열 메서드 [방재기간]  ===================================
+//=========================================================================
+// 1. View에서 선택한 값(사용자 선택 값)을 모두 받음.
+// 2. 선택 월의 범위 월 얻기. 범위 월 구하는 메서드 호출 -> "getDateRangeArr()"
+// 3. 파일명 조합. 파일 명 생성 메서드 호출 -> "getFileNames()"
+// public function getStnBangjaeData() {
+        
+//     $data_head = $this->input->post('data_head');
+//     $var_select = $this->input->post('var_select');
+//     $init_hour = $this->input->post('init_hour');
+//     $model_sel = $this->input->post('model_sel');
+//     $location = $this->input->post('location');
+//     $peri = $this->input->post('peri');
+//     $bangjae_year = $this->input->post('bangjae_year');
+//     $vrfy_idx = $this->input->post('vrfy_idx');
+    
+//     //$fdir = "./data/DFSD/SHRT/VRFY";
+//     $fd = $this->datafile_dir;
+//     $dhead_arr = explode("_", $data_head);
+//     // SHRT or MEDM
+//     $dtype = $dhead_arr[1];
+//     $fdir = $fd . $dtype . "/" . $peri;
+    
+//     $rangeMon = array();
+//         $rangeYear = ($peri == "SPRING") ? $bangjae_year . "051500_" . $bangjae_year . "101500" : $bangjae_year . "051500_" . $bangjae_year . "101500";
+//         array_push($rangeYear, $rangeMon);
+    
+//     $fnParam = [
+//         'dir_head' => $fdir,
+//         'data_head' => $data_head,
+//         'var_select' => $var_select,
+//         'model_sel' => $model_sel,
+//         'rangeMon' => $rangeMon,
+//         'vrfy_idx' => $vrfy_idx,
+//         'location' => $location,
+//         'map_type' => $map_type
+//     ];
+    
+//     if( $location[0] == "mean" ) {
+//         $allTargData = $this->tstbcommon_func->getFcstData($fnParam);
+        
+//         $fnParam['location'] = ["mean"];
+//         // 표출하기 쉽게 데이터 정리.
+//         $finalData = $this->tstbcommon_func->arrangeFcstData($allTargData, $fnParam);
+
+//     } else {
+//         $allTargData = $this->tstbcommon_func->getFcstData($fnParam);
+//         // 표출하기 쉽게 데이터 정리.
+//         $finalData = $this->tstbcommon_func->arrangeFcstData($allTargData, $fnParam);
+//     }
+    
+//     echo json_encode($finalData);
+// }
+
 
     
 //=========================================================================
@@ -454,4 +583,21 @@ class Main extends CI_Controller {
         return $dt->format('Y-m-d H');
     }
     
+
+
+    // Can select Bangjae year that searching directory. 
+    // $peri = SHRT or MEDM, $season = SPRING or WINTER (directory name)
+    public function getBangjaeYear($peri, $season) {
+
+        $dataPath = $this->datafile_dir . $peri . "/". $season;
+        $yearArr = $this->common_func->getDirectoryYear($dataPath);
+
+        return($yearArr);
+    }
+
+
+
+
 }
+
+

@@ -65,3 +65,9 @@
 		setSubLocation(subLocVal);
 		getDataArray();
 	}
+
+	function listingSubLocSSPS(subLocVal) {
+		// js/vrfy_js/get_station_name.js
+		setSubLocationSSPS(subLocVal);
+		getDataArray();
+	}

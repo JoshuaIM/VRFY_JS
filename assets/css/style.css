@@ -25,9 +25,14 @@ TODO: 2021-01-20 add
 .col-lg-1h {
     /*
 	width: 3600px; 
+	width: 5000px; 
     */
 	width: 5000px; 
 }
+.col-md-1h {
+    width: 1100px; 
+}
+
 
 ul li {
     list-style: none;
@@ -280,7 +285,7 @@ ul.top-menu > li > .logout {
 
 
 #sidebar .sub-menu > .sub li:last-child {
-    padding-bottom: 10px;
+    /* padding-bottom: 10px; */
 }
 
 
@@ -324,10 +329,12 @@ ul.sidebar-menu {
 #sidebar > ul > li > ul.sub {
     /*display: none;*/
     display: block;
+    margin-bottom: 20px;
 }
 
 #sidebar > ul > li.active > ul.sub, #sidebar > ul > li > ul.sub > li > a {
     display: block;
+    height: 100%;
 }
 
 ul.sidebar-menu li ul.sub li{

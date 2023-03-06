@@ -123,6 +123,28 @@
                             	공간분포</a></li>
 						</ul>
 					</li>
+
+                    <!-- leftside(Main Menu) -->		
+                    <!-- 단기(산악) -->		
+                    
+                    <li class="sub-menu income">
+                        <a><i class="fa fa-signal"></i><span>
+                		단기(산악)</span></a>
+                        <ul class="sub">
+                            <li class="main_menu">
+                            <a href="<?php echo base_url('main/ssps_shrt_ts_stn'); ?>" class="<?php echo ($mapType=='ssps_ts' || $mapType=='ssps_map' ) ? 'active' : '';?>"><i class="fa fa-map-marker"></i>
+                    		지점
+                    		</a></li>
+                            	<li class="main_submenu">
+                            	<a href="<?php echo base_url('main/ssps_shrt_ts_stn'); ?>" class="subsub <?php echo ($vrfyType=='ssps_shrt_ts_stn') ? 'active' : '';?>"><i class="fa fa-clock-o"></i>
+                            	시계열</a></li>
+                                
+                            	<li class="main_submenu">
+                            	<a href="<?php echo base_url('main/ssps_shrt_map_stn'); ?>" class="subsub <?php echo ($vrfyType=='ssps_shrt_map_stn') ? 'active' : '';?>"><i class="fa fa-picture-o"></i>
+                            	공간분포</a></li>
+                               
+						</ul>
+					</li>
 					 
             	</ul>
 			</div>
@@ -152,6 +174,14 @@
         		} else if($vrfyType == 'shrt_map_grd') {
                     $this->load->view('main/map_grd'); 
                     $this->load->view('common/topMenu/top_map_stn'); 
+                    $this->load->view('common/content_map'); 
+        		} else if($vrfyType == 'ssps_shrt_ts_stn') {
+                    $this->load->view('main/ssps_ts_stn'); 
+                    $this->load->view('common/topMenu/top_ts_stn_ssps'); 
+                    $this->load->view('common/content');
+                } else if($vrfyType == 'ssps_shrt_map_stn') {
+                    $this->load->view('main/ssps_map_stn'); 
+                    $this->load->view('common/topMenu/top_map_stn_ssps'); 
                     $this->load->view('common/content_map'); 
         		}
             ?>

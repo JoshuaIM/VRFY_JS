@@ -43,7 +43,7 @@ function makeCSVfile() {
     const m = ('0' + today.getMinutes()).slice(-2);
     const s = ('0' + today.getSeconds()).slice(-2);
 
-    let filename = "VRFY_" + Y + "-" + M + "-" + D + "_" +  h + "_" + m + "_" + s + ".csv";
+    const filename = "VRFY_" + Y + "-" + M + "-" + D + "_" +  h + "_" + m + "_" + s + ".csv";
 
 
     // 한글 처리를 위한 BOM 추가

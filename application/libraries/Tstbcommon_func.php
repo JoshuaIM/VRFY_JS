@@ -70,9 +70,10 @@ class Tstbcommon_func {
                                         // data의 정보.
                                         // $mkArr = $this->splitFcstData($line);
                                         $temporary_data = $this->splitFcstData($line);
+                                        $var = $fnParam['var_select'];
                                         $modl_name = $modl;
                                         $modl_arr_size = sizeof($fnParam['model_sel']);
-                                        $mkArr = $this->extractModlData($temporary_data, $modl_name, $modl_arr_size);
+                                        $mkArr = $this->extractModlData($temporary_data, $var, $modl_name, $modl_arr_size);
 
                                         array_push($location_data_arr, $mkArr);
                                         // array_push($dataArr, $mkArr);
@@ -94,9 +95,10 @@ class Tstbcommon_func {
                                         $dinfo = $vrfy . "_" . $loc . "_" . substr($mon['data'], 0, 6) . "_" . $mon['utcInfo'] . "_" . $modl;
                                         // $mkArr = $this->splitFcstData($line);
                                         $temporary_data = $this->splitFcstData($line);
+                                        $var = $fnParam['var_select'];
                                         $modl_name = $modl;
                                         $modl_arr_size = sizeof($fnParam['model_sel']);
-                                        $mkArr = $this->extractModlData($temporary_data, $modl_name, $modl_arr_size);
+                                        $mkArr = $this->extractModlData($temporary_data, $var, $modl_name, $modl_arr_size);
 
                                         $dArray = [
                                             // 파일명 검사용.
@@ -636,9 +638,13 @@ class Tstbcommon_func {
 
 
     // TODO : 2023-01-17 복수 모델 선택 중 ECMWF가 포함되었을 시 135H 으로 맞추기 위해 선별하는 작업.
-    public function extractModlData($data, $modl_name, $modl_arr_size) {
-        if( $modl_name == "ECMW_NPPM" && $modl_arr_size > 1 ) {
-            $mkArr = $this->suitForecastFormat($data, "data");
+    public function extractModlData($data, $var, $modl_name, $modl_arr_size) {
+        if( ($modl_name == "ECMW_NPPM" && $modl_arr_size > 1) ) {
+            if( $var != "TMN" && $var != "TMX" ) {
+                $mkArr = $this->suitForecastFormat($data, "data");
+            } else {
+                $mkArr = $data;
+            }
         } else {
             $mkArr = $data;
         }

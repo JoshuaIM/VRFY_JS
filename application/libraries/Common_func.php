@@ -11,8 +11,8 @@ class Common_func {
         foreach ($dirs as $d) {
             $d_all = explode("/", $d);
             $d_name = $d_all[sizeof($d_all)-1];
-                // 디렉토리 명(YYYYMM)이 6자리 && 숫자 인 것만
-                if( strlen($d) && is_numeric($d_name) ) {
+                // 디렉토리 명(YYYYMM)이 6자리 && 숫자 인 것만 
+                if( strlen($d_name) == 6 && is_numeric($d_name) ) {
                     array_push($dir_arr, intval($d_name));
                 }
         }
@@ -25,6 +25,27 @@ class Common_func {
         
         return $latest_date;
     }
+
+
+
+// 디렉토리로 날짜 검색하여 최신 날짜 가져오는 메서드.    
+    public function getDirectoryYear($dataPath) {
+
+        $dirs = glob($dataPath . '/*', GLOB_ONLYDIR);
+        
+        $dir_arr = array();
+        foreach ($dirs as $d) {
+            $d_all = explode("/", $d);
+            $d_name = $d_all[sizeof($d_all)-1];
+                // 디렉토리 명(YYYY)이 4자리 && 숫자 인 것만
+                if( strlen($d_name) == 4 && is_numeric($d_name) ) {
+                    array_push($dir_arr, $d_name);
+                }
+        }
+        rsort($dir_arr);
+
+        return $dir_arr;
+    }
         
     
     
@@ -36,21 +57,43 @@ class Common_func {
         switch ( $vt[0] ) {
             case( $vt[0] == "shrt" ): array_push($vtArr, "단기"); break;
             case( $vt[0] == "medm" ): array_push($vtArr, "중기"); break;
+            case( $vt[0] == "ssps" && $vt[1] == "shrt" ): array_push($vtArr, "단기(산악)"); break;
         }
         switch ( $vt[1] ) {
             case( $vt[1] == "tb" ): array_push($vtArr, "집계표"); break;
-            case( $vt[1] == "ts" ): array_push($vtArr, "시계열"); break;
+            case( $vt[1] == "ts" || $vt[2] == "ts" ): array_push($vtArr, "시계열"); break;
             case( $vt[1] == "map" ): array_push($vtArr, "공간분포"); break;
         }
         switch ( $vt[2] ) {
-            case( $vt[2] == "stn" ): array_push($vtArr, "지점"); break;
+            case( $vt[2] == "stn" || $vt[3] == "stn" ): array_push($vtArr, "지점"); break;
             case( $vt[2] == "grd" ): array_push($vtArr, "격자"); break;
         }
         
         return $vtArr;
     }
+// getVrfyTypeName() 복제 - 산악용.
+    public function getSspsTypeName($vrfyType) {
+        $vt = explode("_", $vrfyType);
+        
+        $vtArr = array();
+        switch ( $vt[1] ) {
+            case( $vt[1] == "shrt" ): array_push($vtArr, "단기"); break;
+            case( $vt[1] == "medm" ): array_push($vtArr, "중기"); break;
+        }
+        switch ( $vt[2] ) {
+            case( $vt[2] == "tb" ): array_push($vtArr, "집계표"); break;
+            case( $vt[2] == "ts" || $vt[2] == "ts" ): array_push($vtArr, "시계열"); break;
+            case( $vt[2] == "map" ): array_push($vtArr, "공간분포"); break;
+        }
+        switch ( $vt[3] ) {
+            case( $vt[3] == "stn" || $vt[3] == "stn" ): array_push($vtArr, "지점"); break;
+            case( $vt[3] == "grd" ): array_push($vtArr, "격자"); break;
+        }
+        
+        return $vtArr;
+    }
     
-    
+
     
 // 요소(변수)별 검증지수 선택 배열 만드는 메서드.
     public function getVrfyTech($vn) {

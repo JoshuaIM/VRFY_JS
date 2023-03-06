@@ -184,12 +184,9 @@
     .selectMulti option {
         background-color: #c9d6de;
     }
-    
-
-    .subsub {
-        margin-left: 25px;
+    .subsub i {
+		margin-left: 20px;
     }
-    
     
     
 /* ???? ??? ?? + ???? ???? */
@@ -202,7 +199,7 @@
 	*/
 
 	/* ???? ???? ???? */
-	.verifIndexArea {
+	.verifIndexArea, .grphZoomOut {
         float: left;
         margin-top: 3px;
         height: 30px;
@@ -215,7 +212,12 @@
         height: 17px;
         vertical-align:-3px;
     }
-    
+    .grphZoomOut input {
+		margin-left: 20px;
+		width: 20px;
+		height: 20px;
+		vertical-align:-3px;
+	}
     
 /*Joshua ver1 Panel*/
 	.js1-panel {
@@ -284,9 +286,9 @@
 		/* 2021-01-28 ???? */
 		/*
 		height:230px;
-		height:270px;
-		*/ 
 		height:320px; 
+		*/ 
+		height:270px;
 		margin:auto; 
 		margin-top:10px; 
 		margin-bottom:20px; 
@@ -595,8 +597,13 @@
         /*z-index: 9;*/
     }
     .xyInputText{
-    	width:45px;
+    	width: 45px;
     	margin:1px 2px;
     	height: 23px;
     	color: black;
     }
+
+	#sel_year {
+		/* margin: 0 10px 0 10px; */
+		width: 60px;
+	}
