@@ -8,33 +8,8 @@ var changeDateFormat = "2020-12-01";
     function chkCalendar(calendarID) {
     	var sDate = $('#sInitDate').val();
     	var eDate = $('#eInitDate').val();
-
-//         	// 기간 선택 값이 6자(YYYYMM)가 맞는지 체크.
-//         	if( sDate.length != 6 && eDate.length != 6) {
-//     			alert("날짜 형식이 잘못되었습니다.");
-//     		return false;
-//         	}
-
 		var sDateFormat = sDate.substr(0,4) + "-" + sDate.substr(4,2);
 		var eDateFormat = eDate.substr(0,4) + "-" + eDate.substr(4,2);
-
-// TODO : 2021-01-22 백업 - Default
-//     	var strDate;
-//     	var endDate;
-//     	if( sDate > eDate ) {
-//     		$('#sInitDate').val(eDate)
-//             strDate = new Date(eDateFormat);
-//     	} else {
-//             strDate = new Date(sDateFormat);
-//     	}
-// 			endDate = new Date(eDateFormat);
-
-// 		changeDatePicker(strDate, endDate);
-
-//         // onchange 이 후 텍스트 박스에서 커서 끔.
-// 	  	calendarID.blur();
-
-// 	  	getDataArray();
 
 // 2021-01-22 1시간 자료 표출을 위해 추가.
 		var startD = "";
@@ -117,13 +92,13 @@ var changeDateFormat = "2020-12-01";
             	<button class="nowBtn" type="button" onclick="readyAndNowFunc();">NOW</button>
             	<button class="totalDownBtn" type="button" onclick="makeCSVfile();">DOWNLOAD CSV FILE</button>
             </div>
-			<!--
-			<div class="btn-group" >
+			
+			<div class="btn-group zoom_grph" >
 				<div class="grphZoomOut">
-					<input style="" name="" value="" type="checkbox"> <text>전체그래프보기</text>
+					<input type="checkbox" id="GRPH_ZOOM" onclick="getDataArray()" /> <text>전체그래프보기</text>
 				</div>
 			</div>
-			-->
+			
     	</div>
     	
     	<div id="vrfySelect" class="verifIndexArea" >

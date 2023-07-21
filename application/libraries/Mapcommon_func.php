@@ -12,7 +12,9 @@ class Mapcommon_func {
         
         // 순서: 검증지수 - 지점  - 월 - UTC - 모델
         foreach ($fnParam['vrfy_idx'] as $vrfy) {
+
             foreach ($fnParam['rangeMon'] as $mon) {
+                
                 foreach ($fnParam['model_sel'] as $modl) {
                     
                     $ymDir = $mon['ymInfo'];

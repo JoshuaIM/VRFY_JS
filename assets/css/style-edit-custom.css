@@ -65,6 +65,7 @@
     	/* joshua add margin-left */
     	/* def 2019-09-26
     	margin-left: 230px;
+        margin-top: 65px;
     	*/
         margin-top: 0px;
         margin-left: 200px;
@@ -213,10 +214,20 @@
         vertical-align:-3px;
     }
     .grphZoomOut input {
-		margin-left: 20px;
+		margin-left: 10px;
 		width: 20px;
 		height: 20px;
 		vertical-align:-3px;
+	}
+	.forecastSelectArea {
+		font-size: 15px;
+		margin-bottom: 15px;
+	}
+    .forecastSelectArea input {
+		margin-left: 20px;
+		width: 20px;
+		height: 20px;
+		vertical-align:-4px;
 	}
     
 /*Joshua ver1 Panel*/
@@ -311,11 +322,12 @@
 		text-align: center;
 		background: #CADBE9;?????
 		background: #E2EBF3;????? ?? ??????
+		height:370px; 
 		*/
 		background: #D9E2E8;
 		
 		width:93%; 
-		height:370px; 
+		height:270px; 
 		margin:auto; 
 		margin-top:10px; 
 		margin-bottom:20px; 
@@ -363,6 +375,20 @@
 		
 	}
 	
+/* Gemd var Box Panel*/
+	.gemdVar-panel {
+		/*text-align: center;*/
+		background: #D9E2E8;
+		
+		width:93%; 
+		height:170px; 
+		margin:auto; 
+		margin-top:20px; 
+		margin-bottom:20px; 
+		/*padding-left:10px;*/ 
+		padding-top:10px;
+	}
+
 /* ????? ????? ?��? */
 	#div_ajax_load_image {
 		background: #f0f5f9;
@@ -472,40 +498,54 @@
 	/* ??? ????? ?? */
 
 	/* ???????? ??? ?????��? ????? ?? ???? */
-		.map_utc_table {
+	.map_utc_table {
         border-collapse: separate; 
         border-spacing: 5px;
         /*margin: 0 auto;*/
         margin-left: 5px;
         margin-bottom: 15px;
 	}
+
     .slider {
       cursor: pointer;
-      width: 45px;
-      height: 10px;
+      width: 35px;
+      height: 20px;
       background-color: #D8E6E7;
       border: 1px solid #52616a;
+
+	  color: gray;
+	  font-size: 1px !important;
+	  text-align:center;
       /*#274c5e*/
     }
     /*
     TODO: 2021-03-02 add.
     */
     .sl_black {
-      cursor: pointer;
-      width: 45px;
-      height: 10px;
-      background-color: #52616a;
-      border: 1px solid #52616a;
-      /*#274c5e*/
+		cursor: pointer;
+		width: 35px;
+		height: 20px;
+		background-color: #52616a;
+		border: 1px solid #52616a;
+		/*#274c5e*/
+
+		color: gray;
+		font-size: 2px; 
+		text-align:center;
     }
     .sliderLabel {
         height: 15px;
         text-align: center;
+		vertical-align: top;
         font-weight: bold;
-        width: 30px;
+        width: 35px;
         font-size: 10px;
     }
+	.hour24 {
+		color: red;
+	}
     .sliderSelected {
+		width: 35px;
         background-color: #4ECDC4;
     }
     .img_area {
@@ -603,7 +643,135 @@
     	color: black;
     }
 
-	#sel_year {
+	#select_bangjae_date {
 		/* margin: 0 10px 0 10px; */
-		width: 60px;
+		width: 70px;
+	}
+	#select_season_date {
+		/* margin: 0 10px 0 10px; */
+		width: 70px;
+	}
+	#select_bangjae_season {
+		/* margin: 0 10px 0 10px; */
+		width: 70px;
+	}
+	#select_season_season {
+		/* margin: 0 10px 0 10px; */
+		width: 70px;
+	}
+
+
+	.datainfo_hover_text {
+		position: relative;
+		border-bottom: 1px dotted black;
+	}
+	  
+	.datainfo_hover_text:before {
+		content: attr(data-hover);
+		visibility: hidden;
+		opacity: 0;
+		width: 140px;
+		background-color: gray;
+		color: #fff;
+		text-align: center;
+		border-radius: 5px;
+		padding: 5px 0;
+		transition: opacity 1s ease-in-out;
+	  
+		position: absolute;
+		z-index: 1;
+		left: 0;
+		top: 110%;
+	}
+	  
+	.datainfo_hover_text:hover:before {
+		opacity: 1;
+		visibility: visible;
+	}
+
+
+
+	.viewPerformTable {
+		margin-left: 10px;
+	}
+
+	.perform_tab {
+		font-size: 14px;
+		font-weight: bold;
+		float: left;
+		text-align: center;
+		height: 300px;
+		/* margin: 20px auto; */
+		/* width: 300px; */
+		border-collapse: collapse;
+		background: #fafafa;
+		box-sizing: border-box;
+		box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+		border-left: 2px solid #ccc;
+	}
+
+	.perform_tab > thead {
+		border: 1px solid #222;
+		border-right: 0;
+		background: #333;
+	}
+
+	.perform_tab > thead > tr > th {
+		color: #fff;
+		padding: 10px;
+		border-right: 1px solid #fff;
+		border-bottom: 1px solid #fff;
+	}
+
+	.perform_tab > tbody {
+		border-left: 1px solid #ccc;
+	}
+
+	.perform_tab > tbody > tr {
+		border-bottom: 1px solid #ccc;
+	}
+
+	.perform_tab > tbody > tr > td {
+		width: 100px;
+		height: 35px;
+		padding: 10px;
+		border-right: 1px solid #ccc;
+	}
+
+
+	.checkStation {
+		overflow-y:scroll; 
+		border: 1px solid #8a8989;
+		margin-left: 5px; 
+		width: 95%; 
+		height: 170px;
+	}
+
+	.checkbox_stn {
+		vertical-align: -1px;
+		margin-left: 5px !important;
+		margin-right: 2px !important;
+		width: 13px;
+		height: 13px;
+
+	}
+
+
+	.checkVariable {
+		/* overflow-y:scroll; 
+		border: 1px solid #8a8989; */
+		margin-left: 5px; 
+		width: 95%; 
+		height: 170px;
+	}
+	.checkVariable td {
+		font-size: 12.5px !important;
+	}
+
+	.checkbox_var {
+		vertical-align: -2px;
+		/* margin-left: 5px !important; */
+		margin-right: 3px !important;
+		width: 13px;
+		height: 13px;
 	}
