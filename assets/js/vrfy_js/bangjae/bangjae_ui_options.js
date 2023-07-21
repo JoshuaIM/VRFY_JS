@@ -51,9 +51,6 @@ function bangjaeON() {
 // console.log(bangJae_date_map);
 
     let year_arr = getOnlyYearArr(BANGJAE);
-console.log('year_arr', year_arr);
-console.log('BANGJAE', BANGJAE);
-console.log('BANGJAEMAP', BANGJAEMAP);
     makeBangJaeYearOptions(year_arr);
 
     makeBangJaeSeasonOptions(BANGJAEMAP);

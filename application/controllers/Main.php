@@ -8,7 +8,7 @@ class Main extends CI_Controller {
 
     public function index()
     {
-        redirect('ts/ts_stn');
+        redirect('ts/shrt_stn');
     }
 
     

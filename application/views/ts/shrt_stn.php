@@ -103,7 +103,6 @@
 			url_address = '<?php echo site_url();?>/main/callVrfyTech'
 		}
 
-
 		$.ajax({
                 type : "POST",
                     data :

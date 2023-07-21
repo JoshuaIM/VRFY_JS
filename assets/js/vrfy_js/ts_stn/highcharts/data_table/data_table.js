@@ -14,8 +14,6 @@ function makeFcstDataTable( forecast_arr, data_arr, var_select, dataFontClass, e
     return selCont;
 }
 
-
-
 function fcstDataTableUseId( forecast_arr, data_arr, var_select, dataFontClass, each_utc, range_val ) {
 
     selCont = "";
@@ -64,13 +62,13 @@ function fcstDataTableUseId( forecast_arr, data_arr, var_select, dataFontClass, 
                         selCont += "<td class='" + dataFontClass + "'>" + data[d] + "</td>";
                         
                         // // TODO: 2021-06-01 소수점 둘째자리 반올림
-                        // selCont += "<td class='" + dataFontClass + "'>" + resp[vl]['data'][mm]['data'][d].toFixed(1) + "</td>";
+                        // selCont += "<td class='" + dataFontClass + "'>" + data_arr[mm]['data'][d].toFixed(1) + "</td>";
                     }
                 }
             }
 
             selCont += "</tr>";
-        } // End of "for(var mm=0; mm<resp[vl]['data'].length; mm++)" 
+        } // End of "for(var mm=0; mm<data_arr.length; mm++)" 
 
     return selCont;
 }
@@ -97,4 +95,68 @@ function calculateAveValue( array, var_select ) {
     }
     
     return ave;
+}
+
+
+
+
+function makeMonthDataTable( data_arr, var_select, dataFontClass, each_utc, table_id ) {
+    
+    selCont = "";
+
+    //---- 집계표 테이블 시작
+        selCont += "<table class='monTable'>";
+        selCont += "<tr class='tb_head'>";
+        selCont += "<td class='td_lg'>모델 - 기법</td><td class='td_lg'>UTC</td>";
+
+        for ( let d=0; d<data_arr[0]['mon_range'].length; d++) {
+            selCont += "<td class='td_lg'>"+ data_arr[0]['mon_range'][d] +"</td>";
+        }
+
+    selCont += "</tr>";
+
+    for(var m=0; m<data_arr.length; m++) {
+
+        // 그래픽당 모든 배열값이 null일 경우 표출 안하기 위함.
+        var chk_num = 0;
+        for(var chk=0; chk<data_arr[m]['data'].length; chk++) {
+            if( data_arr[m]['data'][chk] != null ) {
+                chk_num = chk_num +1;
+            }
+        }
+        
+        if( chk_num < 1 ) {
+            continue;
+        } else {
+
+            selCont += "<tr class='tb_data'>";
+
+                 selCont += "<td>" + data_arr[m]['model'] + "</td>" + 
+                             "<td>" + data_arr[m]['utcInfo'].replace("UTC","") + "</td>"; 
+
+                for(var d=0; d<data_arr[m]['data'].length; d++) {
+                    if( data_arr[m]['data'][d] == null ) {
+                            selCont += "<td> </td>";
+                    } else {
+                        // 강수확률은 값의 /100 적용.
+                        if( var_select == "POP" ) {
+                            selCont += "<td>" + (data_arr[m]['data'][d]/100).toFixed(3) + "</td>";
+                        } else {
+                            selCont += "<td>" + data_arr[m]['data'][d] + "</td>";
+
+                            // // TODO: 2021-06-01 소수점 둘째자리 반올림
+                            // selCont += "<td>" + data_arr[m]['data'][d].toFixed(1) + "</td>";
+                        }
+                    }
+                }
+        }
+        
+        selCont += "</tr>";
+    } // End of "for(var mm=0; mm<data_arr.length; mm++)" 
+
+    selCont += "</table>";    						
+    //---- 집계표 테이블 끝
+
+
+    return selCont;
 }

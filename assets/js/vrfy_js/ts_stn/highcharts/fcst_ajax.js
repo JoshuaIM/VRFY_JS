@@ -36,6 +36,7 @@ console.log('data', set_data);
                 // 월별 제외 : 예측기간 범위 선택 표출 기능과 예측성능비교표 표출
                 if ( peri != "MONTH" )
                 {
+console.log('pass', peri);
                     if ( data_head === "DFS_SHRT_STN_" || data_head === "247_SHRT_STN_" )
                     {
                         // 예측기간 범위 선택 표출
@@ -72,7 +73,10 @@ console.log('data', set_data);
                     else
                     {
 
-                        const file_name = resp[vl]['data'][0]['fileName'];
+                        const dataInfo = resp[vl]['data'];
+                        const file_name = dataInfo[0]['fileName'];
+                        const each_utc = resp[vl]['utc'];
+
                         if ( peri === "BANGJAE" )
                         {
                             // 방재기간 정보 표출
@@ -124,7 +128,7 @@ console.log('data', set_data);
                                 
                         if ( peri === "FCST" )
                         {
-                            selCont += "<h5><b class='chartName'>" + var_select + "</b> <b class='vrfyName'>[ " + vrfy_name + "_" + stn_name + " ]  " + resp[vl]['utc'] + "UTC</b></h5>";
+                            selCont += "<h5><b class='chartName'>" + var_select + "</b> <b class='vrfyName'>[ " + vrfy_name + "_" + stn_name + " ]  " + each_utc + "UTC</b></h5>";
                         }
                         else if ( peri === "BANGJAE" || peri === "SEASON" )
                         {
@@ -136,7 +140,7 @@ console.log('data', set_data);
                             const startDate = $("#" + peri_low + "_startD").val();
                             const endDate = $("#" + peri_low + "_endD").val();
                             const addText = " - " + selectYear + " " + selectSeason + " 방재기간(" + startDate + "~" + endDate + ")"
-                            selCont += "<h5><b class='chartName'>" + var_select + "</b> <b class='vrfyName'>[ " + vrfy_name + "_" + stn_name + " ] " + resp[vl]['utc'] + "UTC " + addText + "</b></h5>";
+                            selCont += "<h5><b class='chartName'>" + var_select + "</b> <b class='vrfyName'>[ " + vrfy_name + "_" + stn_name + " ] " + each_utc + "UTC " + addText + "</b></h5>";
                         }
                         else if ( peri === "ALLMONTH" )
                         {
@@ -144,37 +148,52 @@ console.log('data', set_data);
                             const endDate = $("#allmonth_endD").val();
                             const addText = " - 전체기간 (" + startDate + "~" + endDate + ")";
 
-                            selCont += "<h5><b class='chartName'>" + var_select + "</b> <b class='vrfyName'>[ " + vrfy_name + "_" + stn_name + " ]  " + resp[vl]['utc'] + "UTC " + addText + "</b></h5>";
+                            selCont += "<h5><b class='chartName'>" + var_select + "</b> <b class='vrfyName'>[ " + vrfy_name + "_" + stn_name + " ]  " + each_utc + "UTC " + addText + "</b></h5>";
                         }
-
                         
                         selCont += "</div>";
                         // 검증지수 * 지점 개수 만큼 차트DIV Header 끝.
     
 
                         //---- 집계표 표출
-                            const each_utc = resp[vl]['utc'];
-
-                            let forecast_info = resp[vl]['data'][0]['fHeadUtc'];
-                            let dataInfo = resp[vl]['data'];
+                            let forecast_info = dataInfo[0]['fHeadUtc'];
 
                             const table_id = each_utc + "UTC_" + vrfy_loc + "_table";
-                            // assets/js/vrfy_js/highcharts/common/data_table.js
-                            selCont += makeFcstDataTable(forecast_info, dataInfo, var_select, dataFontClass, each_utc, table_id);
+
+                            if ( peri === "MONTH" )
+                            {
+                                // assets/js/vrfy_js/highcharts/common/data_table.js
+                                selCont += makeMonthDataTable(dataInfo, var_select, dataFontClass, each_utc, table_id);
+                            }
+                            else
+                            {
+                                // assets/js/vrfy_js/highcharts/common/data_table.js
+                                selCont += makeFcstDataTable(forecast_info, dataInfo, var_select, dataFontClass, each_utc, table_id);
+                            }
 
                         //---- 시계열 차트 시작
-                            selCont += "<div id='" +vrfy_loc + "_" + resp[vl]['utc'] + "_div' class='cht_div'></div>";
+                            selCont += "<div id='" +vrfy_loc + "_" + each_utc + "_div' class='cht_div'></div>";
                             
                             selCont += "</div></div>";
                             
                             // 검증지수 * 지점 개수 만큼 차트DIV 생성 끝.
                             $('#contValue').append(selCont);
     
-                            // assets/js/vrfy_js/zoom/zoom.js
-                            let isZoom = checkZoomGraph();
-                            setZoomGraph(isZoom, data_head, location);
-    
-                            const vrfy_id = vftc[0];
+                            let vrfy_id = "";
+                            let isZoom = false;
+                                if ( peri === "MONTH" )
+                                {
+                                    isZoom = false;
+                                    const sp_vl = vrfy_loc.split("_");
+                                    vrfy_id = sp_vl[0];
+                                }
+                                else
+                                {
+                                    // assets/js/vrfy_js/zoom/zoom.js
+                                    isZoom = checkZoomGraph();
+                                    setZoomGraph(isZoom, data_head, location);
+                                    vrfy_id = vftc[0];
+                                }
     
                             const var_unit = get_grph_unit(var_select, vrfy_id);
                                 const vUnit = var_unit.split("#");
@@ -190,130 +209,37 @@ console.log('data', set_data);
                             }
     
                             // 빈 하이차트 만들기 - assets/js/vrfy_js/highcharts/highcharts_frame.js
-                            let cht_name = vrfy_loc + "_" + resp[vl]['utc'];
-                            let data_utc_arr = resp[vl]['data'][0]['fHeadUtc'];
+                            let cht_name = vrfy_loc + "_" + each_utc;
+
+                            let data_utc_arr = "";
+                            if ( peri === "MONTH" )
+                            {
+                                data_utc_arr = resp[vl]['data'][0]['mon_range'];
+                            }
+                            else 
+                            {
+                                data_utc_arr = dataInfo[0]['fHeadUtc'];
+                            }
 
                             makeEmptyHighcharts( isZoom, peri, cht_name, yaxis_title, data_utc_arr, unitSymb, location, var_select );
                             // 빈 하이차트 만들기 - assets/js/vrfy_js/highcharts/highcharts_frame.js
     
                             // 모델X초기시각X기간 값을 하이차트에 Append 하기 위해 객체 생성.
-                            const chart = $('#' + vrfy_loc + "_" + resp[vl]['utc'] + "_div").highcharts();
+                            let chart = $('#' + vrfy_loc + "_" + each_utc + "_div").highcharts();
             
-                            // 하나의 차트에 들어갈 데이터 라인의 수.
-                            const cht_line_num = resp[vl]['data'].length;
-    
-                            // TODO : 데이터가 하나도 없을 시. ( 위에 "if( resp[vl]['data'].length == 0 )" 를 추가했으므로 필요없을 수 있음 )
-                            if ( cht_line_num == 0 )
+                            if ( peri === "MONTH" )
                             {
-                                chart.series[0].name= "No Data";
-                                chart.series[0].setData([], true);
-                            }
-                            // 데이터가 하나 일 경우 series의 name이 제대로 기입이 안되므로 억지로 집어넣어준다.
-                            else if ( cht_line_num == 1 )
-                            {
-
-                                let chtdata = new Array();
-                                // 강수확률은 값의 /100 적용.
-                                if( var_select == "POP" ) {
-                                    // IE에서 .map() 함수 사용 못함.
-                                    const pop_d = resp[vl]['data'][0]['data'];
-                                        for(let x=0; x<pop_d.length; x++) {
-                                            if( pop_d[x] ) {
-                                                chtdata.push( parseFloat( (pop_d[x]/100).toFixed(3) ) );
-                                            } else {
-                                                chtdata.push( pop_d[x] );
-                                            }
-                                        }
-                                } else {
-                                    chtdata = resp[vl]['data'][0]['data'];
-                                }
-                                
-                                // // 집계표에 사용되는 AVE값까지 포함되어 있으므로 시계열 표출 시 삭제 함. 
-                                // chtdata.pop();
-                                // chtdata.splice(chtdata.length - 1);
-                                // 원본 배열 값이 같이 삭제되므로 아래 필터함수 사용해서 사용 2023-01-12
-                                let length = chtdata.length;
-                                let chtdata2 = chtdata.filter((number, index) => {
-                                    return index < length-1;
-                                });
-                                chtdata = chtdata2;
-                                
-                                const lineName = resp[vl]['data'][0]['month'] + "_" + resp[vl]['data'][0]['utc'] + "_" + resp[vl]['data'][0]['model'];
-                                // 모델 컬러 추가. 2023-01-11
-                                const modl_color = resp[vl]['data'][0]['modl_color'];
-                                
-                                chart.series[0].setData( chtdata, true );
-                                // 카테고리 추가(00, 12 UTC 멀티 표출 때문). 2023-04-14
-                                // chart.xAxis[0].update({ categories: data_utc_arr });
-                                // 모델 컬러 추가. 2023-01-11
-                                chart.series[0].update({name: lineName, color: modl_color}, false);
-                                chart.redraw();
-
+                                // 차트 업데이트 : 월별은 차트 형식이 달라서 구분.
+                                chart = set_month_timeseries_data(chart, dataInfo , var_select);
                             }
                             else
                             {
-                                for (let mm=0; mm<resp[vl]['data'].length; mm++)
-                                {
-                                    let chtdata = new Array();
-                                    // 강수확률은 값의 /100 적용.
-                                    if ( var_select === "POP" )
-                                    {
-                                        let pop_d = resp[vl]['data'][mm]['data'];
-                                            for (let x=0; x<pop_d.length; x++)
-                                            {
-                                                if( pop_d[x] ) {
-                                                    chtdata.push( parseFloat( (pop_d[x]/100).toFixed(3) ) );
-                                                } else {
-                                                    chtdata.push( pop_d[x] );
-                                                }
-                                            }
-                                    }
-                                    else
-                                    {
-                                        chtdata = resp[vl]['data'][mm]['data'];
-                                    }
-                                    
-                                    // 집계표에 사용되는 AVE값까지 포함되어 있으므로 시계열 표출 시 삭제 함. 
-                                    // chtdata.pop();
-                                    // chtdata.splice(chtdata.length - 1);
-                                    // chtdata.splice(chtdata.length - 1);
-                                    // 원본 배열 값이 같이 삭제되므로 아래 필터함수 사용해서 사용 2023-01-12
-                                    let length = chtdata.length;
-                                    let chtdata2 = chtdata.filter((number, index) => {
-                                        return index < length-1;
-                                    });
-                                    chtdata = chtdata2;
-
-                                    const lineName = resp[vl]['data'][mm]['month'] + "_" + resp[vl]['data'][mm]['utc'] + "_" + resp[vl]['data'][mm]['model'];
-                                    // 모델 컬러 추가. 2023-01-11
-                                    let modl_color = resp[vl]['data'][mm]['modl_color'];
-                                    
-                                    if ( mm == 0 )
-                                    {
-                                        chart.series[0].name = lineName;
-                                        // 모델 컬러 추가. 2023-01-11
-                                        chart.series[0].color = modl_color;
-                                        chart.series[0].setData(chtdata, false);
-                                        // chart.xAxis[0].update({ categories: data_utc_arr });
-                                    }
-                                    else if ( mm == (resp[vl]['data'].length -1) )
-                                    {
-                                        // 모델 컬러 추가. 2023-01-11
-                                        // chart.xAxis[0].update({ categories: data_utc_arr });
-                                        chart.addSeries({data: chtdata, name: lineName, marker: {symbol: 'circle'}, color: modl_color}, true);
-                                    }
-                                    else
-                                    {
-                                        // 모델 컬러 추가. 2023-01-11
-                                        // chart.xAxis[0].update({ categories: data_utc_arr });
-                                        chart.addSeries({data: chtdata, name: lineName, marker: {symbol: 'circle'}, color: modl_color}, false);
-                                    }
-                                
-                                }
-
+                                // 차트 업데이트
+                                chart = set_timeseries_data(chart, dataInfo , var_select);
                             }
+
     
-                        } // End of "if( resp[vl]['data'].length == 0 )"
+                        } // End of "if( dataInfo.length == 0 )"
                         
                     } // End of "for(var vl=0; vl<resp.length; vl++)"
                         

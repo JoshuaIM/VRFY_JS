@@ -95,6 +95,134 @@ class MY_Controller extends CI_Controller {
         return $data_to_template;
     }
 
+
+    protected function get_ts_stn_data($post_data)
+    {
+        $data_head = $post_data['data_head'];
+        $var_select = $post_data['var_select'];
+        $init_hour = $post_data['init_hour'];
+        $model_sel = $post_data['model_sel'];
+        $location = $post_data['location'];
+        $start_init = $post_data['start_init'];
+        $range_date = $post_data['range_date'];
+        $end_init = $post_data['end_init'];
+        $vrfy_idx = $post_data['vrfy_idx'];
+        $peri = $post_data['peri'];
+
+        /////////////////////////////////////////////////////////////////////
+        // 00UTC+12UTC의 경우 00#12
+        $infoUTC = array();
+        foreach ( $init_hour as $utc )
+        {
+            $targUTC = explode("#" , $utc);
+            array_push($infoUTC, $targUTC[0]);
+        }
+        /////////////////////////////////////////////////////////////////////
+
+        $data_head_exp_arr = explode("_", $data_head);
+        $fdir = "";
+        $range_mon = array();
+            if ( $peri === "FCST" OR $peri === "MONTH" )
+            {
+                $type_dir = "";
+                if ( $model_sel[0] === "SSPS" )
+                {
+                    $type_dir = "SSPS";
+                }
+                else
+                {
+                    $type_dir = $data_head_exp_arr[1];
+                }
+
+                $fdir = $this->datafile_dir . $type_dir . "/" . $this->data_group_dir . $this->mon_dir; 
+
+                $range_mon = $this->common_func->getDateRangeArr($start_init, $end_init);
+            }
+            else if ( $peri === "BANGJAE" )
+            {
+                $fdir = $this->datafile_dir . $data_head_exp_arr[1] . "/" . $this->data_group_dir . $this->bangjae_dir;
+
+                $range_mon = $this->bangjae_func->getDateBangjae($range_date, $this->bangjae_season);
+            }
+            else if ( $peri === "SEASON" )
+            {
+                $fdir = $this->datafile_dir . $data_head_exp_arr[1] . "/" . $this->data_group_dir . $this->season_dir; 
+
+                $range_mon = $this->bangjae_func->getDateSeason($range_date);
+            }
+            else if ( $peri === "ALLMONTH" )
+            {
+                $fdir = $this->datafile_dir . $data_head_exp_arr[1] ."/" . $this->data_group_dir . $this->allmonth_dir; 
+
+                $range_mon = $this->common_func->getAllMonthDateRangeArr($fdir, $var_select, $this->allmonth_start);
+            }
+        
+        $fnParam = [
+            'dir_head' => $fdir,
+            'data_head' => $data_head,
+            'var_select' => $var_select,
+            'model_sel' => $model_sel,
+            'infoUTC' => $infoUTC,
+            'rangeMon' => $range_mon,
+            'vrfy_idx' => $vrfy_idx,
+            'location' => $location,
+        ];
+        
+        $finalData = array();
+        if ( $peri === "MONTH" )
+        {
+            if ( $location[0] == "mean" )
+            {
+                $allTargData = $this->tstbcommon_func->getMonData($fnParam);
+    
+                $fnParam['location'] = ["mean"];
+                // 표출하기 쉽게 데이터 정리.
+                $finalData = $this->tstbcommon_func->arrangeMonData($allTargData, $fnParam);
+            }
+            else
+            {
+                $allTargData = $this->tstbcommon_func->getMonData($fnParam);
+                
+                // 표출하기 쉽게 데이터 정리.
+                $finalData = $this->tstbcommon_func->arrangeMonData($allTargData, $fnParam);
+            }
+        }
+        else
+        {
+            if ( $location[0] == "mean" )
+            {
+                $allTargData = $this->tstbcommon_func->getFcstData($fnParam);
+                
+                $fnParam['location'] = ["mean"];
+                // 표출하기 쉽게 데이터 정리.
+                $finalData = $this->tstbcommon_func->arrangeFcstData($allTargData, $fnParam);
+            }
+            else
+            {
+                $allTargData = $this->tstbcommon_func->getFcstData($fnParam);
+                // 표출하기 쉽게 데이터 정리.
+                $finalData = $this->tstbcommon_func->arrangeFcstData($allTargData, $fnParam);
+            }
+        }
+        
+        return $finalData;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 /* End of file MY_Controller.php */

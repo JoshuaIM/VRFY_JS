@@ -115,7 +115,6 @@ function changeViewForecastRange(clickForecastRange) {
             let vrfy_loc = glob_data[vl]['vrfy_loc'];
                 // let check_247 = $('#subLocation option:selected').val();
                 let check_247 = $("input:checkbox[name=STATION]").val();
-console.log('check_247', check_247);
                 if( check_247 === "247ALL" ) {
                     vrfy_loc = vrfy_loc + "247";
                 }
