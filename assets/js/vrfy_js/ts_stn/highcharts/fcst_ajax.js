@@ -36,7 +36,6 @@ console.log('data', set_data);
                 // 월별 제외 : 예측기간 범위 선택 표출 기능과 예측성능비교표 표출
                 if ( peri != "MONTH" )
                 {
-console.log('pass', peri);
                     if ( data_head === "DFS_SHRT_STN_" || data_head === "247_SHRT_STN_" )
                     {
                         // 예측기간 범위 선택 표출

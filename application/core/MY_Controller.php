@@ -40,8 +40,11 @@ class MY_Controller extends CI_Controller {
 
     protected $allmonth_start = "20211201";
     
-    protected $var_array = ["T1H", "TMX", "TMN", "REH", "VEC", "WSD", "SKY", "PTY", "POP", "RN1", "SN3"];
-    protected $var_name_array = ["기온", "최고기온", "최저기온", "습도",  "풍향", "풍속", "하늘상태", "강수유무", "강수확률", "시간 강수량", "3시간 적설"];
+    protected $shrt_var_array = ["T1H", "TMX", "TMN", "REH", "VEC", "WSD", "SKY", "PTY", "POP", "RN1", "SN3"];
+    protected $shrt_var_name_array = ["기온", "최고기온", "최저기온", "습도",  "풍향", "풍속", "하늘상태", "강수유무", "강수확률", "시간 강수량", "3시간 적설"];
+
+    protected $medm_var_array = ["T3H", "TMX", "TMN", "REH", "VEC", "WSD", "SKY", "PTY", "POP", "RN3", "SN3"];
+    protected $medm_var_name_array = ["기온", "최고기온", "최저기온", "습도",  "풍향", "풍속", "하늘상태", "강수유무", "강수확률", "3시간 강수량", "3시간 적설"];
 
 
 
@@ -78,9 +81,20 @@ class MY_Controller extends CI_Controller {
 
         $data_to_template['dateType'] = "month";
         $data_to_template['vrfyTypeName'] = $this->common_func->getVrfyTypeName($vrfy_type);
+
+        if ( $type === "SHRT" )
+        {
+            $data_to_template['varArray'] = $this->shrt_var_array;
+            $data_to_template['varnameArray'] = $this->shrt_var_name_array;
+        }
+        else if ( $type === "MEDM" )
+        {
+            $data_to_template['varArray'] = $this->medm_var_array;
+            $data_to_template['varnameArray'] = $this->medm_var_name_array;
+            
+        }
+        
         $data_to_template['varName'] = $var_name;
-        $data_to_template['varArray'] = $this->var_array;
-        $data_to_template['varnameArray'] = $this->var_name_array;
         $data_to_template['vrfyTech'] = $this->common_func->getVrfyTech($var_name);
         
         $data_to_template['bangjaeDate'] = $bangjae_date;
@@ -207,13 +221,6 @@ class MY_Controller extends CI_Controller {
         
         return $finalData;
     }
-
-
-
-
-
-
-
 
 
 

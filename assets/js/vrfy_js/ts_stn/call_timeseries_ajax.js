@@ -1,5 +1,6 @@
 function call_timeseries_ajax(data_head, var_select, model_sel, init_hour, location, vrfy_idx, peri)
 {
+
     let start_init = "";
     let end_init = "";
     let bangjae_date = "";
@@ -70,21 +71,3 @@ function set_ajax_data(data_head, var_select, init_hour, model_sel, location, st
 
 
 
-
-
-
-
-
-// function get_url_address(site_url, peri)
-// {
-//     let url = "";
-//     switch (peri)
-//     {
-//         case "FCST"         : url = site_url + "/shrt/ts_stn/getStnFcstData";   break;
-//         case "BANGJAE"      : url = site_url + "/main/getStnBangjaeData";       break;
-//         case "SEASON"       : url = site_url + "/main/getStnSeasonData";        break;
-//         case "ALLMONTH"     : url = site_url + "/main/getStnAllmonthData";      break;
-//     }
-
-//     return url;
-// }

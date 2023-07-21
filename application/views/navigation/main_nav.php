@@ -48,11 +48,11 @@
                 		중기</span></a>
                         <ul class="sub">
                             <li class="main_menu">
-                            <a href="<?php echo base_url('main/medm_ts_stn'); ?>" class="<?php echo ($mapType=='medm_stn') ? 'active' : '';?>"><i class="fa fa-map-marker"></i>
+                            <a href="<?php echo base_url('ts/medm_stn'); ?>" class="<?php echo ($mapType=='medm_stn') ? 'active' : '';?>"><i class="fa fa-map-marker"></i>
                     		지점
                     		</a></li>
                             	<li class="main_submenu">
-                            	<a href="<?php echo base_url('main/medm_ts_stn'); ?>" class="subsub <?php echo ($vrfyType=='medm_ts_stn') ? 'active' : '';?>"><i class="fa fa-clock-o"></i>
+                            	<a href="<?php echo base_url('ts/medm_stn'); ?>" class="subsub <?php echo ($vrfyType=='medm_ts_stn') ? 'active' : '';?>"><i class="fa fa-clock-o"></i>
                             	시계열</a></li>
                             	<li class="main_submenu">
                             	<a href="<?php echo base_url('main/medm_map_stn'); ?>" class="subsub <?php echo ($vrfyType=='medm_map_stn') ? 'active' : '';?>"><i class="fa fa-picture-o"></i>

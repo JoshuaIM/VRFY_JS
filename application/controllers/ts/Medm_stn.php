@@ -6,7 +6,7 @@
  * @property 
  */
 
-class Shrt_stn extends My_Controller {
+class Medm_stn extends My_Controller {
 
     function __construct()
     {
@@ -17,12 +17,12 @@ class Shrt_stn extends My_Controller {
 
     public function index()
     {
-        $this->shrt_stn();
+        $this->medm_stn();
     }
 
-    public function shrt_stn()
+    public function medm_stn()
     {
-        $data_to_template = $this->get_data_template("SHRT", "SHRT");
+        $data_to_template = $this->get_data_template("MEDM", "MEDM");
 
         $this->load->view("templates/header", $data_to_template);
         $this->load->view("navigation/main_nav", $data_to_template);
@@ -34,24 +34,8 @@ class Shrt_stn extends My_Controller {
     }
 
 
-    public function ajax_ts_stn_data()
-    {
-        $finalData = $this->get_ts_stn_data($_POST);
-
-        echo json_encode($finalData);
-    }
-
-
-
-
-
-
-
-
-
 
 
 
 
 }
-

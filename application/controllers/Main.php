@@ -4,6 +4,8 @@ class Main extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
+
+        $this->load->library('Common_func');
     }
 
     public function index()
@@ -29,10 +31,10 @@ class Main extends CI_Controller {
     // View에서 Ajax로 호출하여 요소(변수)별 검증지수 배열 찾기. "getVrfyTech()" 메서드 호출.
     public function callVrfyTechShrt()
     {
-        $varName = $this->input->post('varName');
-        $vrfyTech = $this->common_func->getVrfyTechShrt($varName);
-        
-        echo json_encode($vrfyTech);
+        $var_name = $this->input->post('varName');
+        $vrfy_tech_list = $this->common_func->getVrfyTechShrt($var_name);
+
+        echo json_encode($vrfy_tech_list);
     }
 
     // 산악용

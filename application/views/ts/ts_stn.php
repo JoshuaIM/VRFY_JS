@@ -93,13 +93,17 @@
 
 ////////////////////////////////////////////
 // 요소선택 변경 시 검증지수 체크박스를 다시 세팅하기 위한 메서드.
-	function selVar(val) {
+	function selVar(var_name)
+	{
 
 		// 단기 시간적설이 SN3로 변경되며 검증지수가 증가하였는데 중기와 중복되지 않기 위해 함수를 분리.
 		let url_address = "";
-		if( vrfyType === "shrt_ts_stn" ) {
+		if ( data_type === "shrt_ts_stn" )
+		{
 			url_address = '<?php echo site_url();?>/main/callVrfyTechShrt'
-		} else {
+		}
+		else
+		{
 			url_address = '<?php echo site_url();?>/main/callVrfyTech'
 		}
 
@@ -107,16 +111,15 @@
                 type : "POST",
                     data :
                     {
-						// "varName" : val.value
-						"varName" : val
+						"varName" : var_name
                     },
                     dataType: "json",
-                    // url : '<?php echo site_url();?>/main/callVrfyTech',
                     url : url_address,
 					// 변수에 저장하기 위함.
                     async:false,
                     success : function(resp)
                     {
+// console.log('selVar(resp) :', resp);
 
                         // 검증지수 체크박스 삭제.
                     	$('#vrfySelect').empty();
@@ -127,7 +130,7 @@
             			vrfy_data = resp['data_vrfy'];
             			vrfy_txt = resp['txt_vrfy'];
             			vrfy_title = resp['title_vrfy'];
-                		d
+
                 		// 검증 지수 셀렉트박스 생성.
 						makeVrfySelect(vrfy_data, vrfy_txt, pType, dateType);
 
