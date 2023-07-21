@@ -21,39 +21,7 @@ class Ts_stn extends My_Controller {
     public function ts_stn($page = 'ts_stn')
     {
 
-        $varName = "T1H";
-        $vrfyType = 'shrt_ts_stn';
-        $dataHead = "DFS_SHRT_STN_";
-        
-        // ex) ./data/SHRT/CALC/DAOU/MOND/YYYYMM
-        $dataPath = $this->datafile_dir . "SHRT/" . $this->data_group_dir . $this->mon_dir; 
-        $data_to_template['dataDate'] = $this->common_func->getDirectoryDate($dataPath);
-
-        // ex) ./data/SHRT/CALC/DAOU/BNGJ/YYYYMM
-        $bangjaeDataPath = $this->datafile_dir . "SHRT/" .  $this->data_group_dir . $this->bangjae_dir; 
-        $bangjae_date = $this->common_func->getDateDirectoryArray($bangjaeDataPath);
-        $data_to_template['bangjaeDate'] = $bangjae_date;
-        // YYYY:selectBox 와 MM(방재기간 또는 계절에 따라 naming 변경):selectBox 분리를 위해서
-        $data_to_template['bangjaeArrMap'] = $this->bangjae_func->getDateSelctBoxArray($bangjae_date);
-        
-        // ex) ./data/SHRT/CALC/DAOU/SEAS/YYYYMM
-        $seasonDataPath = $this->datafile_dir . "SHRT/" .  $this->data_group_dir . $this->season_dir; 
-        $season_date = $this->common_func->getDateDirectoryArray($seasonDataPath);
-        $data_to_template['seasonDate'] = $season_date;
-        // YYYY:selectBox 와 MM(방재기간 또는 계절에 따라 naming 변경):selectBox 분리를 위해서
-        $data_to_template['seasonArrMap'] = $this->bangjae_func->getDateSelctBoxArray($season_date);
-        
-        $data_to_template['dataHead'] = $dataHead;
-        $data_to_template['modltech_info'] = $this->common_func->setModelCheckbox("shrt");
-        $data_to_template['dateType'] = "month";
-        $data_to_template['vrfyType'] = $vrfyType;
-        $data_to_template['vrfyTypeName'] = $this->common_func->getVrfyTypeName($vrfyType);
-        $data_to_template['varName'] = $varName;
-        $data_to_template['varArray'] = $this->var_array;
-        $data_to_template['varnameArray'] = $this->var_name_array;
-        $data_to_template['vrfyTech'] = $this->common_func->getVrfyTech($varName);
-        
-        $data_to_template['main_content'] = "shrt/ts_stn";
+        $data_to_template = $this->get_data_template("SHRT", "SHRT");
 
         $this->load->view("templates/header", $data_to_template);
         $this->load->view("navigation/main_nav", $data_to_template);
