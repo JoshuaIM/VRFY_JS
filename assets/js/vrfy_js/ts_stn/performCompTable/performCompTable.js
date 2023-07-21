@@ -1,20 +1,12 @@
-    // function showPerformComparisonTable(ajax_url, data, var_select, model_sel, vrfy_idx) {
     function showPerformComparisonTable(ajax_url, data, var_select, model_sel, vrfy_idx, init_hour) {
-
-// console.log('ajax_url', ajax_url);
-// console.log('data', data);
-// console.log('var_select', var_select);
-// console.log('model_sel', model_sel);
-// console.log('vrfy_idx', vrfy_idx);
-// console.log('init_hour', init_hour);
 
         // 검증지수 체크박스 index 값(순서)으로 vrfy_title(전역변수)의 해당 이름을 가져오기 위함.
         let vrfy_idx_arr = new Array();
-    	$("input[name=VRFY_INDEX]").each(function(index, item) {
+        $("input[name=VRFY_INDEX]").each(function(index, item) {
             if(item.checked) {
                 vrfy_idx_arr.push(index)
             }
-    	});
+        });
 // console.log('vrfy_idx', vrfy_idx_arr);
 
         let var_name = $(".eleSelBox option:selected").text();
@@ -45,10 +37,11 @@
         let modl_num = model_sel.length;
         let vrfy_num = vrfy_idx.length;
         let utc_num = utc.length;
+        let month_num = month_arr.length;
 
         let table = makeHtmlTableHeader(ajax_url);
 
-            for( let m=0; m<month_arr.length; m++) {
+            for( let m=0; m<month_num; m++) {
 
                 for( let vr=0; vr<vrfy_num; vr++ ) {
 
@@ -122,7 +115,7 @@
     
         // let window_size = (modl_num * utc.length)*10 + 300;
         let window_width_size = ( ((modl_num*2) * 50) + 300 ) * utc_num;
-        let window_height_size = 400 * vrfy_num;
+        let window_height_size = 400 * vrfy_num * month_num;
         if( window_height_size > 1000 ) {
             window_height_size = 1000;
         }
@@ -245,7 +238,7 @@
 
 
     function selectedYYYYMMType(yyyymm) {
-     
+        
         let res_yyyymm = "";
 
         let selectedType = $('#data_period option:selected').val();
