@@ -39,7 +39,7 @@
                 set_data = set_ajax_data(data_head, var_select, init_hour, model_sel, location, null, null, null, vrfy_idx, peri);
             }
 
-            const ajax_url = site_url + "/shrt/ts_stn/get_ts_stn_data";
+            const ajax_url = site_url + "/ts/ts_stn/get_ts_stn_data";
             call_ajax_ts_data(ajax_url, set_data);
 
         }

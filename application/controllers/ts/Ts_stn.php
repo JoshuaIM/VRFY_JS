@@ -25,9 +25,9 @@ class Ts_stn extends My_Controller {
 
         $this->load->view("templates/header", $data_to_template);
         $this->load->view("navigation/main_nav", $data_to_template);
-        $this->load->view('shrt/import_js', $data_to_template); 
-        $this->load->view('shrt/ts_stn', $data_to_template); 
-        $this->load->view('shrt/top_options', $data_to_template); 
+        $this->load->view('ts/import_js', $data_to_template); 
+        $this->load->view('ts/ts_stn', $data_to_template); 
+        $this->load->view('ts/top_options', $data_to_template); 
         $this->load->view('common/content');
         $this->load->view("templates/footer");
     }
