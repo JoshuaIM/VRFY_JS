@@ -34,11 +34,11 @@
                         단기</span></a>
                         <ul class="sub">
                             <li class="main_menu">
-                            <a href="<?php echo base_url('ts/shrt_stn');?>" class="<?php echo ($mapType=='shrt_stn') ? 'active' : '';?>"> <i class="fa fa-map-marker"></i>지점</a></li>
+                            <a href="<?php echo base_url('ts/shrt_stn');?>" class="<?php echo ( $type === 'SHRT' ) ? 'active' : '';?>"><i class="fa fa-map-marker"></i>지점</a></li>
                                 <li class="main_submenu">
-                                <a href="<?php echo base_url('ts/shrt_stn'); ?>" class="subsub <?php echo ($vrfyType=='shrt_ts_stn') ? 'active' : '';?>"><i class="fa fa-clock-o"></i>시계열</a></li>
+                                <a href="<?php echo base_url('ts/shrt_stn'); ?>" class="subsub <?php echo ( $vrfyType === 'shrt_ts_stn' ) ? 'active' : '';?>"><i class="fa fa-clock-o"></i>시계열</a></li>
                                 <li class="main_submenu">
-                                <a href="<?php echo base_url('map/map_stn'); ?>" class="subsub <?php echo ($vrfyType=='shrt_map_stn') ? 'active' : '';?>"><i class="fa fa-picture-o"></i>공간분포</a></li>
+                                <a href="<?php echo base_url('map/map_stn'); ?>" class="subsub <?php echo ( $vrfyType === 'shrt_map_stn' ) ? 'active' : '';?>"><i class="fa fa-picture-o"></i>공간분포</a></li>
                         </ul>
                     </li>
                     
@@ -48,15 +48,11 @@
                 		중기</span></a>
                         <ul class="sub">
                             <li class="main_menu">
-                            <a href="<?php echo base_url('ts/medm_stn'); ?>" class="<?php echo ($mapType=='medm_stn') ? 'active' : '';?>"><i class="fa fa-map-marker"></i>
-                    		지점
-                    		</a></li>
+                            <a href="<?php echo base_url('ts/medm_stn'); ?>" class="<?php echo ( $type === "MEDM" ) ? 'active' : '';?>"><i class="fa fa-map-marker"></i>지점</a></li>
                             	<li class="main_submenu">
-                            	<a href="<?php echo base_url('ts/medm_stn'); ?>" class="subsub <?php echo ($vrfyType=='medm_ts_stn') ? 'active' : '';?>"><i class="fa fa-clock-o"></i>
-                            	시계열</a></li>
+                            	<a href="<?php echo base_url('ts/medm_stn'); ?>" class="subsub <?php echo ( $vrfyType === 'medm_ts_stn' ) ? 'active' : '';?>"><i class="fa fa-clock-o"></i>시계열</a></li>
                             	<li class="main_submenu">
-                            	<a href="<?php echo base_url('main/medm_map_stn'); ?>" class="subsub <?php echo ($vrfyType=='medm_map_stn') ? 'active' : '';?>"><i class="fa fa-picture-o"></i>
-                            	공간분포</a></li>
+                            	<a href="<?php echo base_url('main/medm_map_stn'); ?>" class="subsub <?php echo ($vrfyType === 'medm_map_stn' ) ? 'active' : '';?>"><i class="fa fa-picture-o"></i>공간분포</a></li>
 						</ul>
 					</li>
 
@@ -66,16 +62,11 @@
                 		산악</span></a>
                         <ul class="sub">
                             <li class="main_menu">
-                            <a href="<?php echo base_url('main/ssps_shrt_ts_stn'); ?>" class="<?php echo ($mapType=='ssps_ts' || $mapType=='ssps_map' ) ? 'active' : '';?>"><i class="fa fa-map-marker"></i>
-                    		지점
-                    		</a></li>
+                            <a href="<?php echo base_url('ts/ssps_stn'); ?>" class="<?php echo ( $type === "SSPS" ) ? 'active' : '';?>"><i class="fa fa-map-marker"></i>지점</a></li>
                             	<li class="main_submenu">
-                            	<a href="<?php echo base_url('main/ssps_shrt_ts_stn'); ?>" class="subsub <?php echo ($vrfyType=='ssps_shrt_ts_stn') ? 'active' : '';?>"><i class="fa fa-clock-o"></i>
-                            	시계열</a></li>
-                                
+                            	<a href="<?php echo base_url('ts/ssps_stn'); ?>" class="subsub <?php echo ( $vrfyType === 'ssps_shrt_ts_stn' ) ? 'active' : '';?>"><i class="fa fa-clock-o"></i>시계열</a></li>
                             	<li class="main_submenu">
-                            	<a href="<?php echo base_url('main/ssps_shrt_map_stn'); ?>" class="subsub <?php echo ($vrfyType=='ssps_shrt_map_stn') ? 'active' : '';?>"><i class="fa fa-picture-o"></i>
-                            	공간분포</a></li>
+                            	<a href="<?php echo base_url('ts/ssps_shrt_map_stn'); ?>" class="subsub <?php echo ( $vrfyType === 'ssps_shrt_map_stn' ) ? 'active' : '';?>"><i class="fa fa-picture-o"></i>공간분포</a></li>
                                
 						</ul>
 					</li>
@@ -86,20 +77,13 @@
                 		예보활용도</span></a>
                         <ul class="sub">
                             <li class="main_menu">
-                            <a href="<?php echo base_url('main/gemd_ts_similarity'); ?>" class="<?php echo ($mapType=='gemd_ts' || $mapType=='gemd_map' ) ? 'active' : '';?>"><i class="fa fa-map-marker"></i>
-                    		지점
-                    		</a></li>
+                            <a href="<?php echo base_url('ts/gemd_ts_similarity'); ?>" class="<?php echo ( $type === "GEMD" ) ? 'active' : '';?>"><i class="fa fa-map-marker"></i>지점</a></li>
                             	<li class="main_submenu">
-                            	<a style="padding-left:10px;" href="<?php echo base_url('main/gemd_ts_similarity'); ?>" class="subsub <?php echo ($vrfyType=='gemd_ts_similarity') ? 'active' : '';?>"><i style="padding-right:3px;" class="fa fa-clock-o"></i>
-                            	유사도(시계열)</a></li>
-
+                            	<a style="padding-left:10px;" href="<?php echo base_url('main/gemd_ts_similarity'); ?>" class="subsub <?php echo ($vrfyType=='gemd_ts_similarity') ? 'active' : '';?>"><i style="padding-right:3px;" class="fa fa-clock-o"></i>유사도(시계열)</a></li>
                             	<li class="main_submenu">
-                            	<a style="padding-left:10px;" href="<?php echo base_url('main/gemd_ts_accuracy'); ?>" class="subsub <?php echo ($vrfyType=='gemd_ts_accuracy') ? 'active' : '';?>"><i style="padding-right:3px;" class="fa fa-clock-o"></i>
-                            	정확도(시계열)</a></li>
-                                
+                            	<a style="padding-left:10px;" href="<?php echo base_url('ts/accuracy_stn'); ?>" class="subsub <?php echo ($vrfyType=='gemd_ts_accuracy') ? 'active' : '';?>"><i style="padding-right:3px;" class="fa fa-clock-o"></i>정확도(시계열)</a></li>
                             	<li class="main_submenu">
-                            	<a style="padding-left:10px;" href="<?php echo base_url('main/gemd_map_utilize'); ?>" class="subsub <?php echo ($vrfyType=='gemd_map_utilize') ? 'active' : '';?>"><i style="padding-right:3px;" class="fa fa-picture-o"></i>
-                            	공간분포</a></li>
+                            	<a style="padding-left:10px;" href="<?php echo base_url('main/gemd_map_utilize'); ?>" class="subsub <?php echo ($vrfyType=='gemd_map_utilize') ? 'active' : '';?>"><i style="padding-right:3px;" class="fa fa-picture-o"></i>공간분포</a></li>
 						</ul>
 					</li>
                         

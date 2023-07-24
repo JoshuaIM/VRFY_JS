@@ -1,6 +1,7 @@
 <script type="text/javascript">
 
 // 사이트 확인 (month or arbi)
+	const type = "<?php echo $type; ?>";
 	var dateType = "<?php echo $dateType; ?>";
 	const data_type = "<?php echo $vrfyType; ?>";
 
@@ -15,10 +16,17 @@
 	let currentEndDate = "<?php echo $dataDate; ?>";			
 
 // 변수 타입 스트링으로 모두 변환하기 위해 json_encode 안씀.
-	let BANGJAE = [<?php echo '"'.implode('","', $bangjaeDate).'"' ?>];
-	let SEASON = [<?php echo '"'.implode('","', $seasonDate).'"' ?>];
-	let BANGJAEMAP = <?php echo json_encode($bangjaeArrMap); ?>;
-	let SEASONMAP = <?php echo json_encode($seasonArrMap); ?>;
+	<?php 
+	if ( $type != "SSPS" )
+	{
+	?>
+		let BANGJAE = [<?php echo '"'.implode('","', $bangjaeDate).'"' ?>];
+		let SEASON = [<?php echo '"'.implode('","', $seasonDate).'"' ?>];
+		let BANGJAEMAP = <?php echo json_encode($bangjaeArrMap); ?>;
+		let SEASONMAP = <?php echo json_encode($seasonArrMap); ?>;
+	<?php
+	}
+	?>
 
 	let glob_data = new Array();
 
@@ -64,9 +72,6 @@
 			$(".top_wrapper").css("margin-bottom", "0px");
 		}
 		
-		// (UI)모델 및 기법 선택 값 (중복 선택)
-		let model_sel = get_model_option();
-
 		// (UI)초기시각 UTC 선택 값 (중복 선택)
     	let init_hour = get_init_hour_option();
   
@@ -87,7 +92,17 @@
 		setZoomButton(peri);
     
 		// 메인 동작 함수.
-		call_timeseries_ajax(data_head, var_select, model_sel, init_hour, location, vrfy_idx, peri);
+		if ( type === "SSPS" )
+		{
+			let model_sel = ["SSPS"];
+			call_ssps_timeseries_ajax(data_head, var_select, model_sel, init_hour, location, vrfy_idx, peri);
+		}
+		else
+		{
+			// (UI)모델 및 기법 선택 값 (중복 선택)
+			let model_sel = get_model_option();
+			call_timeseries_ajax(data_head, var_select, model_sel, init_hour, location, vrfy_idx, peri);
+		}
     }
 
 
@@ -98,9 +113,13 @@
 
 		// 단기 시간적설이 SN3로 변경되며 검증지수가 증가하였는데 중기와 중복되지 않기 위해 함수를 분리.
 		let url_address = "";
-		if ( data_type === "shrt_ts_stn" )
+		if ( type === "SHRT" )
 		{
 			url_address = '<?php echo site_url();?>/main/callVrfyTechShrt'
+		}
+		else if ( type === "SSPS" )
+		{
+			url_address = '<?php echo site_url();?>/main/callSspsVrfyTech'
 		}
 		else
 		{
@@ -171,11 +190,14 @@
 	
 	<!-- 모델 선택 -->
 	<?php
-		$modlData = [
-			"vrfyTypeName" =>$vrfyTypeName,
-			"modltech_info" => $modltech_info
-		];
-		$this->load->view('common/sideMenu/modlSelectBox', $modlData);
+		if ( $type != "SSPS" )
+		{
+			$modlData = [
+				"vrfyTypeName" =>$vrfyTypeName,
+				"modltech_info" => $modltech_info
+			];
+			$this->load->view('common/sideMenu/modlSelectBox', $modlData);
+		}
 	?>
 
 	<!-- 초기시각 선택 -->
@@ -183,10 +205,16 @@
 
 	<!-- 지점 선택 -->
 	<?php 
-		$stn_split = explode("_", $vrfyType);
-		if( $stn_split[0] === "medm" ) {
+		if ( $type === "MEDM" )
+		{
 			$stnData = ["stn" => "medm"];
-		} else {
+		}
+		else if ( $type === "SSPS" )
+		{
+			$stnData = ["stn" => "ssps"];
+		}
+		else
+		{
 			$stnData = ["stn" => "def"];
 		}
 		// $this->load->view('common/sideMenu/stationSelectBox', $stnData); 

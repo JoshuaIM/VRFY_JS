@@ -294,26 +294,50 @@ function setSubLocationSSPS(selectValue) {
 	// 서브 지점 리스트 삭제(초기화).
 	$('#subLocation').empty();
 
-	var option = "";
+	// 기존 지점 멀티 선택 안되게 default (주석 풀기)
+	// var option = "";
+	// if ( selValue == "ALL" ) {
+	// 	option += "<option value='" + selValue + "' selected>&#128440; " + selTxt + "</option>";
+	// } else {
+		
+	// 	var splitValue = selValue.split("#");
+	// 		for(var sp=0; sp<splitValue.length; sp++) {
+	// 			var l_id = splitValue[sp];
+	// 			var l_txt = get_station_name( splitValue[sp] );
+				
+	// 			if( sp == 0) {
+	// 				option += "<option value='" + l_id + "' selected>&#128440; " + l_txt + "</option>";
+	// 			} else {
+	// 				option += "<option value='" + l_id + "' >&#128440; " + l_txt + "</option>";
+	// 			}
+	// 		}
+	// }
+	// $('#subLocation').append(option);
+	// 기존 지점 멀티 선택 안되게 default (주석 풀기)
+
+	// 지점 멀티 선택 되게
+	let checkbox = "";
 	if ( selValue == "ALL" ) {
-		option += "<option value='" + selValue + "' selected>&#128440; " + selTxt + "</option>";
+		checkbox += "<input type='checkbox' class='checkbox_stn' name='STATION' value='" + selValue + "' onclick='checkStation(this.name, this.value, this.id); getDataArray();' checked>" + selTxt;
 	} else {
 		
-		var splitValue = selValue.split("#");
+		// checkbox += "<input type='checkbox' id='loc_ave' class='checkbox_stn' name='STATION' value='" + selValue + "' onclick='checkStation(this.name, this.value, this.id); getDataArray();' >" + selTxt + " 전체<br>";
+		// checkbox += "<input type='checkbox' id='loc_mean' class='checkbox_stn' name='STATION' value='mean#" + selValue + "' onclick='checkStation(this.name, this.value, this.id); getDataArray();' >" + selTxt + " 평균<br>";
 		
-			for(var sp=0; sp<splitValue.length; sp++) {
-				var l_id = splitValue[sp];
-				var l_txt = get_station_name( splitValue[sp] );
+		let splitValue = selValue.split("#");
+			for(let sp=0; sp<splitValue.length; sp++) {
+				let l_id = splitValue[sp];
+				let l_txt = get_station_name( splitValue[sp] );
 				
 				if( sp == 0) {
-					option += "<option value='" + l_id + "' selected>&#128440; " + l_txt + "</option>";
+					checkbox += "<input type='checkbox' id='loc_each' class='checkbox_stn' name='STATION' value='" + l_id + "' onclick='checkStation(this.name, this.value, this.id); getDataArray();' checked>" + l_txt + "<br>";
 				} else {
-					option += "<option value='" + l_id + "' >&#128440; " + l_txt + "</option>";
+					checkbox += "<input type='checkbox' id='loc_each' class='checkbox_stn' name='STATION' value='" + l_id + "' onclick='checkStation(this.name, this.value, this.id); getDataArray();' >" + l_txt + "<br>";
 				}
 			}
 	}
-	$('#subLocation').append(option);
-	
+	$('#subLocation').append(checkbox);
+	// 지점 멀티 선택 되게
 }
 
 
@@ -453,3 +477,63 @@ function setSubLocationSimilarity(selectValue) {
 
 }
 
+
+
+
+function check_ssps_station(obj_name, obj_value, obj_id) {
+
+console.log("hi");
+console.log('obj_name', obj_name);
+console.log('obj_value', obj_value);
+console.log('obj_id', obj_id);
+
+
+
+	// // assets/js/vrfy_js/common_func.js : 체크가 모두 풀리는 것을 방지.
+	// checkNoneSelectBox(obj_name, obj_value);
+
+	// const chk_box_obj = $("input[name=" + obj_name + "]");
+	// const chk_total_num = chk_box_obj.length;
+	// const pos = obj_value.indexOf("#");
+
+	// // 전체 또는 평균 선택 시
+	// if( obj_id === "loc_ave" || obj_id === "loc_mean" ) {
+	// 	// const split_arr = obj_value.split("#");
+
+	// 	// 권역평균 선택 시
+	// 	if( obj_id === "loc_mean" ) {
+	// 		chk_box_obj.prop("checked", false);
+	// 		// $("input[name=" + obj_name + "][value='" + obj_value + "']").prop("checked", true);
+	// 		$("input[id=" + obj_id + "]").prop("checked", true);
+			
+	// 	// 권역 전체 선택 시
+	// 	} else {
+	// 		if( $("input[id=loc_ave]").is(":checked") ) {
+	// 			chk_box_obj.prop("checked", true);
+	// 			$("input[id=loc_mean]").prop("checked", false);
+	// 		} else {
+	// 			chk_box_obj.prop("checked", false);
+	// 			chk_box_obj.eq(2).prop("checked", true);
+	// 		}
+	// 	}
+
+	// // 지역 개별 선택 시
+	// } else if( obj_id === "loc_each" ) {
+
+	// 	// 권역평균 체크 시 - 해제
+	// 	if( $("input[id=loc_mean]").is(":checked") ) {
+	// 		$("input[id=loc_mean]").prop("checked", false);
+	// 	} else {
+	// 		// ave & mean 
+	// 		const each_total_num = chk_total_num -2;
+	// 		const each_num = $("input[id=loc_each]:checked").length;
+	
+	// 		if( each_total_num == each_num ) {
+	// 			$("input[id=loc_ave]").prop("checked", true);
+	// 		} else {
+	// 			$("input[id=loc_ave]").prop("checked", false);
+	// 		}
+	// 	}
+	// }
+	
+}

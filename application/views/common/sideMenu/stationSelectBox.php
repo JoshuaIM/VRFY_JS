@@ -46,9 +46,15 @@
                 <option value="ALL" selected>산악지점 전체평균</option>
                 <option value="10112#10122#10142#10151#10172#10193#10202#10211#10213#10222#10262#10272#10282#40262#40281#40497#40595#40980#40984#40990#40997#10252#30191#40321#40331#40979#40985#40988#40991#40995#40998#40999" >산악지점별</option>
             </select>
-            <select id="subLocation" name="LOCATION" class="selectMulti" size="9" onclick="getDataArray();" multiple >
+            <!-- 기존 지점 선택(멀티X) -->
+            <!-- <select id="subLocation" name="LOCATION" class="selectMulti" size="9" onclick="getDataArray();" multiple >
                 <option value="ALL" selected>&#128440; 전체지점 평균</option>
-            </select>
+            </select> -->
+
+            <!-- 멀티 지점 선택 -->
+            <div id="subLocation" class="checkStation">
+                <input type="checkbox" class="checkbox_stn" name="STATION" value="ALL" onclick="check_ssps_station(this.name, this.value, this.id); getDataArray();" checked>산악지점 전체평균
+            </div>
 	    </div>
 
 <?php
