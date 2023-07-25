@@ -17,6 +17,15 @@ console.log('data', set_data);
                 // csv 내려받기 기능을 위해 데이터 값 광역변수에 저장.
                 glob_data = resp;
     
+                if ( type === "GEMD" )
+                {
+                    def_forecast_range = resp[0]['data'][0]['fHeadUtc'];
+                }
+                else
+                {
+                    def_forecast_range = new Array();
+                }
+
                 const data_head = set_data["data_head"];
                 const init_hour = set_data["init_hour"];
                 const var_select = set_data["var_select"];
@@ -34,28 +43,25 @@ console.log('data', set_data);
                 $('#contValue').empty();
                         
                 // 월별 제외 : 예측기간 범위 선택 표출 기능과 예측성능비교표 표출
-                if ( peri != "MONTH" )
+                if ( (type === "SHRT" && peri != "MONTH") || (type === "MEDM" && peri != "MONTH") )
                 {
-                    if ( data_head === "DFS_SHRT_STN_" || data_head === "247_SHRT_STN_" )
-                    {
-                        // 예측기간 범위 선택 표출
-                        // assets/js/vrfy_js/highcharts/common/forecast_selectBox.js
-                        const forecast_select_box = makeFCselectBox(init_hour, var_select);
-                        $('#contValue').append(forecast_select_box);
-    
-                        $('.viewPerformTable').empty();
-    
-                        perform_var = var_select;
-                        perform_modl = model_sel;
-                        perform_vrfy = vrfy_idx;
-                        perform_utc = init_hour;
-    
-                        // 예측성능비교표
-                        const func = "showPerformComparisonTable(site_url, glob_data, perform_var, perform_modl, perform_vrfy, perform_utc)";
-    
-                        const make_btn = "<button class='performTableBtn' type='button' onclick='" + func + "'>예측 성능 비교표 보기</button>";
-                        $('.viewPerformTable').append(make_btn);
-                    }
+                    // 예측기간 범위 선택 표출
+                    // assets/js/vrfy_js/highcharts/common/forecast_selectBox.js
+                    const forecast_select_box = makeFCselectBox(init_hour, var_select);
+                    $('#contValue').append(forecast_select_box);
+
+                    $('.viewPerformTable').empty();
+
+                    perform_var = var_select;
+                    perform_modl = model_sel;
+                    perform_vrfy = vrfy_idx;
+                    perform_utc = init_hour;
+
+                    // 예측성능비교표
+                    const func = "showPerformComparisonTable(site_url, glob_data, perform_var, perform_modl, perform_vrfy, perform_utc)";
+
+                    const make_btn = "<button class='performTableBtn' type='button' onclick='" + func + "'>예측 성능 비교표 보기</button>";
+                    $('.viewPerformTable').append(make_btn);
                 }
 
 
@@ -74,6 +80,7 @@ console.log('data', set_data);
 
                         const dataInfo = resp[vl]['data'];
                         const file_name = dataInfo[0]['fileName'];
+console.log('file_name', file_name);
                         const each_utc = resp[vl]['utc'];
 
                         if ( peri === "BANGJAE" )
@@ -166,8 +173,17 @@ console.log('data', set_data);
                             }
                             else
                             {
-                                // assets/js/vrfy_js/highcharts/common/data_table.js
-                                selCont += makeFcstDataTable(forecast_info, dataInfo, var_select, dataFontClass, each_utc, table_id);
+
+                                if ( type === "GEMD" )
+                                {
+                                    // assets/js/vrfy_js/highcharts/common/data_table_similarity.js
+                                    selCont += makeFcstDataTableUtilize(forecast_info, dataInfo, var_select, dataFontClass, each_utc, table_id);
+                                }
+                                else
+                                {
+                                    // assets/js/vrfy_js/highcharts/common/data_table.js
+                                    selCont += makeFcstDataTable(forecast_info, dataInfo, var_select, dataFontClass, each_utc, table_id);
+                                }
                             }
 
                         //---- 시계열 차트 시작

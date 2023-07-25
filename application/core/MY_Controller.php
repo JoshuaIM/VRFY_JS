@@ -89,14 +89,15 @@ class MY_Controller extends CI_Controller {
         if ( $low_sub_type === "accuracy" )
         {
             $data_to_template['modltech_info'] = $this->common_func->setModelCheckbox("shrt");
+            $data_to_template['vrfyTypeName'] = $this->common_func->getGemdTypeName($vrfy_type);
         }
         else
         {
             $data_to_template['modltech_info'] = $this->common_func->setModelCheckbox($low_type);
+            $data_to_template['vrfyTypeName'] = $this->common_func->getVrfyTypeName($vrfy_type);
         }
 
         $data_to_template['dateType'] = "month";
-        $data_to_template['vrfyTypeName'] = $this->common_func->getVrfyTypeName($vrfy_type);
         $data_to_template['varName'] = $var_name;
 
         if ( $type === "SHRT" )
@@ -128,6 +129,9 @@ class MY_Controller extends CI_Controller {
     }
 
 
+    // view에서 AJAX 호출
+    // 데이터 READ 및 추출
+    // 결과값 RETURN
     protected function get_ts_stn_data($post_data)
     {
         $data_head = $post_data['data_head'];
@@ -140,6 +144,7 @@ class MY_Controller extends CI_Controller {
         $end_init = $post_data['end_init'];
         $vrfy_idx = $post_data['vrfy_idx'];
         $peri = $post_data['peri'];
+        $type = $post_data['type'];
 
         /////////////////////////////////////////////////////////////////////
         // 00UTC+12UTC의 경우 00#12
@@ -151,98 +156,152 @@ class MY_Controller extends CI_Controller {
         }
         /////////////////////////////////////////////////////////////////////
 
-        $data_head_exp_arr = explode("_", $data_head);
-        $fdir = "";
-        $range_mon = array();
-            if ( $peri === "FCST" OR $peri === "MONTH" )
-            {
-                $type_dir = "";
-                if ( $model_sel[0] === "SSPS" )
-                {
-                    $type_dir = "SSPS";
-                }
-                else
-                {
-                    $type_dir = $data_head_exp_arr[1];
-                }
+        $fdir = $this->get_data_directory_path($peri, $data_head, $type); 
 
-                $fdir = $this->datafile_dir . $type_dir . "/" . $this->data_group_dir . $this->mon_dir; 
+        $range_mon = $this->get_month_range($peri, $start_init, $end_init, $range_date, $fdir, $var_select);
 
-                $range_mon = $this->common_func->getDateRangeArr($start_init, $end_init);
-            }
-            else if ( $peri === "BANGJAE" )
-            {
-                $fdir = $this->datafile_dir . $data_head_exp_arr[1] . "/" . $this->data_group_dir . $this->bangjae_dir;
-
-                $range_mon = $this->bangjae_func->getDateBangjae($range_date, $this->bangjae_season);
-            }
-            else if ( $peri === "SEASON" )
-            {
-                $fdir = $this->datafile_dir . $data_head_exp_arr[1] . "/" . $this->data_group_dir . $this->season_dir; 
-
-                $range_mon = $this->bangjae_func->getDateSeason($range_date);
-            }
-            else if ( $peri === "ALLMONTH" )
-            {
-                $fdir = $this->datafile_dir . $data_head_exp_arr[1] ."/" . $this->data_group_dir . $this->allmonth_dir; 
-
-                $range_mon = $this->common_func->getAllMonthDateRangeArr($fdir, $var_select, $this->allmonth_start);
-            }
-        
         $fnParam = [
             'dir_head' => $fdir,
             'data_head' => $data_head,
             'var_select' => $var_select,
-            'model_sel' => $model_sel,
             'infoUTC' => $infoUTC,
             'rangeMon' => $range_mon,
             'vrfy_idx' => $vrfy_idx,
             'location' => $location,
         ];
-        
-        $finalData = array();
-        if ( $peri === "MONTH" )
+
+        if ( $type === "GEMD" ) 
         {
-            if ( $location[0] == "mean" )
+            $gemd_fdir = $this->get_data_directory_path($peri, $data_head, "GEMD_REAL");
+
+            $fnParam['gemd_dir_head'] = $gemd_fdir;
+
+            $model_gemd = array();
+            array_push($model_gemd, "GEMD");
+            foreach ( $model_sel as $m )
             {
-                $allTargData = $this->tstbcommon_func->getMonData($fnParam);
-    
-                $fnParam['location'] = ["mean"];
-                // 표출하기 쉽게 데이터 정리.
-                $finalData = $this->tstbcommon_func->arrangeMonData($allTargData, $fnParam);
+                array_push($model_gemd, $m);
             }
-            else
-            {
-                $allTargData = $this->tstbcommon_func->getMonData($fnParam);
-                
-                // 표출하기 쉽게 데이터 정리.
-                $finalData = $this->tstbcommon_func->arrangeMonData($allTargData, $fnParam);
-            }
+            $fnParam['model_sel'] = $model_gemd;
         }
         else
         {
-            if ( $location[0] == "mean" )
-            {
-                $allTargData = $this->tstbcommon_func->getFcstData($fnParam);
-                
-                $fnParam['location'] = ["mean"];
-                // 표출하기 쉽게 데이터 정리.
-                $finalData = $this->tstbcommon_func->arrangeFcstData($allTargData, $fnParam);
-            }
-            else
-            {
-                $allTargData = $this->tstbcommon_func->getFcstData($fnParam);
-                // 표출하기 쉽게 데이터 정리.
-                $finalData = $this->tstbcommon_func->arrangeFcstData($allTargData, $fnParam);
-            }
+            $fnParam['model_sel'] = $model_sel;
         }
+
+        // 데이터 수집 및 표출 위한 정리.
+        $all_data = $this->get_data($peri, $fnParam);
+        $arrange_data = $this->get_arrange_data($peri, $location[0], $all_data, $fnParam);
         
-        return $finalData;
+        return $arrange_data;
     }
 
 
 
 
+    // 데이터 디렉터리 경로.
+    protected function get_data_directory_path($peri, $data_head, $type)
+    {
+        $type_dir = "";
+        if ( $type === "SSPS" )
+        {
+            $type_dir = "SSPS";
+        }
+        else if ( $type === "GEMD_REAL" )
+        {
+            $type_dir = "GEMD";
+        }
+        else
+        {
+            $data_head_exp_arr = explode("_", $data_head);
+            $type_dir = $data_head_exp_arr[1];
+        }
+
+        $tail_dir = "";
+        if ( $peri === "FCST" OR $peri === "MONTH" )
+        {
+            $tail_dir = $this->mon_dir;
+        }
+        else if ( $peri === "BANGJAE" )
+        {
+            $tail_dir = $this->bangjae_dir;
+        }
+        else if ( $peri === "SEASON" )
+        {
+            $tail_dir = $this->season_dir;
+        }
+        else if ( $peri === "ALLMONTH" )
+        {
+            $tail_dir = $this->allmonth_dir;
+        }
+
+        $fdir = $this->datafile_dir . $type_dir . "/" . $this->data_group_dir . $tail_dir; 
+        return $fdir;
+    }
+
+
+    // 월 범위.
+    protected function get_month_range($peri, $start_init, $end_init, $range_date, $fdir, $var_select)
+    {
+        $range_mon = array();
+        if ( $peri === "BANGJAE" )
+        {
+            $range_mon = $this->bangjae_func->getDateBangjae($range_date, $this->bangjae_season);
+        }
+        else if ( $peri === "SEASON" )
+        {
+            $range_mon = $this->bangjae_func->getDateSeason($range_date);
+        }
+        else if ( $peri === "ALLMONTH" )
+        {
+            $range_mon = $this->common_func->getAllMonthDateRangeArr($fdir, $var_select, $this->allmonth_start);
+        }
+        else
+        {
+            $range_mon = $this->common_func->getDateRangeArr($start_init, $end_init);
+        }
+
+        return $range_mon;
+    }
+
+
+    // 데이터 추출.
+    protected function get_data($peri, $file_param)
+    {
+        $data = array();
+        if ( $peri === "MONTH" )
+        {
+            $data = $this->tstbcommon_func->getMonData($file_param);
+        }
+        else
+        {
+            $data = $this->tstbcommon_func->getFcstData($file_param);
+        }
+        return $data;
+    }
+
+
+    // 표출을 위해 데이터 정리 - 표출 순서 및 하나의 그래프 표출 OR 독립적인 그래프 표출 정리.
+    protected function get_arrange_data($peri, $location, $data, $file_param)
+    {
+        $arrange_data = array();
+        $param = $file_param;
+        if ( $location === "mean" )
+        {
+            $param['location'] = ["mean"];
+        }
+
+        if ( $peri === "MONTH" )
+        {
+            $arrange_data = $this->tstbcommon_func->arrangeMonData($data, $param);
+        }
+        else
+        {
+            $arrange_data = $this->tstbcommon_func->arrangeFcstData($data, $param);
+        }
+
+        return $arrange_data;
+    }
 
 
 

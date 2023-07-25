@@ -49,7 +49,6 @@ function call_timeseries_ajax(data_head, var_select, model_sel, init_hour, locat
 
 function call_ssps_timeseries_ajax(data_head, var_select, model_sel, init_hour, location, vrfy_idx, peri)
 {
-    console.log('location', location);
     // (UI)기간 시작 값
     const start_init = $("input:text[name='sInitDate']").val();
     // (UI)기간 끝 값
@@ -75,9 +74,10 @@ function set_ajax_data(data_head, var_select, init_hour, model_sel, location, st
         "end_init" : end_init,
         "range_date" : range_date,
         "vrfy_idx" : vrfy_idx,
-        "peri" : peri
+        "peri" : peri,
+        "type" : type
     }; 
-
+console.log('set', set_data);
     return set_data;
 }
 

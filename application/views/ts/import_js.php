@@ -30,6 +30,7 @@
 <!-- // fcst ajax 및 집계표 공통함수 분리 -->
 	<script src="<?php echo base_url('assets/js/vrfy_js/ts_stn/highcharts/fcst_ajax.js');?>"></script>
 	<script src="<?php echo base_url('assets/js/vrfy_js/ts_stn/highcharts/data_table/data_table.js');?>"></script>
+	<script src="<?php echo base_url('assets/js/vrfy_js/ts_stn/highcharts/data_table/data_table_similarity.js');?>"></script>
 	<script src="<?php echo base_url('assets/js/vrfy_js/ts_stn/highcharts/ts_highcharts.js');?>"></script>
 
 <!-- // 줌인아웃(전체보기) 기능 -->

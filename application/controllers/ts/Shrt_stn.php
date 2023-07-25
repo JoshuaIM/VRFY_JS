@@ -17,12 +17,15 @@ class Shrt_stn extends My_Controller {
 
     public function index()
     {
+        // $this->shrt_stn("SHRT");
         $this->shrt_stn();
     }
 
+    // public function shrt_stn($d_type)
     public function shrt_stn()
     {
-        $data_to_template = $this->get_data_template("SHRT", "SHRT");
+        $data_to_template = $this->get_data_template("SHRT", "SHRT", "STN");
+        // $data_to_template = $this->get_data_template($d_type, $d_type);
 
         $this->load->view("templates/header", $data_to_template);
         $this->load->view("navigation/main_nav", $data_to_template);

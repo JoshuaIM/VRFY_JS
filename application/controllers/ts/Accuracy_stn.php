@@ -6,7 +6,7 @@
  * @property 
  */
 
-class Medm_stn extends My_Controller {
+class Accuracy_stn extends My_Controller {
 
     function __construct()
     {
@@ -17,13 +17,12 @@ class Medm_stn extends My_Controller {
 
     public function index()
     {
-        // $this->medm_stn("MEDM");
-        $this->medm_stn();
+        $this->accuracy_stn();
     }
 
-    public function medm_stn()
+    public function accuracy_stn()
     {
-        $data_to_template = $this->get_data_template("MEDM", "MEDM", "STN");
+        $data_to_template = $this->get_data_template("GEMD", "SHRT", "ACCURACY");
 
         $this->load->view("templates/header", $data_to_template);
         $this->load->view("navigation/main_nav", $data_to_template);
@@ -32,8 +31,6 @@ class Medm_stn extends My_Controller {
         $this->load->view('ts/top_options', $data_to_template); 
         $this->load->view('common/content');
         $this->load->view("templates/footer");
-
-        // $this->shrt_stn("MEDM");
     }
 
 
@@ -41,4 +38,12 @@ class Medm_stn extends My_Controller {
 
 
 
+
+
+
+
+
+
+
 }
+

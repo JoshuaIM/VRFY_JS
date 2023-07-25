@@ -30,6 +30,9 @@
 
 	let glob_data = new Array();
 
+// (예보활용도-정확도) 수치예보 가이던스 자료 공통 예측시간 적용을 위함.
+	let def_forecast_range = new Array();
+
 // 예측 성능 비교표 표출 시 사용.
 	const site_url = "<?php echo site_url();?>";
 	let perform_var = "";
@@ -113,7 +116,7 @@
 
 		// 단기 시간적설이 SN3로 변경되며 검증지수가 증가하였는데 중기와 중복되지 않기 위해 함수를 분리.
 		let url_address = "";
-		if ( type === "SHRT" )
+		if ( type === "SHRT" || type === "GEMD" )
 		{
 			url_address = '<?php echo site_url();?>/main/callVrfyTechShrt'
 		}
