@@ -2,6 +2,7 @@
 
 // 사이트 확인 (month or arbi)
 	const type = "<?php echo $type; ?>";
+	const sub_type = "<?php echo $sub_type; ?>";
 	var dateType = "<?php echo $dateType; ?>";
 	const data_type = "<?php echo $vrfyType; ?>";
 
@@ -59,7 +60,6 @@
     // 데이터 표출 시 UI 정보 수집 함수.
     function getDataArray()
 	{
-
 		// 데이터 네임 앞 글자. 단기-지점
 		let data_head = "<?php echo $dataHead; ?>";
 
@@ -79,6 +79,7 @@
     	let init_hour = get_init_hour_option();
   
 		// (UI)지점 및 표준검증지점에 따른 data_head 값 변경.
+		// assets/js/vrfy_js/common/get_option_value.js
     	let get_loc_dhead =  get_location_datahead_option(data_head);
     	// (UI)지점 선택 값
 		let location = get_loc_dhead.get("location");
@@ -93,7 +94,7 @@
 
 		// 줌 체크박스 보이기/숨기기.
 		setZoomButton(peri);
-    
+
 		// 메인 동작 함수.
 		if ( type === "SSPS" )
 		{

@@ -80,7 +80,6 @@ console.log('data', set_data);
 
                         const dataInfo = resp[vl]['data'];
                         const file_name = dataInfo[0]['fileName'];
-console.log('file_name', file_name);
                         const each_utc = resp[vl]['utc'];
 
                         if ( peri === "BANGJAE" )
@@ -173,7 +172,6 @@ console.log('file_name', file_name);
                             }
                             else
                             {
-
                                 if ( type === "GEMD" )
                                 {
                                     // assets/js/vrfy_js/highcharts/common/data_table_similarity.js

@@ -56,7 +56,7 @@ class MY_Controller extends CI_Controller {
     /**
      * $type : SHRT, MEDM, GEMD
      * $data_type : SHRT, MEDM
-     * $sub_type : STN, ACCURACY
+     * $sub_type : STN, ACCURACY, SIMILARITY
      **/
     protected function get_data_template( $type, $data_type, $sub_type )
     {
@@ -75,6 +75,7 @@ class MY_Controller extends CI_Controller {
         $data_head = "DFS_" . $data_type . "_STN_";
         $data_path = $this->datafile_dir . $type ."/" . $this->data_group_dir . $this->mon_dir; 
         $vrfy_type = $low_type . "_ts_" . $low_sub_type;
+
         $bangjae_data_path = $this->datafile_dir . $type . "/" .  $this->data_group_dir . $this->bangjae_dir; 
         $bangjae_date = $this->common_func->getDateDirectoryArray($bangjae_data_path);
         $season_data_path = $this->datafile_dir . $type . "/" .  $this->data_group_dir . $this->season_dir; 
@@ -82,11 +83,14 @@ class MY_Controller extends CI_Controller {
         
         $data_to_template = array();
         $data_to_template['type'] = $type;
+        $data_to_template['sub_type'] = $sub_type;
         $data_to_template['vrfyType'] = $vrfy_type;
         $data_to_template['dataHead'] = $data_head;
         $data_to_template['dataDate'] = $this->common_func->getDirectoryDate($data_path);
+        $data_to_template['dateType'] = "month";
+        $data_to_template['varName'] = $var_name;
 
-        if ( $low_sub_type === "accuracy" )
+        if ( $low_sub_type === "accuracy" || $low_sub_type === "similarity" )
         {
             $data_to_template['modltech_info'] = $this->common_func->setModelCheckbox("shrt");
             $data_to_template['vrfyTypeName'] = $this->common_func->getGemdTypeName($vrfy_type);
@@ -96,9 +100,19 @@ class MY_Controller extends CI_Controller {
             $data_to_template['modltech_info'] = $this->common_func->setModelCheckbox($low_type);
             $data_to_template['vrfyTypeName'] = $this->common_func->getVrfyTypeName($vrfy_type);
         }
-
-        $data_to_template['dateType'] = "month";
-        $data_to_template['varName'] = $var_name;
+        
+        if ( $low_sub_type === "similarity" )
+        {
+            $data_to_template['vrfyTech'] = [
+                "data_vrfy" => ["CORR", "COSS"],
+                "txt_vrfy" => ["상관계수", "코사인유사도"],
+                "title_vrfy" => ["상관계수", "코사인유사도"]
+            ];
+        }
+        else
+        {
+            $data_to_template['vrfyTech'] = $this->common_func->getVrfyTech($var_name);
+        }
 
         if ( $type === "SHRT" )
         {
@@ -116,8 +130,6 @@ class MY_Controller extends CI_Controller {
             $data_to_template['varnameArray'] = $this->gemd_var_name_array;
         }
         
-        $data_to_template['vrfyTech'] = $this->common_func->getVrfyTech($var_name);
-
         $data_to_template['bangjaeDate'] = $bangjae_date;
         $data_to_template['seasonDate'] = $season_date;
 
@@ -145,6 +157,7 @@ class MY_Controller extends CI_Controller {
         $vrfy_idx = $post_data['vrfy_idx'];
         $peri = $post_data['peri'];
         $type = $post_data['type'];
+        $sub_type = $post_data['sub_type'];
 
         /////////////////////////////////////////////////////////////////////
         // 00UTC+12UTC의 경우 00#12
@@ -156,7 +169,7 @@ class MY_Controller extends CI_Controller {
         }
         /////////////////////////////////////////////////////////////////////
 
-        $fdir = $this->get_data_directory_path($peri, $data_head, $type); 
+        $fdir = $this->get_data_directory_path($peri, $data_head, $type, $sub_type); 
 
         $range_mon = $this->get_month_range($peri, $start_init, $end_init, $range_date, $fdir, $var_select);
 
@@ -170,9 +183,9 @@ class MY_Controller extends CI_Controller {
             'location' => $location,
         ];
 
-        if ( $type === "GEMD" ) 
+        if ( $type === "GEMD" && $sub_type === "ACCURACY" ) 
         {
-            $gemd_fdir = $this->get_data_directory_path($peri, $data_head, "GEMD_REAL");
+            $gemd_fdir = $this->get_data_directory_path($peri, $data_head, $type, "GEMD_REAL");
 
             $fnParam['gemd_dir_head'] = $gemd_fdir;
 
@@ -191,31 +204,37 @@ class MY_Controller extends CI_Controller {
 
         // 데이터 수집 및 표출 위한 정리.
         $all_data = $this->get_data($peri, $fnParam);
-        $arrange_data = $this->get_arrange_data($peri, $location[0], $all_data, $fnParam);
+
+        $arrange_data = $this->get_arrange_data($peri, $location[0], $sub_type, $all_data, $fnParam);
         
         return $arrange_data;
+        // return $all_data;
     }
 
 
 
 
     // 데이터 디렉터리 경로.
-    protected function get_data_directory_path($peri, $data_head, $type)
+    protected function get_data_directory_path($peri, $data_head, $type, $sub_type)
     {
         $type_dir = "";
         if ( $type === "SSPS" )
         {
             $type_dir = "SSPS";
         }
-        else if ( $type === "GEMD_REAL" )
-        {
-            $type_dir = "GEMD";
-        }
         else
         {
-            $data_head_exp_arr = explode("_", $data_head);
-            $type_dir = $data_head_exp_arr[1];
+            if ( $sub_type === "GEMD_REAL" OR $sub_type === "SIMILARITY" )
+            {
+                $type_dir = "GEMD";
+            }
+            else
+            {
+                $data_head_exp_arr = explode("_", $data_head);
+                $type_dir = $data_head_exp_arr[1];
+            }
         }
+
 
         $tail_dir = "";
         if ( $peri === "FCST" OR $peri === "MONTH" )
@@ -282,7 +301,7 @@ class MY_Controller extends CI_Controller {
 
 
     // 표출을 위해 데이터 정리 - 표출 순서 및 하나의 그래프 표출 OR 독립적인 그래프 표출 정리.
-    protected function get_arrange_data($peri, $location, $data, $file_param)
+    protected function get_arrange_data($peri, $location, $sub_type, $data, $file_param)
     {
         $arrange_data = array();
         $param = $file_param;
@@ -297,8 +316,16 @@ class MY_Controller extends CI_Controller {
         }
         else
         {
-            $arrange_data = $this->tstbcommon_func->arrangeFcstData($data, $param);
+            if ( $sub_type === "SIMILARITY" )
+            {
+                $arrange_data = $this->tstbcommon_func->arrangeGemdUtilizeFcstData($data, $param);
+            }
+            else
+            {
+                $arrange_data = $this->tstbcommon_func->arrangeFcstData($data, $param);
+            }
         }
+
 
         return $arrange_data;
     }

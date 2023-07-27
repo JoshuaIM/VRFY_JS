@@ -1,11 +1,10 @@
 function call_timeseries_ajax(data_head, var_select, model_sel, init_hour, location, vrfy_idx, peri)
 {
-
     let start_init = "";
     let end_init = "";
     let bangjae_date = "";
     let season_date = "";
-
+    
     if( peri === "BANGJAE" )
     {
         bangjae_date = $("#select_bangjae_date").val() + $("#select_bangjae_season").val();
@@ -75,9 +74,9 @@ function set_ajax_data(data_head, var_select, init_hour, model_sel, location, st
         "range_date" : range_date,
         "vrfy_idx" : vrfy_idx,
         "peri" : peri,
-        "type" : type
+        "type" : type,
+        "sub_type" : sub_type
     }; 
-console.log('set', set_data);
     return set_data;
 }
 

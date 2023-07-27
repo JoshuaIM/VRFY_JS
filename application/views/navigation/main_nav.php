@@ -77,9 +77,9 @@
                 		예보활용도</span></a>
                         <ul class="sub">
                             <li class="main_menu">
-                            <a href="<?php echo base_url('ts/gemd_ts_similarity'); ?>" class="<?php echo ( $type === "GEMD" ) ? 'active' : '';?>"><i class="fa fa-map-marker"></i>지점</a></li>
+                            <a href="<?php echo base_url('ts/similarity_stn'); ?>" class="<?php echo ( $type === "GEMD" ) ? 'active' : '';?>"><i class="fa fa-map-marker"></i>지점</a></li>
                             	<li class="main_submenu">
-                            	<a style="padding-left:10px;" href="<?php echo base_url('main/gemd_ts_similarity'); ?>" class="subsub <?php echo ($vrfyType=='gemd_ts_similarity') ? 'active' : '';?>"><i style="padding-right:3px;" class="fa fa-clock-o"></i>유사도(시계열)</a></li>
+                            	<a style="padding-left:10px;" href="<?php echo base_url('ts/similarity_stn'); ?>" class="subsub <?php echo ($vrfyType=='gemd_ts_similarity') ? 'active' : '';?>"><i style="padding-right:3px;" class="fa fa-clock-o"></i>유사도(시계열)</a></li>
                             	<li class="main_submenu">
                             	<a style="padding-left:10px;" href="<?php echo base_url('ts/accuracy_stn'); ?>" class="subsub <?php echo ($vrfyType=='gemd_ts_accuracy') ? 'active' : '';?>"><i style="padding-right:3px;" class="fa fa-clock-o"></i>정확도(시계열)</a></li>
                             	<li class="main_submenu">
