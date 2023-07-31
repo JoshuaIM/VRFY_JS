@@ -75,7 +75,8 @@
 		if ( type === "SSPS" )
 		{
 			let model_sel = ["SSPS"];
-			call_ssps_graph_ajax(data_head, var_select, model_sel, init_hour, location, vrfy_idx, peri);
+			// call_ssps_graph_ajax(data_head, var_select, model_sel, init_hour, location, vrfy_idx, peri);
+			call_graph_ajax(data_head, var_select, model_sel, init_hour, location, vrfy_idx, peri);
 		}
 		else
 		{
@@ -131,10 +132,6 @@
                 		// 검증 지수 셀렉트박스 생성.
 						makeVrfySelect(vrfy_data, vrfy_txt, pType, dateType);
 
-                    	// 초기시각 세팅.
-						// 1시간 단기 자료 표출로 인하여 00+12UTC는 표출 안하고, 멀티 선택 막음. 2021-02-25
-						//makeUTCopt(val.value, dateType);
-						
                     },
                     error : function(error) 
                     {
@@ -150,163 +147,6 @@
 	}
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  예측기간별 자료  Ajax 이용 그래픽 표출 메서드.
-	function callAjaxUtcInfo(data_head, var_select, init_hour, model_sel, start_init, end_init, vrfy_idx, peri) {
-
-		// 기온 1시간 또는 3시간 자료인지 확인.
-		// 2021-02-19 add by joshua.
-		// var var_change = "";
-
-		var sd = start_init.substr(0,4) + "-" + start_init.substr(4,2) + "-01";
-// console.log(sd);
-		// if( var_select == "T1H" || var_select == "T3H" ) {
-		// 	if( shrtMonthCheck(sd) ) {
-		// 		var_change = "T3H";
-		// 	} else {
-		// 		var_change = "T1H";
-		// 	}
-		// } else if( var_select == "RN1" || var_select == "RN3" ) {
-		// 	if( shrtMonthCheck(sd) ) {
-		// 		var_change = "RN3";
-		// 	} else {
-		// 		var_change = "RN1";
-		// 	}
-		// } else if( var_select == "SN1" || var_select == "SN3" ) {
-		// 	if( shrtMonthCheck(sd) ) {
-		// 		var_change = "SN3";
-		// 	} else {
-		// 		var_change = "SN1";
-		// 	}
-		// } else {
-		// 	var_change = var_select;
-		// }
-		// 2021-02-19 add by joshua.		
-
-		// 예측시간이 1시간 또는 3시간 자료인지 확인 후 변수 이름 변경. (shrt_change_3to1_func.js 로 함수 옮김. 2021-03-31)
-		// var var_change = changeVrfyByVar(start_init, var_select);
-		var var_change = var_select;
-
-    	$.ajax({
-            type : "POST",
-                data :
-                {
-    				"data_head" : data_head,
-    				//"var_select" : var_select,
-    				"var_select" : var_change,
-    				"init_hour" : init_hour,
-    				"model_sel" : model_sel,
-    				"start_init" : start_init,
-    				"end_init" : end_init,
-    				"vrfy_idx" : vrfy_idx,
-    				"peri" : peri
-                },
-                dataType: "json",
-                url : '<?php echo site_url();?>/main/getStnFcstNum',
-    			// 변수에 저장하기 위함.
-                async: false,
-                success : function(resp)
-                {
-
-// console.log(data_head);
-// console.log(resp);
-					// 그래프 표출 영역 초기화.
-                	$('#fcstValue').empty();
-                	$('#contValue').empty();
-
-					// 표출 항목이 있을 경우 start.
-					if( resp["fcst_info"] ) {
-
-						//fcstTable = "<div class='col-lg-10'>";
-						fcstTable = "";
-						
-						fcstTable += "<table class='map_utc_table' >";
-						
-						// 2021-02-24 add by joshua.
-						if( shrtMonthCheck(sd) == true || ( var_change == "TMX" || var_change == "TMN" ) ) {
-
-							fcstTable += "<tr>";
-							for(var i=0; i<resp['fcst_info']['utc_txt'].length; i++) {
-									fcstTable += "<td class='sliderLabel' id='ImageL_" + i + "'>" + resp['fcst_info']['utc_txt'][i] + "</td>";
-								}
-							fcstTable += "</tr>";
-							
-							fcstTable += "<tr>";
-								for(var i=0; i<resp['fcst_info']['utc_txt'].length; i++) {
-									fcstTable += "<td class='slider' id='Image_" + i + "' title='" + resp['fcst_info']['utc_txt'][i] + "' > &nbsp; </td>";
-								}
-							fcstTable += "</tr>";
-							
-							fcstTable += "</table>";
-							
-							fcstTable += "</div>";
-
-						// 2021-02-24 add by joshua.
-						// 2020-12월 이 후 자료일 경우.	
-						} else {
-
-							// assets/js/vrfy_js/map_slider/make_map_slider.js
-							if( data_head === "DFS_SHRT_STN_" ) {
-								fcstTable += makeShrtSliderTile(init_hour, resp['fcst_info']['utc_txt']);
-							} else if( data_head === "DFS_MEDM_STN_" ) {
-								fcstTable += makeMedmSliderTile(init_hour, resp['fcst_info']['utc_txt']);
-							}
-						}
-
-						
-						$('#fcstValue').append(fcstTable);
-
-						maxstep = resp['fcst_info']['utc_txt'].length -1;
-						
-						// display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head);
-						display_grph(var_change, model_sel, vrfy_idx, resp, idx, data_head);
-
-						
-						//setSlideAt(0);
-						// 슬라이드바를 직접 클릭할때 호출되는 함수
-						$("td[id^='Image_']").click(function() {
-							idx = $(this).attr("id").substr(6);
-							ImgIndex = idx;
-							
-							// display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head);
-							display_grph(var_change, model_sel, vrfy_idx, resp, idx, data_head);
-						});
-
-						// 한번 클릭 시 여러번 실행되는 문제(여러번 콜했을 경우)를 방지.
-						$("body").off('keydown');
-						// 좌우 화살표 키
-						$("body").keydown(function(e) {
-							if(e.keyCode == 37) { // left
-								idx = idx*1 -1;
-								if (idx < 0){
-									idx = maxstep;
-								}
-								// display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head);
-								display_grph(var_change, model_sel, vrfy_idx, resp, idx, data_head);
-								
-							} else if(e.keyCode == 39) { // right
-								idx = idx*1 +1;
-
-								if (idx > maxstep ){
-									idx = 0;
-								}
-								// display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head);
-								display_grph(var_change, model_sel, vrfy_idx, resp, idx, data_head);
-							}
-						});
-						
-					}
-					// 표출 항목이 있을 경우 End of if.
-
-                }, // End of "success : function(resp)"
-                error : function(error) 
-                {
-                    alert("error");
-                    console.log(error);
-                }
-        })
-		
-	}
 
 
 
@@ -543,11 +383,14 @@ console.log(resp);
 	
 	<!-- 모델 선택 -->
 	<?php
-		$modlData = [
-			"vrfyTypeName" =>$vrfyTypeName,
-			"modltech_info" => $modltech_info
-		];
-		$this->load->view('common/sideMenu/modlSelectBox', $modlData);
+		if ( $type != "SSPS" )
+		{
+			$modlData = [
+				"vrfyTypeName" =>$vrfyTypeName,
+				"modltech_info" => $modltech_info
+			];
+			$this->load->view('common/sideMenu/modlSelectBox', $modlData);
+		}
 	?>
 
 	<!-- 초기시각 선택 -->

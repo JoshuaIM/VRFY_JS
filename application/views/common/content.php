@@ -10,12 +10,19 @@
 		?>
 			<!-- 예보시각 표출 영역 (공간분포 표출 시) -->
 			<div id="fcstValue" class="col-lg-12" ></div>
+
+			<!-- 결과물 표출 영역 -->
+			<div id="contValue" class="col-lg-11" ></div>
+		<?php
+		}
+		else
+		{
+		?>
+			<!-- 결과물 표출 영역 -->
+	    	<div id="contValue"></div>
 		<?php
 		}
 		?>
-
-		<!-- 결과물 표출 영역 -->
-    	<div id="contValue"></div>
     </div>
     
 </section>

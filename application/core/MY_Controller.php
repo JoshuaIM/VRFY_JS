@@ -85,11 +85,6 @@ class MY_Controller extends CI_Controller {
         }
         $vrfy_type = $low_type . "_" . $grph_type . "_" . $low_sub_type;
 
-        $bangjae_data_path = $this->datafile_dir . $type . "/" .  $this->data_group_dir . $this->bangjae_dir; 
-        $bangjae_date = $this->common_func->getDateDirectoryArray($bangjae_data_path);
-        $season_data_path = $this->datafile_dir . $type . "/" .  $this->data_group_dir . $this->season_dir; 
-        $season_date = $this->common_func->getDateDirectoryArray($season_data_path);
-        
         $data_to_template = array();
         $data_to_template['type'] = $type;
         $data_to_template['grph_type'] = $grph_type;
@@ -141,15 +136,79 @@ class MY_Controller extends CI_Controller {
             $data_to_template['varnameArray'] = $this->gemd_var_name_array;
         }
         
+        $bangjae_data_path = $this->datafile_dir . $type . "/" .  $this->data_group_dir . $this->bangjae_dir; 
+        $bangjae_date = $this->common_func->getDateDirectoryArray($bangjae_data_path);
+        $season_data_path = $this->datafile_dir . $type . "/" .  $this->data_group_dir . $this->season_dir; 
+        $season_date = $this->common_func->getDateDirectoryArray($season_data_path);
         $data_to_template['bangjaeDate'] = $bangjae_date;
         $data_to_template['seasonDate'] = $season_date;
-
         // YYYY:selectBox 와 MM(방재기간 또는 계절에 따라 naming 변경):selectBox 분리를 위해서
         $data_to_template['bangjaeArrMap'] = $this->bangjae_func->getDateSelctBoxArray($bangjae_date);
         $data_to_template['seasonArrMap'] = $this->bangjae_func->getDateSelctBoxArray($season_date);
 
         return $data_to_template;
     }
+
+
+    /**
+     * 1. $type : SSPS
+     * 2. $data_type : SHRT
+     * 3. $sub_type : STN
+     * 4. $grph_type : ts, map
+     **/
+    public function get_data_ssps_template( $type, $data_type, $sub_type, $grph_type )
+    {
+        $low_type = strtolower($type);
+        $low_data_type = strtolower($data_type);
+
+        $var_name = "T1H";
+
+        $data_head = "DFS_" . $data_type . "_STN_";
+
+        if( $grph_type === "ts" )
+        {
+            $data_path = $this->datafile_dir . $type ."/" . $this->data_group_dir . $this->mon_dir; 
+        }
+        else
+        {
+            $data_path = $this->datafile_dir . $type ."/" . $this->grph_group_dir . $this->mon_dir; 
+        }
+        
+        $vrfy_type = $low_type . "_" . $low_data_type . "_ts_stn";
+        
+        $data_to_template = array();
+        $data_to_template['type'] = $type;
+        $data_to_template['grph_type'] = $grph_type;
+        $data_to_template['sub_type'] = $sub_type;
+        $data_to_template['vrfyType'] = $vrfy_type;
+        $data_to_template['dataDirectoryHead'] = $data_path;
+        $data_to_template['dataHead'] = $data_head;
+
+        $data_to_template['dataDate'] = $this->common_func->getDirectoryDate($data_path);
+
+        $data_to_template['dateType'] = "month";
+        $data_to_template['vrfyTypeName'] = $this->common_func->getSspsTypeName($vrfy_type);
+
+        $data_to_template['varName'] = $var_name;
+
+        $data_to_template['varArray'] = $this->ssps_var_array;
+        $data_to_template['varnameArray'] = $this->ssps_var_name_array;
+
+        $data_to_template['vrfyTech'] = $this->common_func->getSspsVrfyTech($var_name);
+        
+        $bangjae_data_path = $this->datafile_dir . $type . "/" .  $this->data_group_dir . $this->bangjae_dir; 
+        $bangjae_date = $this->common_func->getDateDirectoryArray($bangjae_data_path);
+        $season_data_path = $this->datafile_dir . $type . "/" .  $this->data_group_dir . $this->season_dir; 
+        $season_date = $this->common_func->getDateDirectoryArray($season_data_path);
+        $data_to_template['bangjaeDate'] = $bangjae_date;
+        $data_to_template['seasonDate'] = $season_date;
+        // YYYY:selectBox 와 MM(방재기간 또는 계절에 따라 naming 변경):selectBox 분리를 위해서
+        $data_to_template['bangjaeArrMap'] = $this->bangjae_func->getDateSelctBoxArray($bangjae_date);
+        $data_to_template['seasonArrMap'] = $this->bangjae_func->getDateSelctBoxArray($season_date);
+
+        return $data_to_template;
+    }
+
 
 
     // view에서 AJAX 호출
@@ -224,7 +283,7 @@ class MY_Controller extends CI_Controller {
 
 
 
-        // view에서 AJAX 호출
+    // view에서 AJAX 호출
     // 데이터 READ 및 추출
     // 결과값 RETURN
     protected function get_map_stn_data($post_data)
@@ -416,7 +475,6 @@ class MY_Controller extends CI_Controller {
                 $arrange_data = $this->tstbcommon_func->arrangeFcstData($data, $param);
             }
         }
-
 
         return $arrange_data;
     }

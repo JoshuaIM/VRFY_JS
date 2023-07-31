@@ -33,7 +33,7 @@ console.log("resp", resp);
                     fcstTable += "<table class='map_utc_table' >";
                     
                     // assets/js/vrfy_js/map_slider/make_map_slider.js
-                    if( type === "SHRT" ) {
+                    if( type === "SHRT" || type === "SSPS" ) {
                         fcstTable += makeShrtSliderTile(init_hour, forecast_info_txt);
                     } else if( type === "MEDM" ) {
                         fcstTable += makeMedmSliderTile(init_hour, forecast_info_txt);

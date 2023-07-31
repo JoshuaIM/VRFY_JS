@@ -40,17 +40,6 @@ class Medm_stn extends My_Controller {
     }
 
 
-    public function ajax_map_stn_data()
-    {
-        $finalData = $this->get_map_stn_data($_POST);
-
-        echo json_encode($finalData);
-    }
-
-
-
-
-
 
 
 
