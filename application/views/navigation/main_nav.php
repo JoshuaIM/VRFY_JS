@@ -52,7 +52,7 @@
                             	<li class="main_submenu">
                             	<a href="<?php echo base_url('ts/medm_stn'); ?>" class="subsub <?php echo ( $vrfyType === 'medm_ts_stn' ) ? 'active' : '';?>"><i class="fa fa-clock-o"></i>시계열</a></li>
                             	<li class="main_submenu">
-                            	<a href="<?php echo base_url('main/medm_map_stn'); ?>" class="subsub <?php echo ($vrfyType === 'medm_map_stn' ) ? 'active' : '';?>"><i class="fa fa-picture-o"></i>공간분포</a></li>
+                            	<a href="<?php echo base_url('map/medm_stn'); ?>" class="subsub <?php echo ($vrfyType === 'medm_map_stn' ) ? 'active' : '';?>"><i class="fa fa-picture-o"></i>공간분포</a></li>
 						</ul>
 					</li>
 
@@ -66,7 +66,7 @@
                             	<li class="main_submenu">
                             	<a href="<?php echo base_url('ts/ssps_stn'); ?>" class="subsub <?php echo ( $vrfyType === 'ssps_shrt_ts_stn' ) ? 'active' : '';?>"><i class="fa fa-clock-o"></i>시계열</a></li>
                             	<li class="main_submenu">
-                            	<a href="<?php echo base_url('ts/ssps_shrt_map_stn'); ?>" class="subsub <?php echo ( $vrfyType === 'ssps_shrt_map_stn' ) ? 'active' : '';?>"><i class="fa fa-picture-o"></i>공간분포</a></li>
+                            	<a href="<?php echo base_url('map/ssps_stn'); ?>" class="subsub <?php echo ( $vrfyType === 'ssps_shrt_map_stn' ) ? 'active' : '';?>"><i class="fa fa-picture-o"></i>공간분포</a></li>
                                
 						</ul>
 					</li>
