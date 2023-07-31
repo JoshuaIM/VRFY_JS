@@ -54,11 +54,12 @@ class MY_Controller extends CI_Controller {
 
 
     /**
-     * $type : SHRT, MEDM, GEMD
-     * $data_type : SHRT, MEDM
-     * $sub_type : STN, ACCURACY, SIMILARITY
+     * 1. $type : SHRT, MEDM, GEMD
+     * 2. $data_type : SHRT, MEDM
+     * 3. $sub_type : STN, ACCURACY, SIMILARITY
+     * 4. $grph_type : ts, map
      **/
-    protected function get_data_template( $type, $data_type, $sub_type )
+    protected function get_data_template( $type, $data_type, $sub_type, $grph_type )
     {
         $low_type = strtolower($type);
         $low_sub_type = strtolower($sub_type);
@@ -73,8 +74,16 @@ class MY_Controller extends CI_Controller {
         }
 
         $data_head = "DFS_" . $data_type . "_STN_";
-        $data_path = $this->datafile_dir . $type ."/" . $this->data_group_dir . $this->mon_dir; 
-        $vrfy_type = $low_type . "_ts_" . $low_sub_type;
+
+        if( $grph_type === "ts" )
+        {
+            $data_path = $this->datafile_dir . $type ."/" . $this->data_group_dir . $this->mon_dir; 
+        }
+        else
+        {
+            $data_path = $this->datafile_dir . $type ."/" . $this->grph_group_dir . $this->mon_dir; 
+        }
+        $vrfy_type = $low_type . "_" . $grph_type . "_" . $low_sub_type;
 
         $bangjae_data_path = $this->datafile_dir . $type . "/" .  $this->data_group_dir . $this->bangjae_dir; 
         $bangjae_date = $this->common_func->getDateDirectoryArray($bangjae_data_path);
@@ -83,8 +92,10 @@ class MY_Controller extends CI_Controller {
         
         $data_to_template = array();
         $data_to_template['type'] = $type;
+        $data_to_template['grph_type'] = $grph_type;
         $data_to_template['sub_type'] = $sub_type;
         $data_to_template['vrfyType'] = $vrfy_type;
+        $data_to_template['dataDirectoryHead'] = $data_path;
         $data_to_template['dataHead'] = $data_head;
         $data_to_template['dataDate'] = $this->common_func->getDirectoryDate($data_path);
         $data_to_template['dateType'] = "month";
@@ -152,8 +163,8 @@ class MY_Controller extends CI_Controller {
         $model_sel = $post_data['model_sel'];
         $location = $post_data['location'];
         $start_init = $post_data['start_init'];
-        $range_date = $post_data['range_date'];
         $end_init = $post_data['end_init'];
+        $range_date = $post_data['range_date'];
         $vrfy_idx = $post_data['vrfy_idx'];
         $peri = $post_data['peri'];
         $type = $post_data['type'];
@@ -209,6 +220,63 @@ class MY_Controller extends CI_Controller {
         
         return $arrange_data;
         // return $all_data;
+    }
+
+
+
+        // view에서 AJAX 호출
+    // 데이터 READ 및 추출
+    // 결과값 RETURN
+    protected function get_map_stn_data($post_data)
+    {
+        $data_head = $post_data['data_head'];
+        $var_select = $post_data['var_select'];
+        $init_hour = $post_data['init_hour'];
+        $model_sel = $post_data['model_sel'];
+        $start_init = $post_data['start_init'];
+        $end_init = $post_data['end_init'];
+        $range_date = $post_data['range_date'];
+        $vrfy_idx = $post_data['vrfy_idx'];
+        $peri = $post_data['peri'];
+        $type = $post_data['type'];
+        $sub_type = $post_data['sub_type'];
+
+        /////////////////////////////////////////////////////////////////////
+        // 00UTC+12UTC의 경우 00#12
+        $infoUTC = array();
+        foreach ( $init_hour as $utc )
+        {
+            $targUTC = explode("#" , $utc);
+            array_push($infoUTC, $targUTC[0]);
+        }
+        /////////////////////////////////////////////////////////////////////
+
+        $fdir = $this->get_data_directory_path($peri, $data_head, $type, $sub_type); 
+
+        $range_mon = $this->get_month_range_map($peri, $start_init, $end_init, $range_date, $fdir, $var_select, $init_hour);
+
+        $fnParam = [
+            'dir_head' => $fdir,
+            'data_head' => $data_head,
+            'peri_type' => $peri,
+            'var_select' => $var_select,
+            'model_sel' => $model_sel,
+            'rangeMon' => $range_mon,
+            'infoUTC' => $infoUTC,
+            'vrfy_idx' => $vrfy_idx
+        ];
+
+        // 데이터의 헤더정보 중 예보시간 읽어서 가져오는 함수.
+        $fcst_info = $this->mapcommon_func->getFcstInfo($fnParam);
+
+        $data_res = [
+            'fcst_info' => $fcst_info,
+            'date_info' => $range_mon
+        ];
+        
+        return $data_res;
+        // return $fcst_info;
+        // return $fnParam;
     }
 
 
@@ -278,6 +346,29 @@ class MY_Controller extends CI_Controller {
         else
         {
             $range_mon = $this->common_func->getDateRangeArr($start_init, $end_init);
+        }
+
+        return $range_mon;
+    }
+    // 월 범위.
+    protected function get_month_range_map($peri, $start_init, $end_init, $range_date, $fdir, $var_select, $init_hour)
+    {
+        $range_mon = array();
+        if ( $peri === "BANGJAE" )
+        {
+            $range_mon = $this->bangjae_func->getDateBangjaeMap($bangjae_date, $this->bangjae_season, $init_hour);
+        }
+        else if ( $peri === "SEASON" )
+        {
+            // $range_mon = $this->bangjae_func->getDateSeason($range_date);
+        }
+        else if ( $peri === "ALLMONTH" )
+        {
+            // $range_mon = $this->common_func->getAllMonthDateRangeArr($fdir, $var_select, $this->allmonth_start);
+        }
+        else
+        {
+            $range_mon = $this->common_func->getDateRangeArrMAP($start_init, $end_init, $init_hour);
         }
 
         return $range_mon;

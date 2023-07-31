@@ -22,7 +22,13 @@ class Accuracy_stn extends My_Controller {
 
     public function accuracy_stn()
     {
-        $data_to_template = $this->get_data_template("GEMD", "SHRT", "ACCURACY");
+        /**
+         * 1. $type : SHRT, MEDM, GEMD
+         * 2. $data_type : SHRT, MEDM
+         * 3. $sub_type : STN, ACCURACY, SIMILARITY
+         * 4. $grph_type : ts, map
+         **/
+        $data_to_template = $this->get_data_template("GEMD", "SHRT", "ACCURACY", "ts");
 
         $this->load->view("templates/header", $data_to_template);
         $this->load->view("navigation/main_nav", $data_to_template);

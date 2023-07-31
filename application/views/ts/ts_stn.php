@@ -3,7 +3,7 @@
 // 사이트 확인 (month or arbi)
 	const type = "<?php echo $type; ?>";
 	const sub_type = "<?php echo $sub_type; ?>";
-	var dateType = "<?php echo $dateType; ?>";
+	const dateType = "<?php echo $dateType; ?>";
 	const data_type = "<?php echo $vrfyType; ?>";
 
 // 그래픽 Title의 검증지수 한글화.
@@ -87,6 +87,7 @@
 		data_head = get_loc_dhead.get("datahead");
 
 		// (UI)검증지수 선택 값 (중복 선택)
+		// assets/js/vrfy_js/common/get_option_value.js
 		let vrfy_idx = get_vrfy_option();
 
     	// (UI)기간 선택 값

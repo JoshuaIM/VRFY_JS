@@ -2,6 +2,7 @@
 	<script src="<?php echo base_url('assets/js/vrfy_js/common/ready_and_now.js');?>"></script>
 	<script src="<?php echo base_url('assets/js/vrfy_js/common/make_vrfy_checkbox.js');?>"></script>
 	<script src="<?php echo base_url('assets/js/vrfy_js/common/get_option_value.js');?>"></script>
+	<script src="<?php echo base_url('assets/js/vrfy_js/common/checkbox_controll.js');?>"></script>
 	
 	<script src="<?php echo base_url('assets/js/vrfy_js/ts_stn/ts_common_func.js');?>"></script>
 	

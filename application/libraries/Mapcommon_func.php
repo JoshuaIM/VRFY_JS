@@ -6,43 +6,38 @@ class Mapcommon_func {
 //////////////////////////////////////////////////////////////////////////////
     
 // 공간분포 지점에서 데이터의 헤더정보 중 예보시간을 읽어서 리턴하는 메서드.
-    public function getFcstInfo($fnParam) {
-        
-        $test = array();       
-        
+    public function getFcstInfo($fnParam)
+    {
         // 순서: 검증지수 - 지점  - 월 - UTC - 모델
-        foreach ($fnParam['vrfy_idx'] as $vrfy) {
+        foreach( $fnParam['vrfy_idx'] as $vrfy )
+        {
+            foreach( $fnParam['rangeMon'] as $mon )
+            {
+                foreach( $fnParam['infoUTC'] as $utc )
+                {
+                    foreach( $fnParam['model_sel'] as $modl )
+                    {
+                        $ymDir = $mon['ymInfo'];
+                        $modl_ym_dir = "/" . $ymDir . "/";
 
-            foreach ($fnParam['rangeMon'] as $mon) {
-                
-                foreach ($fnParam['model_sel'] as $modl) {
-                    
-                    $ymDir = $mon['ymInfo'];
-                    
-                    $modl_ym_dir = "/" . $ymDir . "/";
-                    
-                    // 파일명 조합.
-                    $tmpfn = $fnParam['dir_head'] . $modl_ym_dir . $fnParam['var_select'] . "/" . $fnParam['data_head'] . $modl . '_' . $fnParam['var_select'] . '_VRFY_' . $vrfy . '.' . $mon['data'];
-		    //$tmpfn = $fnParam['dir_name'] . $fnParam['data_head'] . $modl . '_' . $fnParam['var_select'] . '_VRFY_' . $vrfy . '.' . $mon['range_mon'];
-                    
-                    
-//                     array_push($test, $tmpfn);
-                    // 파일이 존재할 경우
-                    if( file_exists($tmpfn) ) {
-//                     array_push($test, $tmpfn);
-                        
-                        // 줄 단위 파일 읽기.
-                        $fileLine = explode("\n", file_get_contents($tmpfn));
-                        
-                        // 데이터 파일 헤더의 UTC 정보 제공. ( 그래프 X축의 forecast 시간 표출용 )
-                        $fHeadUtc = $this->getMapFileHeadUtc($fileLine[1], $fnParam['peri_type']);
-                        
-                        if( sizeof($fHeadUtc) > 1 ) {
-                            return $fHeadUtc;    
-                        }
-                        
-                    } // End of "File exist" if 문.
-                } // End of "MODEL" foreach.
+                        // 파일명 조합.
+                        $tmpfn = $fnParam['dir_head'] . $modl_ym_dir . $fnParam['var_select'] . "/" . $fnParam['data_head'] . $modl . '_' . $fnParam['var_select'] . '_VRFY_' . $vrfy . '.' . $mon['data'];
+
+                        // 파일이 존재할 경우
+                        if( file_exists($tmpfn) ) {
+                            // 줄 단위 파일 읽기.
+                            $fileLine = explode("\n", file_get_contents($tmpfn));
+                            
+                            // 데이터 파일 헤더의 UTC 정보 제공. ( 그래프 X축의 forecast 시간 표출용 )
+                            $fHeadUtc = $this->getMapFileHeadUtc($fileLine[1], $fnParam['peri_type']);
+                            
+                            if( sizeof($fHeadUtc) > 1 ) {
+                                return $fHeadUtc;    
+                            }
+                            
+                        } // End of "File exist" if 문.
+                    } // End of "MODEL" foreach.
+                }// End of "utc" foreach.
             } // End of "RANGEMON" foreach.
         } // End of "VRFY IDX" foreach.
         

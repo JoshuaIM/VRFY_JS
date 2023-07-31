@@ -22,7 +22,13 @@ class Ssps_stn extends My_Controller {
 
     public function ssps_stn()
     {
-        $data_to_template = $this->get_data_ssps_template("SSPS", "SHRT", "STN");
+        /**
+         * 1. $type : SHRT, MEDM, GEMD
+         * 2. $data_type : SHRT, MEDM
+         * 3. $sub_type : STN, ACCURACY, SIMILARITY
+         * 4. $grph_type : ts, map
+         **/
+        $data_to_template = $this->get_data_ssps_template("SSPS", "SHRT", "STN", "ts");
         // $data_to_template = $this->get_data_template($d_type, $d_type);
 
         $this->load->view("templates/header", $data_to_template);
@@ -34,7 +40,7 @@ class Ssps_stn extends My_Controller {
         $this->load->view("templates/footer");
     }
 
-    public function get_data_ssps_template( $type, $data_type, $sub_type )
+    public function get_data_ssps_template( $type, $data_type, $sub_type, $grph_type )
     {
         $low_type = strtolower($type);
         $low_data_type = strtolower($data_type);
@@ -48,6 +54,7 @@ class Ssps_stn extends My_Controller {
         
         $data_to_template = array();
         $data_to_template['type'] = $type;
+        $data_to_template['grph_type'] = $grph_type;
         $data_to_template['sub_type'] = $sub_type;
         $data_to_template['vrfyType'] = $vrfy_type;
         $data_to_template['dataHead'] = $data_head;
