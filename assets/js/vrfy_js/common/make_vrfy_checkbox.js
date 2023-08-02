@@ -54,7 +54,27 @@ function makeVrfySelect(vrfy_data, vrfy_txt, data_type) {
             }
     
         // } else if( (data_type == "shrt_ts_stn" && v == "RN1") || (data_type == "shrt_map_stn" && v == "RN1") ) {
-        } else if( (data_type == "shrt_ts_stn" && v == "RN1") || (data_type == "shrt_map_stn" && v == "RN1") || (data_type == "gemd_ts_accuracy" && v == "RN1") || (data_type == "gemd_map_utilize" && v == "RN1") ) {
+        // } else if( (data_type == "shrt_ts_stn" && v == "RN1") || (data_type == "shrt_map_stn" && v == "RN1") || (data_type == "gemd_ts_accuracy" && v == "RN1") || (data_type == "gemd_map_utilize" && v == "RN1") ) {
+        } else if( v === "RN1" || v === "RN3" ) {
+            let vrfy_name = vrfy_data[h].substring(0,3);
+            let vrfy_id = vrfy_data[h].substring(3,4);
+                if( vrfy_id === "1" ) {
+                    rn1_num = rn1_num +1;
+                        if( rn1_num % 2 === 1 && rn1_num != 1 ) {
+                            selBox += "<br>";
+                            selBox += "<text style='margin:10px -20px 0px 73px; font-size:13px;'>" + ( (vrfy_name==="BIS")?"FBI":vrfy_name ) + "( </text>";
+                        } else {
+                            selBox += "<text style='margin:10px -20px 0px 5px; font-size:13px;'>" + ( (vrfy_name==="BIS")?"FBI":vrfy_name ) + "( </text>";
+                        }
+                }
+                    let vrfy_txt_id = parseInt(vrfy_id) -1;
+                    selBox += "<input style='width:14px; height:14px; " + ( (vrfy_id === "1")?"":"margin-left: 10px;" ) + "' name='VRFY_INDEX' value='" + vrfy_data[h] + "' type='checkbox' " + js_func + ( (h == 0)?" checked":"" ) + " > <text style='font-size:13px;'>" +  vrfy_txt[vrfy_txt_id] + "</text>";
+                if( parseInt(vrfy_id) == vrfy_txt.length ) {
+                    selBox += "<text>)</text> ";
+                }		
+    
+        // } else if( (data_type == "shrt_ts_stn" && v == "SN3") || (data_type == "shrt_map_stn" && v == "SN3") || (data_type == "gemd_ts_accuracy" && v == "SN3") || (data_type == "gemd_map_utilize" && v == "SN3") ) {
+        } else if( v === "SN3" ) {
             let vrfy_name = vrfy_data[h].substring(0,3);
             let vrfy_id = vrfy_data[h].substring(3,4);
                 if( vrfy_id === "1" ) {
@@ -72,26 +92,8 @@ function makeVrfySelect(vrfy_data, vrfy_txt, data_type) {
                     selBox += "<text>)</text> ";
                 }		
     
-        } else if( (data_type == "shrt_ts_stn" && v == "SN3") || (data_type == "shrt_map_stn" && v == "SN3") || (data_type == "gemd_ts_accuracy" && v == "SN3") || (data_type == "gemd_map_utilize" && v == "SN3") ) {
-            let vrfy_name = vrfy_data[h].substring(0,3);
-            let vrfy_id = vrfy_data[h].substring(3,4);
-                if( vrfy_id === "1" ) {
-                    rn1_num = rn1_num +1;
-                        if( rn1_num % 2 == 1 && rn1_num != 1 ) {
-                            selBox += "<br>";
-                            selBox += "<text style='margin:10px -20px 0px 73px; font-size:13px;'>" + ( (vrfy_name==="BIS")?"FBI":vrfy_name ) + "( </text>";
-                        } else {
-                            selBox += "<text style='margin:10px -20px 0px 5px; font-size:13px;'>" + ( (vrfy_name==="BIS")?"FBI":vrfy_name ) + "( </text>";
-                        }
-                }
-                    let vrfy_txt_id = parseInt(vrfy_id) -1;
-                    selBox += "<input style='width:14px; height:14px; " + ( (vrfy_id === "1")?"":"margin-left: 10px;" ) + "' name='VRFY_INDEX' value='" + vrfy_data[h] + "' type='checkbox' " + js_func + ( (h == 0)?" checked":"" ) + " > <text style='font-size:13px;'>" +  vrfy_txt[vrfy_txt_id] + "</text>";
-                if( parseInt(vrfy_id) == vrfy_txt.length ) {
-                    selBox += "<text>)</text> ";
-                }		
-    
-        } else if( v == "RN3" || v == "RN6" || v == "R12" || v == "SN3" || v == "SN6" || v == "S12" || ( data_type == "ssps_shrt_ts_stn" && v == "RN1" ) || ( data_type == "ssps_shrt_ts_stn" && v == "SN1" ) || ( data_type == "ssps_shrt_map_stn" && v == "RN1" ) || ( data_type == "ssps_shrt_map_stn" && v == "SN1" ) ) {
-        // } else if( v == "RN3" || v == "RN6" || v == "R12" || v == "SN3" || v == "SN6" || v == "S12" || ( data_type != "shrt_ts_stn" && v == "RN1" ) || ( data_type == "shrt_ts_stn" && v == "SN1" ) ) {
+        // } else if( v == "RN3" || v == "RN6" || v == "R12" || v == "SN3" || v == "SN6" || v == "S12" || ( data_type == "ssps_shrt_ts_stn" && v == "RN1" ) || ( data_type == "ssps_shrt_ts_stn" && v == "SN1" ) || ( data_type == "ssps_shrt_map_stn" && v == "RN1" ) || ( data_type == "ssps_shrt_map_stn" && v == "SN1" ) ) {
+        } else if( v == "RN3" || v == "RN6" || v == "R12" || v == "SN3" || v == "SN6" || v == "S12" ) {
             if( vrfy_data[h] == "BIS1" ) {
                 // selBox += "<text style='margin-top:10px; margin-left:10px; margin-right:-20px;'>BIAS( </text>";
                 selBox += "<text style='margin-top:10px; margin-left:10px; margin-right:-20px;'>FBI( </text>";
