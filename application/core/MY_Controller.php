@@ -56,12 +56,13 @@ class MY_Controller extends CI_Controller {
     /**
      * 1. $type : SHRT, MEDM, GEMD
      * 2. $data_type : SHRT, MEDM
-     * 3. $sub_type : STN, ACCURACY, SIMILARITY
+     * 3. $sub_type : STN, ACCURACY, SIMILARITY, UTILIZE
      * 4. $grph_type : ts, map
      **/
     protected function get_data_template( $type, $data_type, $sub_type, $grph_type )
     {
         $low_type = strtolower($type);
+        $low_data_type = strtolower($data_type);
         $low_sub_type = strtolower($sub_type);
 
         if ( $type === "MEDM" )
@@ -90,30 +91,37 @@ class MY_Controller extends CI_Controller {
         $data_to_template['grph_type'] = $grph_type;
         $data_to_template['sub_type'] = $sub_type;
         $data_to_template['vrfyType'] = $vrfy_type;
-        $data_to_template['dataDirectoryHead'] = $data_path;
         $data_to_template['dataHead'] = $data_head;
         $data_to_template['dataDate'] = $this->common_func->getDirectoryDate($data_path);
         $data_to_template['dateType'] = "month";
         $data_to_template['varName'] = $var_name;
 
-        if ( $low_sub_type === "accuracy" || $low_sub_type === "similarity" )
+        $data_to_template['modltech_info'] = $this->common_func->setModelCheckbox($low_data_type);
+        if ( $low_sub_type === "accuracy" OR $low_sub_type === "similarity" OR $low_sub_type === "utilize" )
         {
-            $data_to_template['modltech_info'] = $this->common_func->setModelCheckbox("shrt");
             $data_to_template['vrfyTypeName'] = $this->common_func->getGemdTypeName($vrfy_type);
         }
         else
         {
-            $data_to_template['modltech_info'] = $this->common_func->setModelCheckbox($low_type);
             $data_to_template['vrfyTypeName'] = $this->common_func->getVrfyTypeName($vrfy_type);
         }
         
-        if ( $low_sub_type === "similarity" )
+        if ( $low_sub_type === "similarity" OR $low_sub_type === "utilize" )
         {
-            $data_to_template['vrfyTech'] = [
+            $vrfy_tech = [
                 "data_vrfy" => ["CORR", "COSS"],
                 "txt_vrfy" => ["상관계수", "코사인유사도"],
                 "title_vrfy" => ["상관계수", "코사인유사도"]
             ];
+            if( $low_sub_type === "similarity" )
+            {
+                $data_to_template['vrfyTech'] = $vrfy_tech;
+            }
+            else
+            {
+                $data_to_template['vrfyTech'] = $this->common_func->getVrfyTech($var_name);
+                $data_to_template['utilizeTech'] = $vrfy_tech;
+            }
         }
         else
         {
@@ -140,11 +148,17 @@ class MY_Controller extends CI_Controller {
         $bangjae_date = $this->common_func->getDateDirectoryArray($bangjae_data_path);
         $season_data_path = $this->datafile_dir . $type . "/" .  $this->data_group_dir . $this->season_dir; 
         $season_date = $this->common_func->getDateDirectoryArray($season_data_path);
+        $allmonth_data_path = $this->datafile_dir . $type . "/" .  $this->data_group_dir . $this->allmonth_dir; 
         $data_to_template['bangjaeDate'] = $bangjae_date;
         $data_to_template['seasonDate'] = $season_date;
         // YYYY:selectBox 와 MM(방재기간 또는 계절에 따라 naming 변경):selectBox 분리를 위해서
         $data_to_template['bangjaeArrMap'] = $this->bangjae_func->getDateSelctBoxArray($bangjae_date);
         $data_to_template['seasonArrMap'] = $this->bangjae_func->getDateSelctBoxArray($season_date);
+
+        $data_to_template['dataDirectoryHead'] = $data_path;
+        $data_to_template['bangjaeDataDirectoryHead'] = $bangjae_data_path;
+        $data_to_template['seasonDataDirectoryHead'] = $season_data_path;
+        $data_to_template['allmonthDataDirectoryHead'] = $allmonth_data_path;
 
         return $data_to_template;
     }
@@ -181,7 +195,6 @@ class MY_Controller extends CI_Controller {
         $data_to_template['grph_type'] = $grph_type;
         $data_to_template['sub_type'] = $sub_type;
         $data_to_template['vrfyType'] = $vrfy_type;
-        $data_to_template['dataDirectoryHead'] = $data_path;
         $data_to_template['dataHead'] = $data_head;
 
         $data_to_template['dataDate'] = $this->common_func->getDirectoryDate($data_path);
@@ -200,11 +213,17 @@ class MY_Controller extends CI_Controller {
         $bangjae_date = $this->common_func->getDateDirectoryArray($bangjae_data_path);
         $season_data_path = $this->datafile_dir . $type . "/" .  $this->data_group_dir . $this->season_dir; 
         $season_date = $this->common_func->getDateDirectoryArray($season_data_path);
+        $allmonth_data_path = $this->datafile_dir . $type . "/" .  $this->data_group_dir . $this->allmonth_dir; 
         $data_to_template['bangjaeDate'] = $bangjae_date;
         $data_to_template['seasonDate'] = $season_date;
         // YYYY:selectBox 와 MM(방재기간 또는 계절에 따라 naming 변경):selectBox 분리를 위해서
         $data_to_template['bangjaeArrMap'] = $this->bangjae_func->getDateSelctBoxArray($bangjae_date);
         $data_to_template['seasonArrMap'] = $this->bangjae_func->getDateSelctBoxArray($season_date);
+
+        $data_to_template['dataDirectoryHead'] = $data_path;
+        $data_to_template['bangjaeDataDirectoryHead'] = $bangjae_data_path;
+        $data_to_template['seasonDataDirectoryHead'] = $season_data_path;
+        $data_to_template['allmonthDataDirectoryHead'] = $allmonth_data_path;
 
         return $data_to_template;
     }

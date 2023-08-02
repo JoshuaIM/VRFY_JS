@@ -152,8 +152,17 @@ var changeDateFormat = "2020-12-01";
 
     	</div>
     	
-		<!-- assets/js/vrfy_js/common_func.js -->
-    	<div id="vrfySelect" class="verifIndexArea" >
-    	</div>
+		<?php if( $type === "GEMD" ) { ?>
+			<div id="utilizeSelect" class="verifIndexArea" >
+			</div>
+			<div class="verifIndexArea" style="width:100%; height:.1px;"></div>
+			<div id="vrfySelect" class="verifIndexArea" >
+			</div>
+		<?php } else { ?>
+			<!-- assets/js/vrfy_js/common_func.js -->
+			<div id="vrfySelect" class="verifIndexArea" >
+			</div>
+		<?php } ?>
+
     </div>   
 </section>

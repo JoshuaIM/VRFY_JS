@@ -41,7 +41,14 @@ function call_graph_ajax(data_head, var_select, model_sel, init_hour, location, 
 
     const ajax_url = site_url + "/map/shrt_stn/ajax_map_stn_data";
     // assets/js/vrfy_js/map_stn/show_map_graph.js
-    call_ajax_map_data(ajax_url, set_data);
+    if( type === "GEMD" )
+    {
+        call_ajax_utilize_map_data(ajax_url, set_data);
+    }
+    else
+    {
+        call_ajax_map_data(ajax_url, set_data);
+    }
 
 }
 

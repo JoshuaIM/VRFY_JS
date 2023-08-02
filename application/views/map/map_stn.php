@@ -5,6 +5,7 @@
 	const sub_type = "<?php echo $sub_type; ?>";
 	const dateType = "<?php echo $dateType; ?>";
 	const data_type = "<?php echo $vrfyType; ?>";
+	const grph_type = "<?php echo $grph_type; ?>";
 
 // 그래픽 Title의 검증지수 한글화.
 	let vrfy_data = <?php echo json_encode($vrfyTech['data_vrfy']); ?>;
@@ -23,6 +24,10 @@
 	// 변수 타입 스트링으로 모두 변환하기 위해 json_encod 안씀.
 	let BANGJAE = [<?php echo '"'.implode('","', $bangjaeDate).'"' ?>];
 	let BANGJAEMAP = <?php echo json_encode($bangjaeArrMap); ?>;
+
+	<?php if( $type === "GEMD" OR $grph_type === "map" ) { ?>
+		const utilizeTech = <?php echo json_encode($utilizeTech); ?>;
+	<?php }	?>
 
 	let idx = 0;
 	let maxstep = 0;
@@ -49,12 +54,31 @@
     	var var_select = $("select[name=VAR]").val();
     
 		// 시간강수량의 경우 검증지수 개수가 너무 많아서 표출 영역 늘림.
-		if( var_select === "RN1" ) {
-			$(".top_wrapper").css("margin-bottom", "60px");
-		} else if( var_select === "SN1" ) {
-			$(".top_wrapper").css("margin-bottom", "13px");
-		} else {
-			$(".top_wrapper").css("margin-bottom", "0px");
+		if( type === "GEMD" )
+		{
+			if( var_select === "RN1" || var_select === "SN3" )
+			{
+				$(".top_wrapper").css("margin-bottom", "90px");
+			}
+			else
+			{
+				$(".top_wrapper").css("margin-bottom", "30px");
+			}
+		}
+		else
+		{
+			if( var_select === "RN1" )
+			{
+					$(".top_wrapper").css("margin-bottom", "60px");
+			}
+			else if( var_select === "SN1" )
+			{
+				$(".top_wrapper").css("margin-bottom", "13px");
+			}
+			else
+			{
+				$(".top_wrapper").css("margin-bottom", "0px");
+			}
 		}
 
     	// 초기시각 UTC hour 선택 값
@@ -176,8 +200,6 @@
                 success : function(resp)
                 {
 
-console.log("MEDM");
-console.log(resp);
 					// 그래프 표출 영역 초기화.
                 	$('#fcstValue').empty();
                 	$('#contValue').empty();
@@ -363,6 +385,17 @@ console.log(resp);
     }
 
 
+
+	// 2023-05-30
+	// 활용도 하나만 보여주기
+    function setUtilize(val) {
+    	$('input[name=UTILIZE_INDEX]').each(function() {
+			this.checked = false;
+		});
+
+    	$("input[name=UTILIZE_INDEX][value='" + val + "']").prop("checked", true);
+    }	
+
 </script>
 
 
@@ -389,7 +422,14 @@ console.log(resp);
 				"vrfyTypeName" =>$vrfyTypeName,
 				"modltech_info" => $modltech_info
 			];
-			$this->load->view('common/sideMenu/modlSelectBox', $modlData);
+			if ( $type === "GEMD" )
+			{
+				$this->load->view('common/sideMenu/modlSelectBoxGEMD', $modlData);
+			}
+			else
+			{
+				$this->load->view('common/sideMenu/modlSelectBox', $modlData);
+			}
 		}
 	?>
 

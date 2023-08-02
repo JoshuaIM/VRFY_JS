@@ -83,7 +83,7 @@
                             	<li class="main_submenu">
                             	<a style="padding-left:10px;" href="<?php echo base_url('ts/accuracy_stn'); ?>" class="subsub <?php echo ($vrfyType=='gemd_ts_accuracy') ? 'active' : '';?>"><i style="padding-right:3px;" class="fa fa-clock-o"></i>정확도(시계열)</a></li>
                             	<li class="main_submenu">
-                            	<a style="padding-left:10px;" href="<?php echo base_url('main/gemd_map_utilize'); ?>" class="subsub <?php echo ($vrfyType=='gemd_map_utilize') ? 'active' : '';?>"><i style="padding-right:3px;" class="fa fa-picture-o"></i>공간분포</a></li>
+                            	<a style="padding-left:10px;" href="<?php echo base_url('map/gemd_stn'); ?>" class="subsub <?php echo ($vrfyType=='gemd_map_utilize') ? 'active' : '';?>"><i style="padding-right:3px;" class="fa fa-picture-o"></i>공간분포</a></li>
 						</ul>
 					</li>
                         
