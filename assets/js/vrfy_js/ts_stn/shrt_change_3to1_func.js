@@ -14,7 +14,7 @@ function setShrt3H1HDisplay(sDate, eDate, var_select, peri) {
 		var sDateFormat = sDate.substr(0,4) + "-" + sDate.substr(4,2) + "-01";
 		var eDateFormat = eDate.substr(0,4) + "-" + eDate.substr(4,2) + "-01";
 			if( !shrtMonthCheck(eDateFormat) && var_select != "TMN" && var_select != "TMX" ) {
-				if( var_select === "SN3" && vrfyType === "shrt_ts_stn" ) {
+				if( var_select === "SN3" && type === "SHRT" ) {
 					sel_cont = "<div class='col-lg-3h mb'>||data3H";
 				} else {
 					sel_cont = "<div class='col-lg-1h mb'>||data1H";
