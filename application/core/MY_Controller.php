@@ -119,13 +119,13 @@ class MY_Controller extends CI_Controller {
             }
             else
             {
-                $data_to_template['vrfyTech'] = $this->common_func->getVrfyTech($var_name);
+                $data_to_template['vrfyTech'] = $this->common_func->get_vrfy_tech($var_name);
                 $data_to_template['utilizeTech'] = $vrfy_tech;
             }
         }
         else
         {
-            $data_to_template['vrfyTech'] = $this->common_func->getVrfyTech($var_name);
+            $data_to_template['vrfyTech'] = $this->common_func->get_vrfy_tech($var_name);
         }
 
         if ( $type === "SHRT" )

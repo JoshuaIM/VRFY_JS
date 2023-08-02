@@ -47,7 +47,6 @@ class Common_func {
         switch ( $vt[0] ) {
             case( $vt[0] == "shrt" ): array_push($vtArr, "단기"); break;
             case( $vt[0] == "medm" ): array_push($vtArr, "중기"); break;
-            // case( $vt[0] == "ssps" && $vt[1] == "shrt" ): array_push($vtArr, "단기(산악)"); break;
         }
         switch ( $vt[1] ) {
             case( $vt[1] == "tb" ): array_push($vtArr, "집계표"); break;
@@ -104,236 +103,47 @@ class Common_func {
 
     
 // 요소(변수)별 검증지수 선택 배열 만드는 메서드.
-    public function getVrfyTech($vn) {
-        $vrfyTech = array();
-        if( $vn == "T3H" ||  $vn == "TMX" ||  $vn == "TMN" || $vn == "T1H" ) {
-            $vrfyTech = [
-                // "data_vrfy" => ["CNT1", "CNT2", "CNT3", "BIAS", "MAEE", "RMSE"],
-                // "txt_vrfy" => ["0~2", "2~4", "4~ ", "BIAS", "MAE", "RMSE"],
-                // "title_vrfy" => ["오차빈도(0~2)", "오차빈도(2~4)", "오차빈도(4~)", "BIAS", "MAE", "RMSE"]
-                "data_vrfy" => ["BIAS", "MAEE", "RMSE", "CNT1", "CNT2", "CNT3"],
-                "txt_vrfy" => ["BIAS", "MAE", "RMSE", "0~2", "2~4", "4~ "],
-                "title_vrfy" => ["BIAS", "MAE", "RMSE", "오차빈도(0~2)", "오차빈도(2~4)", "오차빈도(4~)"]
-            ];
-        } else if( $vn == "REH" ) {
-            $vrfyTech = [
-                // "data_vrfy" => ["CNT1", "CNT2", "CNT3", "BIAS", "MAEE", "RMSE"],
-                // "txt_vrfy" => ["0~10", "10~20", "20~ ", "BIAS", "MAE", "RMSE"],
-                // "title_vrfy" => ["오차빈도(0~10)", "오차빈도(10~20)", "오차빈도(20~)", "BIAS", "MAE", "RMSE"]
-                "data_vrfy" => ["BIAS", "MAEE", "RMSE", "CNT1", "CNT2", "CNT3"],
-                "txt_vrfy" => ["BIAS", "MAE", "RMSE", "0~10", "10~20", "20~ "],
-                "title_vrfy" => ["BIAS", "MAE", "RMSE", "오차빈도(0~10)", "오차빈도(10~20)", "오차빈도(20~)"]
-            ];
-        } else if( $vn == "WSD" ) {
-            $vrfyTech = [
-                "data_vrfy" => ["BIAS", "MAEE", "RMSE"],
-                "txt_vrfy" => ["BIAS", "MAE", "RMSE"],
-                "title_vrfy" => ["BIAS", "MAE", "RMSE"]
-            ];
-        } else if( $vn == "PTY" ) {
-            $vrfyTech = [
-                "data_vrfy" => ["ACCC", "BIAS", "CSII", "FARR", "HSSS", "PODD"],
-                // "txt_vrfy" => ["ACC", "BIAS", "CSI", "FAR", "HSS", "POD"],
-                // "title_vrfy" => ["ACC", "BIAS", "CSI", "FAR", "HSS", "POD"]
-                "txt_vrfy" => ["ACC", "FBI", "CSI", "FAR", "HSS", "POD"],
-                "title_vrfy" => ["ACC", "FBI", "CSI", "FAR", "HSS", "POD"]
-            ];
-        } else if( $vn == "SKY" || $vn == "VEC" ) {
-            $vrfyTech = [
-                "data_vrfy" => ["HSSS", "PCC0", "PCC1"],
-                "txt_vrfy" => ["HSS", "PC", "PC(1구간차)"],
-                "title_vrfy" => ["HSS", "PC", "PC(1구간차)"]
-            ];
-        } else if( $vn == "POP" ) {
-            $vrfyTech = [
-                "data_vrfy" => ["BRS0", "BRS1", "BRSS"],
-                "txt_vrfy" => ["무강수", "유강수", "all"],
-                "title_vrfy" => ["무강수", "유강수", "all"]
-            ];
-        } else if( $vn == "RN3" ) {
-            // $vt = ["BIS", "CSI", "ETS"];
-            $vt = ["CSI", "BIS", "ETS"];
-            $vt_arr = array();
-            $txt = ["1mm", "10mm", "60mm", "90mm"];
-            $txt_arr = array();
-            $title_arr = array();
-            foreach ($vt as $arr) {
-                for( $v=1; $v<5; $v++) {
-                    array_push($vt_arr, $arr . $v);
-                }
-                    if( $arr == "BIS" ) {
-                        $vrfy_n = "BIAS";
-                    } else {
-                        $vrfy_n = $arr;
-                    }
-                for( $t=0; $t<sizeof($txt); $t++) {
-                    array_push($txt_arr, $txt[$t]);
-                    array_push($title_arr, $vrfy_n . "(" . $txt[$t] . ")");
-                }
-            }
-            $vrfyTech = [
-                "data_vrfy" => $vt_arr,
-                "txt_vrfy" => $txt_arr,
-                "title_vrfy" => $title_arr
-            ];
-        } else if( $vn == "RN1" ) {
-            // $vt = ["BIS", "CSI", "ETS"];
-            // $vt = ["CSI", "BIS", "ETS"];
-            $vt = ["CSI", "BIS", "ETS", "ACC", "FAR", "HSS", "POD"];
-            $vt_arr = array();
-            // $txt = ["1mm", "10mm", "60mm", "90mm"];
-            // $txt = ["0.5mm", "5mm", "20mm", "50mm"];
-            // $txt = ["0.1mm", "0.5mm", "1mm", "10mm"];
-            $txt = ["0.1~3mm", "3~15mm", "0.1mm~", "0.5mm~", "1mm~", "3mm~", "10mm~", "15mm~"];
-            $txt_arr = array();
-            $title_arr = array();
-            foreach ($vt as $arr) {
-                // for( $v=1; $v<5; $v++) {
-                for( $v=1; $v<sizeof($txt)+1; $v++) {
-                    array_push($vt_arr, $arr . $v);
-                }
-                    if( $arr == "BIS" ) {
-                        $vrfy_n = "FBI";
-                    } else {
-                        $vrfy_n = $arr;
-                    }
-                for( $t=0; $t<sizeof($txt); $t++) {
-                    array_push($txt_arr, $txt[$t]);
-                    array_push($title_arr, $vrfy_n . "(" . $txt[$t] . ")");
-                }
-            }
-            $vrfyTech = [
-                "data_vrfy" => $vt_arr,
-                // "txt_vrfy" => $txt_arr,
-                "txt_vrfy" => $txt,
-                "title_vrfy" => $title_arr
-            ];
-        } else if( $vn == "SN1" ) {
-            $vt = ["CSI", "BIS", "ETS"];
-            $vt_arr = array();
-            $txt = ["0.1~0.5cm", "0.5~1cm", "0.1cm~", "0.5cm~", "1cm~", "5cm~", "10cm~"];
-            $txt_arr = array();
-            $title_arr = array();
-            foreach ($vt as $arr) {
-                // for( $v=1; $v<5; $v++) {
-                for( $v=1; $v<sizeof($txt)+1; $v++) {
-                    array_push($vt_arr, $arr . $v);
-                }
-                    if( $arr == "BIS" ) {
-                        $vrfy_n = "FBI";
-                    } else {
-                        $vrfy_n = $arr;
-                    }
-                for( $t=0; $t<sizeof($txt); $t++) {
-                    array_push($txt_arr, $txt[$t]);
-                    array_push($title_arr, $vrfy_n . "(" . $txt[$t] . ")");
-                }
-            }
-            $vrfyTech = [
-                "data_vrfy" => $vt_arr,
-                // "txt_vrfy" => $txt_arr,
-                "txt_vrfy" => $txt,
-                "title_vrfy" => $title_arr
-            ];
-        } else if( $vn == "RN6" || $vn == "R12" ) {
-            // $vt = ["BIS", "CSI", "ETS"];
-            $vt = ["CSI", "BIS", "ETS"];
-            $vt_arr = array();
-            $txt = ["1mm", "10mm", "70mm", "1100mm"];
-            $txt_arr = array();
-            $title_arr = array();
-            foreach ($vt as $arr) {
-                for( $v=1; $v<5; $v++) {
-                    array_push($vt_arr, $arr . $v);
-                }
-                    if( $arr == "BIS" ) {
-                        $vrfy_n = "BIAS";
-                    } else {
-                        $vrfy_n = $arr;
-                    }
-                for( $t=0; $t<sizeof($txt); $t++) {
-                    array_push($txt_arr, $txt[$t]);
-                    array_push($title_arr, $vrfy_n . "(" . $txt[$t] . ")");
-                }
-            }
-            $vrfyTech = [
-                "data_vrfy" => $vt_arr,
-                "txt_vrfy" => $txt_arr,
-                "title_vrfy" => $title_arr
-            ];
-        // } else if( $vn == "SN3" || $vn == "SN6" || $vn == "S12" || $vn == "SN1" ) {
-        } else if( $vn == "SN3" || $vn == "SN6" || $vn == "S12" ) {
-            // $vt = ["BIS", "CSI", "ETS"];
-            $vt = ["CSI", "BIS", "ETS"];
-            $vt_arr = array();
-            $txt = ["0.1cm", "1cm", "5cm", "10cm"];
-            $txt_arr = array();
-            $title_arr = array();
-            foreach ($vt as $arr) {
-                for( $v=1; $v<5; $v++) {
-                    array_push($vt_arr, $arr . $v);
-                }
-                    if( $arr == "BIS" ) {
-                        $vrfy_n = "BIAS";
-                    } else {
-                        $vrfy_n = $arr;
-                    }
-                for( $t=0; $t<sizeof($txt); $t++) {
-                    array_push($txt_arr, $txt[$t]);
-                    array_push($title_arr, $vrfy_n . "(" . $txt[$t] . ")");
-                }
-            }
-            $vrfyTech = [
-                "data_vrfy" => $vt_arr,
-                "txt_vrfy" => $txt_arr,
-                "title_vrfy" => $title_arr
-            ];
-        }
-        
-        return $vrfyTech;
-    }
-
 // 단기 적설이 SN3 로 변경되어 잠시 사용. : 중기 자료와 중복으로 중기도 동일하게 진행 시 원본 함수와 결합 예정.
 // 요소(변수)별 검증지수 선택 배열 만드는 메서드.
-    public function getVrfyTechShrt($vn) {
+    public function get_vrfy_tech($vn) {
         $vrfyTech = array();
-        if( $vn == "TMX" ||  $vn == "TMN" || $vn == "T1H" ) {
+        if( $vn == "TMX" OR  $vn === "TMN" OR $vn === "T1H" OR $vn === "T3H" ) {
             $vrfyTech = [
                 "data_vrfy" => ["BIAS", "MAEE", "RMSE", "CNT1", "CNT2", "CNT3"],
                 "txt_vrfy" => ["BIAS", "MAE", "RMSE", "0~2", "2~4", "4~ "],
                 "title_vrfy" => ["BIAS", "MAE", "RMSE", "오차빈도(0~2)", "오차빈도(2~4)", "오차빈도(4~)"]
             ];
-        } else if( $vn == "REH" ) {
+        } else if( $vn === "REH" ) {
             $vrfyTech = [
                 "data_vrfy" => ["BIAS", "MAEE", "RMSE", "CNT1", "CNT2", "CNT3"],
                 "txt_vrfy" => ["BIAS", "MAE", "RMSE", "0~10", "10~20", "20~ "],
                 "title_vrfy" => ["BIAS", "MAE", "RMSE", "오차빈도(0~10)", "오차빈도(10~20)", "오차빈도(20~)"]
             ];
-        } else if( $vn == "WSD" ) {
+        } else if( $vn === "WSD" ) {
             $vrfyTech = [
                 "data_vrfy" => ["BIAS", "MAEE", "RMSE"],
                 "txt_vrfy" => ["BIAS", "MAE", "RMSE"],
                 "title_vrfy" => ["BIAS", "MAE", "RMSE"]
             ];
-        } else if( $vn == "PTY" ) {
+        } else if( $vn === "PTY" ) {
             $vrfyTech = [
                 "data_vrfy" => ["ACCC", "BIAS", "CSII", "FARR", "HSSS", "PODD"],
                 "txt_vrfy" => ["ACC", "FBI", "CSI", "FAR", "HSS", "POD"],
                 "title_vrfy" => ["ACC", "FBI", "CSI", "FAR", "HSS", "POD"]
             ];
-        } else if( $vn == "SKY" || $vn == "VEC" ) {
+        } else if( $vn === "SKY" OR $vn == "VEC" ) {
             $vrfyTech = [
                 "data_vrfy" => ["HSSS", "PCC0", "PCC1"],
                 "txt_vrfy" => ["HSS", "PC", "PC(1구간차)"],
                 "title_vrfy" => ["HSS", "PC", "PC(1구간차)"]
             ];
-        } else if( $vn == "POP" ) {
+        } else if( $vn === "POP" ) {
             $vrfyTech = [
                 "data_vrfy" => ["BRS0", "BRS1", "BRSS"],
                 "txt_vrfy" => ["무강수", "유강수", "all"],
                 "title_vrfy" => ["무강수", "유강수", "all"]
             ];
-        } else if( $vn == "RN1" ) {
+        } else if( $vn === "RN1" OR $vn === "RN3" ) {
             $vt = ["CSI", "BIS", "ETS", "ACC", "FAR", "HSS", "POD"];
             $vt_arr = array();
             $txt = ["0.1~3mm", "3~15mm", "0.1mm~", "0.5mm~", "1mm~", "3mm~", "10mm~", "15mm~"];
@@ -358,7 +168,7 @@ class Common_func {
                 "txt_vrfy" => $txt,
                 "title_vrfy" => $title_arr
             ];
-        } else if( $vn == "SN3" ) {
+        } else if( $vn === "SN3" ) {
             $vt = ["CSI", "BIS", "ETS", "ACC", "FAR", "HSS", "POD"];
             $vt_arr = array();
             $txt = ["0.1~0.5cm", "0.5~1cm", "0.1cm~", "0.5cm~", "1cm~", "5cm~", "10cm~"];
@@ -480,46 +290,6 @@ class Common_func {
         return $monRangeArr;
     }
 
-// // 시작 월과 끝 월 사이의 모든 월 구하는 메서드 (파일이름의 끝 날짜 기입용)
-//     public function getDateRangeArr($startDate, $endDate, $init_hour) {
-//         $monRangeArr = array();
-        
-//         // 선택 월의 사이 월 구하기.
-//         $start = ( new DateTime($startDate . "01")) -> modify('first day of this month');
-//         $end = ( new DateTime($endDate . "01")) -> modify('first day of next month');
-//         $interval = DateInterval::createFromDateString('1 month');
-//         $period = new DatePeriod($start, $interval, $end);
-        
-//         foreach ($period as $dt) {
-//             // period 월의 마지막 일을 구하기 위함.
-//             $lastDay = ( new DateTime($dt->format("Ymd"))) -> modify('last day of this month');
-            
-//             foreach ($init_hour as $utc) {
-                
-//                 // 00UTC+12UTC의 경우 00#12
-//                 $targUTC = explode("#" , $utc);
-//                 $strtUTC = $targUTC[0];
-//                 $endUTC = $targUTC[1];
-//                 $infoUTC = $strtUTC;
-//                     if( $strtUTC != $endUTC ) {
-//                         $infoUTC = $strtUTC . "-" . $endUTC;    
-//                     }
-                
-//                 $utc_info = [
-//                     'utcInfo' => $infoUTC . "UTC",
-//                     'ymInfo' => $dt->format("Ym"),
-//                     'data' => $dt->format("Ymd") . $strtUTC . '_' . $lastDay->format("Ymd") . $endUTC
-//                 ];
-                
-//                 array_push($monRangeArr, $utc_info);
-//             }
-            
-//         }
-//         // "yyyymmdd(utc)_yyyymmdd(utc)" 형식의 날짜 값 반환.
-        
-//         return $monRangeArr;
-//     }
-    
     
     
 // 모델-기법 표출용(뷰 페이지) 정보 제공 메서드  
