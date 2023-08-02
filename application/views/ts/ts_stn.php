@@ -210,11 +210,7 @@
 
 	<!-- 지점 선택 -->
 	<?php 
-		if ( $type === "MEDM" )
-		{
-			$stnData = ["stn" => "medm"];
-		}
-		else if ( $type === "SSPS" )
+		if ( $type === "SSPS" )
 		{
 			$stnData = ["stn" => "ssps"];
 		}
