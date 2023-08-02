@@ -43,7 +43,8 @@ console.log('data', set_data);
                 $('#contValue').empty();
                         
                 // 월별 제외 : 예측기간 범위 선택 표출 기능과 예측성능비교표 표출
-                if ( (type === "SHRT" && peri != "MONTH") || (type === "MEDM" && peri != "MONTH") )
+                // if ( (type === "SHRT" && peri != "MONTH") || (type === "MEDM" && peri != "MONTH") )
+                if ( (type === "SHRT" && peri != "MONTH") )
                 {
                     // 예측기간 범위 선택 표출
                     // assets/js/vrfy_js/highcharts/common/forecast_selectBox.js
