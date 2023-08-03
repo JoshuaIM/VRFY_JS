@@ -5,6 +5,7 @@
 	const sub_type = "<?php echo $sub_type; ?>";
 	const dateType = "<?php echo $dateType; ?>";
 	const data_type = "<?php echo $vrfyType; ?>";
+	const grph_type = "<?php echo $grph_type; ?>";
 
 // 그래픽 Title의 검증지수 한글화.
 	let vrfy_data = <?php echo json_encode($vrfyTech['data_vrfy']); ?>;
@@ -118,11 +119,7 @@
 
 		// 단기 시간적설이 SN3로 변경되며 검증지수가 증가하였는데 중기와 중복되지 않기 위해 함수를 분리.
 		let url_address = "";
-		if ( type === "SHRT" || type === "GEMD" )
-		{
-			url_address = '<?php echo site_url();?>/main/callVrfyTechShrt'
-		}
-		else if ( type === "SSPS" )
+		if ( type === "SSPS" )
 		{
 			url_address = '<?php echo site_url();?>/main/callSspsVrfyTech'
 		}
