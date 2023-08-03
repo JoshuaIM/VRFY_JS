@@ -25,7 +25,7 @@
 	let BANGJAE = [<?php echo '"'.implode('","', $bangjaeDate).'"' ?>];
 	let BANGJAEMAP = <?php echo json_encode($bangjaeArrMap); ?>;
 
-	<?php if( $type === "GEMD" OR $grph_type === "map" ) { ?>
+	<?php if( $type === "GEMD" && $grph_type === "map" ) { ?>
 		const utilizeTech = <?php echo json_encode($utilizeTech); ?>;
 	<?php }	?>
 
@@ -69,7 +69,7 @@
 		{
 			if( var_select === "RN1" )
 			{
-					$(".top_wrapper").css("margin-bottom", "60px");
+				$(".top_wrapper").css("margin-bottom", "60px");
 			}
 			else if( var_select === "SN1" )
 			{
