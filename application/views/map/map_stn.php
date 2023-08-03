@@ -26,7 +26,9 @@
 
 	// 변수 타입 스트링으로 모두 변환하기 위해 json_encod 안씀.
 	let BANGJAE = [<?php echo '"'.implode('","', $bangjaeDate).'"' ?>];
+	let SEASON = [<?php echo '"'.implode('","', $seasonDate).'"' ?>];
 	let BANGJAEMAP = <?php echo json_encode($bangjaeArrMap); ?>;
+	let SEASONMAP = <?php echo json_encode($seasonArrMap); ?>;
 
 	<?php if( $type === "GEMD" && $grph_type === "map" ) { ?>
 		const utilizeTech = <?php echo json_encode($utilizeTech); ?>;
@@ -305,7 +307,6 @@
 
 
 	function display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head, dir_path) {
-console.log('dir_path', dir_path);
 
         $("td[id^='Image_']").removeClass("sliderSelected");
         var frameIdx = (idx * 1);

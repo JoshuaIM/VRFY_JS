@@ -120,7 +120,7 @@ console.log('call dir_path', dir_path);
             success : function(resp)
             {
 console.log("resp", resp);
-// console.log('data', set_data);
+console.log('data', set_data);
 // console.log('graphDirHead', graphDirHead);
 
                 // 그래프 표출 영역 초기화.
@@ -200,11 +200,11 @@ console.log("resp", resp);
                                 if( peri === "FCST" ) {
                                     head_dir_path = graphDirHead.split("./")[1];
                                 } else if( peri === "BANGJAE" ) {
-                                    head_dir_path = bangjaeGraphDirHead.split("./")[1];
+                                    head_dir_path = bangjae_graph_dir.split("./")[1];
                                 } else if( peri === "SEASON" ) {
-                                    head_dir_path = seasonGraphDirHead.split("./")[1];
+                                    head_dir_path = season_graph_dir.split("./")[1];
                                 } else if( peri === "ALLMONTH" ) {
-                                    head_dir_path = allmonthGraphDirHead.split("./")[1];
+                                    head_dir_path = allmonth_graph_dir.split("./")[1];
                                 }
 
                                 let yyyymm_directory = "";

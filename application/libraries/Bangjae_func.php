@@ -155,8 +155,6 @@ public function getDateSeasonMap($season_date, $init_hour) {
 
     // // $season_arr = $bangjae_season[$bangjae_mm];
 
-    
-    
     foreach ($init_hour as $utc) {
         
         // 00UTC+12UTC의 경우 00#12
@@ -185,7 +183,7 @@ public function getDateSeasonMap($season_date, $init_hour) {
 
 
 // 전체기간 공간분포 : 시작 월과 끝 월 기입 메서드 (파일이름의 끝 날짜 기입용)
-public function getDateAllmonMap($init_hour) {
+public function getDateAllmonMap($init_hour, $allmonth_start, $allmonth_end) {
     $monRangeArr = array();
     
     foreach ($init_hour as $utc) {
@@ -199,11 +197,11 @@ public function getDateAllmonMap($init_hour) {
                 $infoUTC = $strtUTC . "-" . $endUTC;    
             }
         
-        $file_date_name = "20211201" . $strtUTC . "_" . "20230228" . $endUTC;
+        $file_date_name = $allmonth_start . $strtUTC . "_" . $allmonth_end . $endUTC;
 
         $utc_info = [
             'utcInfo' => $infoUTC . "UTC",
-            'ymInfo' => "202112",
+            'ymInfo' => substr($allmonth_start, -2),
             'data' => $file_date_name
         ];
         

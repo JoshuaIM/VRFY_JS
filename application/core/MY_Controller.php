@@ -39,6 +39,7 @@ class MY_Controller extends CI_Controller {
     ];
 
     protected $allmonth_start = "20211201";
+    protected $allmonth_end = "20230228";
     
     protected $shrt_var_array = ["T1H", "TMX", "TMN", "REH", "VEC", "WSD", "SKY", "PTY", "POP", "RN1", "SN3"];
     protected $shrt_var_name_array = ["기온", "최고기온", "최저기온", "습도",  "풍향", "풍속", "하늘상태", "강수유무", "강수확률", "시간 강수량", "3시간 적설"];
@@ -357,6 +358,7 @@ class MY_Controller extends CI_Controller {
         
         return $data_res;
         // return $fcst_info;
+        // return $range_mon;
         // return $fnParam;
     }
 
@@ -441,11 +443,11 @@ class MY_Controller extends CI_Controller {
         }
         else if ( $peri === "SEASON" )
         {
-            // $range_mon = $this->bangjae_func->getDateSeason($range_date);
+            $range_mon = $this->bangjae_func->getDateSeasonMap($range_date, $init_hour);
         }
         else if ( $peri === "ALLMONTH" )
         {
-            // $range_mon = $this->common_func->getAllMonthDateRangeArr($fdir, $var_select, $this->allmonth_start);
+            $range_mon = $this->bangjae_func->getDateAllmonMap($init_hour, $this->allmonth_start, $this->allmonth_end);
         }
         else
         {
