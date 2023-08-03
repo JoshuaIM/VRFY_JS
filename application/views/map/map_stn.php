@@ -17,7 +17,10 @@
 	let currentStrDate = "<?php echo $dataDate; ?>";			
 	let currentEndDate = "<?php echo $dataDate; ?>";
 
-	const graphDirHead = "<?php echo "$dataDirectoryHead"; ?>";
+	const graphDirHead = "<?php echo $dataDirectoryHead; ?>";
+	const bangjae_graph_dir = "<?php echo $bangjaeDataDirectoryHead; ?>";
+	const season_graph_dir = "<?php echo $seasonDataDirectoryHead; ?>";
+	const allmonth_graph_dir = "<?php echo $allmonthDataDirectoryHead; ?>";
 	
 	const site_url = "<?php echo site_url();?>";
 
@@ -176,132 +179,133 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //  방재기간 자료  Ajax 이용 그래픽 표출 메서드.
-	function callAjaxBangjaeInfo(ajax_url_bangjae, data_head, var_select, init_hour, model_sel, start_init, end_init, vrfy_idx, peri, bangjae_date, vrfy_idx) {
+	// function callAjaxBangjaeInfo(ajax_url_bangjae, data_head, var_select, init_hour, model_sel, start_init, end_init, vrfy_idx, peri, bangjae_date, vrfy_idx) {
 
-		var sd = start_init.substr(0,4) + "-" + start_init.substr(4,2) + "-01";
-		var var_change = var_select;
+	// 	var sd = start_init.substr(0,4) + "-" + start_init.substr(4,2) + "-01";
+	// 	var var_change = var_select;
 
-    	$.ajax({
-            type : "POST",
-                data :
-                {
-    				"data_head" : data_head,
-    				"var_select" : var_change,
-    				"init_hour" : init_hour,
-    				"model_sel" : model_sel,
-    				"vrfy_idx" : vrfy_idx,
-    				"peri" : peri,
-					"bangjae_date" : bangjae_date
-                },
-                dataType: "json",
-                url : ajax_url_bangjae,
-    			// 변수에 저장하기 위함.
-                async: false,
-                success : function(resp)
-                {
+    // 	$.ajax({
+    //         type : "POST",
+    //             data :
+    //             {
+    // 				"data_head" : data_head,
+    // 				"var_select" : var_change,
+    // 				"init_hour" : init_hour,
+    // 				"model_sel" : model_sel,
+    // 				"vrfy_idx" : vrfy_idx,
+    // 				"peri" : peri,
+	// 				"bangjae_date" : bangjae_date
+    //             },
+    //             dataType: "json",
+    //             url : ajax_url_bangjae,
+    // 			// 변수에 저장하기 위함.
+    //             async: false,
+    //             success : function(resp)
+    //             {
 
-					// 그래프 표출 영역 초기화.
-                	$('#fcstValue').empty();
-                	$('#contValue').empty();
+	// 				// 그래프 표출 영역 초기화.
+    //             	$('#fcstValue').empty();
+    //             	$('#contValue').empty();
 
-					// 표출 항목이 있을 경우 start.
-					if( resp["fcst_info"] ) {
+	// 				// 표출 항목이 있을 경우 start.
+	// 				if( resp["fcst_info"] ) {
 
-						//fcstTable = "<div class='col-lg-10'>";
-						fcstTable = "";
+	// 					//fcstTable = "<div class='col-lg-10'>";
+	// 					fcstTable = "";
 						
-						fcstTable += "<table class='map_utc_table' >";
+	// 					fcstTable += "<table class='map_utc_table' >";
 						
-						// 2021-02-24 add by joshua.
-						// if( shrtMonthCheck(sd) == true || ( var_change == "TMX" || var_change == "TMN" ) ) {
-						if( ( var_change == "TMX" || var_change == "TMN" ) ) {
+	// 					// 2021-02-24 add by joshua.
+	// 					// if( shrtMonthCheck(sd) == true || ( var_change == "TMX" || var_change == "TMN" ) ) {
+	// 					if( ( var_change == "TMX" || var_change == "TMN" ) ) {
 
-							fcstTable += "<tr>";
-							for(var i=0; i<resp['fcst_info']['utc_txt'].length; i++) {
-									fcstTable += "<td class='sliderLabel' id='ImageL_" + i + "'>" + resp['fcst_info']['utc_txt'][i] + "</td>";
-								}
-							fcstTable += "</tr>";
+	// 						fcstTable += "<tr>";
+	// 						for(var i=0; i<resp['fcst_info']['utc_txt'].length; i++) {
+	// 								fcstTable += "<td class='sliderLabel' id='ImageL_" + i + "'>" + resp['fcst_info']['utc_txt'][i] + "</td>";
+	// 							}
+	// 						fcstTable += "</tr>";
 							
-							fcstTable += "<tr>";
-								for(var i=0; i<resp['fcst_info']['utc_txt'].length; i++) {
-									fcstTable += "<td class='slider' id='Image_" + i + "' title='" + resp['fcst_info']['utc_txt'][i] + "' > &nbsp; </td>";
-								}
-							fcstTable += "</tr>";
+	// 						fcstTable += "<tr>";
+	// 							for(var i=0; i<resp['fcst_info']['utc_txt'].length; i++) {
+	// 								fcstTable += "<td class='slider' id='Image_" + i + "' title='" + resp['fcst_info']['utc_txt'][i] + "' > &nbsp; </td>";
+	// 							}
+	// 						fcstTable += "</tr>";
 							
-							fcstTable += "</table>";
+	// 						fcstTable += "</table>";
 							
-							fcstTable += "</div>";
+	// 						fcstTable += "</div>";
 
-						// 2021-02-24 add by joshua.
-						// 2020-12월 이 후 자료일 경우.	
-						} else {
+	// 					// 2021-02-24 add by joshua.
+	// 					// 2020-12월 이 후 자료일 경우.	
+	// 					} else {
 
-							// assets/js/vrfy_js/map_slider/make_map_slider.js
-							if( data_head === "DFS_SHRT_STN_" ) {
-								fcstTable += makeShrtSliderTile(init_hour, resp['fcst_info']['utc_txt']);
-							} else if( data_head === "DFS_MEDM_STN_" ) {
-								fcstTable += makeMedmSliderTile(init_hour, resp['fcst_info']['utc_txt']);
-							}
-						}
+	// 						// assets/js/vrfy_js/map_slider/make_map_slider.js
+	// 						if( data_head === "DFS_SHRT_STN_" ) {
+	// 							fcstTable += makeShrtSliderTile(init_hour, resp['fcst_info']['utc_txt']);
+	// 						} else if( data_head === "DFS_MEDM_STN_" ) {
+	// 							fcstTable += makeMedmSliderTile(init_hour, resp['fcst_info']['utc_txt']);
+	// 						}
+	// 					}
 
 						
-						$('#fcstValue').append(fcstTable);
+	// 					$('#fcstValue').append(fcstTable);
 
-						maxstep = resp['fcst_info']['utc_txt'].length -1;
+	// 					maxstep = resp['fcst_info']['utc_txt'].length -1;
 						
-						// display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head);
-						display_grph_bangjae(var_change, model_sel, vrfy_idx, resp, idx, data_head);
+	// 					// display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head);
+	// 					display_grph_bangjae(var_change, model_sel, vrfy_idx, resp, idx, data_head);
 
 						
-						//setSlideAt(0);
-						// 슬라이드바를 직접 클릭할때 호출되는 함수
-						$("td[id^='Image_']").click(function() {
-							idx = $(this).attr("id").substr(6);
-							ImgIndex = idx;
+	// 					//setSlideAt(0);
+	// 					// 슬라이드바를 직접 클릭할때 호출되는 함수
+	// 					$("td[id^='Image_']").click(function() {
+	// 						idx = $(this).attr("id").substr(6);
+	// 						ImgIndex = idx;
 							
-							// display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head);
-							display_grph_bangjae(var_change, model_sel, vrfy_idx, resp, idx, data_head);
-						});
+	// 						// display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head);
+	// 						display_grph_bangjae(var_change, model_sel, vrfy_idx, resp, idx, data_head);
+	// 					});
 
-						// 한번 클릭 시 여러번 실행되는 문제(여러번 콜했을 경우)를 방지.
-						$("body").off('keydown');
-						// 좌우 화살표 키
-						$("body").keydown(function(e) {
-							if(e.keyCode == 37) { // left
-								idx = idx*1 -1;
-								if (idx < 0){
-									idx = maxstep;
-								}
-								// display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head);
-								display_grph_bangjae(var_change, model_sel, vrfy_idx, resp, idx, data_head);
+	// 					// 한번 클릭 시 여러번 실행되는 문제(여러번 콜했을 경우)를 방지.
+	// 					$("body").off('keydown');
+	// 					// 좌우 화살표 키
+	// 					$("body").keydown(function(e) {
+	// 						if(e.keyCode == 37) { // left
+	// 							idx = idx*1 -1;
+	// 							if (idx < 0){
+	// 								idx = maxstep;
+	// 							}
+	// 							// display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head);
+	// 							display_grph_bangjae(var_change, model_sel, vrfy_idx, resp, idx, data_head);
 								
-							} else if(e.keyCode == 39) { // right
-								idx = idx*1 +1;
+	// 						} else if(e.keyCode == 39) { // right
+	// 							idx = idx*1 +1;
 
-								if (idx > maxstep ){
-									idx = 0;
-								}
-								// display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head);
-								display_grph_bangjae(var_change, model_sel, vrfy_idx, resp, idx, data_head);
-							}
-						});
+	// 							if (idx > maxstep ){
+	// 								idx = 0;
+	// 							}
+	// 							// display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head);
+	// 							display_grph_bangjae(var_change, model_sel, vrfy_idx, resp, idx, data_head);
+	// 						}
+	// 					});
 						
-					}
-					// 표출 항목이 있을 경우 End of if.
+	// 				}
+	// 				// 표출 항목이 있을 경우 End of if.
 
-                }, // End of "success : function(resp)"
-                error : function(error) 
-                {
-                    alert("error");
-                    console.log(error);
-                }
-        })
+    //             }, // End of "success : function(resp)"
+    //             error : function(error) 
+    //             {
+    //                 alert("error");
+    //                 console.log(error);
+    //             }
+    //     })
 		
-	}
+	// }
 
 
 
-	function display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head) {
+	function display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head, dir_path) {
+console.log('dir_path', dir_path);
 
         $("td[id^='Image_']").removeClass("sliderSelected");
         var frameIdx = (idx * 1);
@@ -321,10 +325,7 @@
                 		grph_div += "<div class='map_content'>";
                 		
 							var nameOfgrph = data_head + model_sel[m] + "_" + var_select + "_VRFY_" + vrfy_idx[v] + "." + resp['date_info'][d]['data'] + "_" +  resp['fcst_info']['utc_idx'][idx] + ".png";
-
-							var dt_arr = data_head.split("_");
-                			// grph_div += "<img class='grph_img' src='" + "<?php echo base_url('GIFD/');?>" + dt_arr[1] + "/" + resp['date_info'][d]['ymInfo'] + "/" + var_select + "/" + nameOfgrph + "' onerror='no_image(this);' />" ;
-                			grph_div += "<img class='grph_img' src='" + "<?php echo base_url('/'); ?>" + graphDirHead + resp['date_info'][d]['ymInfo'] + "/" + var_select + "/" + nameOfgrph + "' onerror='no_image(this);' />" ;
+                			grph_div += "<img class='grph_img' src='" + "<?php echo base_url('/'); ?>" + dir_path + resp['date_info'][d]['ymInfo'] + "/" + var_select + "/" + nameOfgrph + "' onerror='no_image(this);' />" ;
                 			
                 		grph_div += "</div>";
             		
@@ -337,45 +338,45 @@
 	}
 
 
-	// TODO : 급하게 함수 복사 함. 병합 예정
-	function display_grph_bangjae(var_select, model_sel, vrfy_idx, resp, idx, data_head) {
+	// // TODO : 급하게 함수 복사 함. 병합 예정
+	// function display_grph_bangjae(var_select, model_sel, vrfy_idx, resp, idx, data_head) {
 
-		const grphDirHeadBangjae = graphDirHead.replace('MOND', 'BNGJ');
+	// 	const grphDirHeadBangjae = graphDirHead.replace('MOND', 'BNGJ');
 
-		// setBangjaeInitDateMap(resp['date_info'][0]['data']);
-		setBangjaeInitDate(resp['date_info'][0]['data']);
+	// 	// setBangjaeInitDateMap(resp['date_info'][0]['data']);
+	// 	setBangjaeInitDate(resp['date_info'][0]['data']);
 
-        $("td[id^='Image_']").removeClass("sliderSelected");
-        var frameIdx = (idx * 1);
-        $("#Image_"+frameIdx).addClass("sliderSelected");
+    //     $("td[id^='Image_']").removeClass("sliderSelected");
+    //     var frameIdx = (idx * 1);
+    //     $("#Image_"+frameIdx).addClass("sliderSelected");
 		
-		$('#contValue').empty();
+	// 	$('#contValue').empty();
 		
-		var grph_div = "";
-        for(var m=0; m<model_sel.length; m++) {
-            for(var v=0; v<vrfy_idx.length; v++) {
-                for(var d=0; d<resp['date_info'].length; d++) {
-            		grph_div += "<div class='img_area col-lg-3' >";
-                		grph_div += "<div class='map_header'>";
-                			var vrfy_name = get_vrfy_title(vrfy_data, vrfy_title, vrfy_idx[v]);
-                			grph_div += model_sel[m] + "_" + vrfy_name + "_" + resp['date_info'][d]['ymInfo'] + "_" + resp['date_info'][d]['utcInfo'];
-                		grph_div += "</div>";
-                		grph_div += "<div class='map_content'>";
+	// 	var grph_div = "";
+    //     for(var m=0; m<model_sel.length; m++) {
+    //         for(var v=0; v<vrfy_idx.length; v++) {
+    //             for(var d=0; d<resp['date_info'].length; d++) {
+    //         		grph_div += "<div class='img_area col-lg-3' >";
+    //             		grph_div += "<div class='map_header'>";
+    //             			var vrfy_name = get_vrfy_title(vrfy_data, vrfy_title, vrfy_idx[v]);
+    //             			grph_div += model_sel[m] + "_" + vrfy_name + "_" + resp['date_info'][d]['ymInfo'] + "_" + resp['date_info'][d]['utcInfo'];
+    //             		grph_div += "</div>";
+    //             		grph_div += "<div class='map_content'>";
                 		
-							var nameOfgrph = data_head + model_sel[m] + "_" + var_select + "_VRFY_" + vrfy_idx[v] + "." + resp['date_info'][d]['data'] + "_" +  resp['fcst_info']['utc_idx'][idx] + ".png";
+	// 						var nameOfgrph = data_head + model_sel[m] + "_" + var_select + "_VRFY_" + vrfy_idx[v] + "." + resp['date_info'][d]['data'] + "_" +  resp['fcst_info']['utc_idx'][idx] + ".png";
 
-							var dt_arr = data_head.split("_");
-                			grph_div += "<img class='grph_img' src='" + "<?php echo base_url('/'); ?>" + grphDirHeadBangjae + resp['date_info'][d]['ymInfo'] + "/" + var_select + "/" + nameOfgrph + "' onerror='no_image(this);' />" ;
+	// 						var dt_arr = data_head.split("_");
+    //             			grph_div += "<img class='grph_img' src='" + "<?php echo base_url('/'); ?>" + grphDirHeadBangjae + resp['date_info'][d]['ymInfo'] + "/" + var_select + "/" + nameOfgrph + "' onerror='no_image(this);' />" ;
                 			
-                		grph_div += "</div>";
+    //             		grph_div += "</div>";
             		
-            		grph_div += "</div>";
-                } 
-            }
-        }
+    //         		grph_div += "</div>";
+    //             } 
+    //         }
+    //     }
         
-		$('#contValue').append(grph_div);
-	}
+	// 	$('#contValue').append(grph_div);
+	// }
 
 	
 

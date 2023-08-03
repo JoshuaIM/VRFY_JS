@@ -74,9 +74,9 @@ var changeDateFormat = "2020-12-01";
 				if ( $type != "SSPS" )
 				{
 				?>
-					<!-- <option value="SEASON">계절별</option>	
+					<option value="SEASON">계절별</option>	
 					<option value="BANGJAE">방재기간별</option>	
-					<option value="ALLMONTH">전체기간</option>	 -->
+					<option value="ALLMONTH">전체기간</option>	
 				<?php
 				}
 				?>

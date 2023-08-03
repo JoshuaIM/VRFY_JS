@@ -78,12 +78,13 @@ class MY_Controller extends CI_Controller {
 
         if( $grph_type === "ts" )
         {
-            $data_path = $this->datafile_dir . $type ."/" . $this->data_group_dir . $this->mon_dir; 
+            $group_dir = $this->data_group_dir; 
         }
         else
         {
-            $data_path = $this->datafile_dir . $type ."/" . $this->grph_group_dir . $this->mon_dir; 
+            $group_dir = $this->grph_group_dir; 
         }
+        $data_path = $this->datafile_dir . $type ."/" . $group_dir. $this->mon_dir; 
         $vrfy_type = $low_type . "_" . $grph_type . "_" . $low_sub_type;
 
         $data_to_template = array();
@@ -144,11 +145,11 @@ class MY_Controller extends CI_Controller {
             $data_to_template['varnameArray'] = $this->gemd_var_name_array;
         }
         
-        $bangjae_data_path = $this->datafile_dir . $type . "/" .  $this->data_group_dir . $this->bangjae_dir; 
+        $bangjae_data_path = $this->datafile_dir . $type . "/" .  $group_dir . $this->bangjae_dir; 
         $bangjae_date = $this->common_func->getDateDirectoryArray($bangjae_data_path);
-        $season_data_path = $this->datafile_dir . $type . "/" .  $this->data_group_dir . $this->season_dir; 
+        $season_data_path = $this->datafile_dir . $type . "/" .  $group_dir . $this->season_dir; 
         $season_date = $this->common_func->getDateDirectoryArray($season_data_path);
-        $allmonth_data_path = $this->datafile_dir . $type . "/" .  $this->data_group_dir . $this->allmonth_dir; 
+        $allmonth_data_path = $this->datafile_dir . $type . "/" .  $group_dir . $this->allmonth_dir; 
         $data_to_template['bangjaeDate'] = $bangjae_date;
         $data_to_template['seasonDate'] = $season_date;
         // YYYY:selectBox 와 MM(방재기간 또는 계절에 따라 naming 변경):selectBox 분리를 위해서
@@ -174,6 +175,7 @@ class MY_Controller extends CI_Controller {
     {
         $low_type = strtolower($type);
         $low_data_type = strtolower($data_type);
+        $low_sub_type = strtolower($sub_type);
 
         $var_name = "T1H";
 
@@ -181,14 +183,15 @@ class MY_Controller extends CI_Controller {
 
         if( $grph_type === "ts" )
         {
-            $data_path = $this->datafile_dir . $type ."/" . $this->data_group_dir . $this->mon_dir; 
+            $group_dir = $this->data_group_dir; 
         }
         else
         {
-            $data_path = $this->datafile_dir . $type ."/" . $this->grph_group_dir . $this->mon_dir; 
+            $group_dir = $this->grph_group_dir; 
         }
+        $data_path = $this->datafile_dir . $type ."/" . $group_dir . $this->mon_dir; 
         
-        $vrfy_type = $low_type . "_" . $low_data_type . "_ts_stn";
+        $vrfy_type = $low_type . "_" .$low_data_type . "_" . $grph_type . "_" . $low_sub_type;
         
         $data_to_template = array();
         $data_to_template['type'] = $type;
@@ -434,7 +437,7 @@ class MY_Controller extends CI_Controller {
         $range_mon = array();
         if ( $peri === "BANGJAE" )
         {
-            $range_mon = $this->bangjae_func->getDateBangjaeMap($bangjae_date, $this->bangjae_season, $init_hour);
+            $range_mon = $this->bangjae_func->getDateBangjaeMap($range_date, $this->bangjae_season, $init_hour);
         }
         else if ( $peri === "SEASON" )
         {

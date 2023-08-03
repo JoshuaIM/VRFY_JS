@@ -11,8 +11,8 @@
             success : function(resp)
             {
 console.log("resp", resp);
-// console.log('data', set_data);
-// console.log('graphDirHead', graphDirHead);
+console.log('data', set_data);
+console.log('graphDirHead', graphDirHead);
 
                 // 그래프 표출 영역 초기화.
                 $('#fcstValue').empty();
@@ -23,11 +23,24 @@ console.log("resp", resp);
                 const model_sel = set_data["model_sel"];
                 const vrfy_idx = set_data["vrfy_idx"];
                 const data_head = set_data["data_head"];
+                const peri = set_data["peri"];
                 let forecast_info_txt = "";
                 if ( type != "GEMD" )
                 {
                     forecast_info_txt = resp['fcst_info']['utc_txt'];
                 }
+
+                let dir_path = "";
+                if( peri === "FCST" ) {
+                    dir_path = graphDirHead.split("./")[1];
+                } else if( peri === "BANGJAE" ) {
+                    dir_path = bangjae_graph_dir.split("./")[1];
+                } else if( peri === "SEASON" ) {
+                    dir_path = season_graph_dir.split("./")[1];
+                } else if( peri === "ALLMONTH" ) {
+                    dir_path = allmonth_graph_dir.split("./")[1];
+                }
+console.log('call dir_path', dir_path);
 
                 // 표출 항목이 있을 경우 start.
                 if( resp["fcst_info"] ) {
@@ -54,13 +67,13 @@ console.log("resp", resp);
                     maxstep = resp['fcst_info']['utc_txt'].length -1;
                     
                     // display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head);
-                    display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head);
+                    display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head, dir_path);
 
                     // 슬라이드바를 직접 클릭할때 호출되는 함수
                     $("td[id^='Image_']").click(function() {
                         idx = $(this).attr("id").substr(6);
                         ImgIndex = idx;
-                        display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head);
+                        display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head, dir_path);
                     });
 
                     // 한번 클릭 시 여러번 실행되는 문제(여러번 콜했을 경우)를 방지.
@@ -72,7 +85,7 @@ console.log("resp", resp);
                             if (idx < 0){
                                 idx = maxstep;
                             }
-                            display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head);
+                            display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head, dir_path);
                             
                         } else if(e.keyCode == 39) { // right
                             idx = idx*1 +1;
@@ -80,7 +93,7 @@ console.log("resp", resp);
                             if (idx > maxstep ){
                                 idx = 0;
                             }
-                            display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head);
+                            display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head, dir_path);
                         }
                     });
                 } // 표출 항목이 있을 경우 End of if.
@@ -255,44 +268,3 @@ console.log("resp", resp);
 		return graph_name;
 	}
 
-
-
-    function display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head) {
-
-        $("td[id^='Image_']").removeClass("sliderSelected");
-        var frameIdx = (idx * 1);
-        $("#Image_"+frameIdx).addClass("sliderSelected");
-		
-		$('#contValue').empty();
-		
-		var grph_div = "";
-        for(var m=0; m<model_sel.length; m++) {
-            for(var v=0; v<vrfy_idx.length; v++) {
-                for(var d=0; d<resp['date_info'].length; d++) {
-            		grph_div += "<div class='img_area col-lg-3' >";
-                		grph_div += "<div class='map_header'>";
-                			var vrfy_name = get_vrfy_title(vrfy_data, vrfy_title, vrfy_idx[v]);
-                			grph_div += model_sel[m] + "_" + vrfy_name + "_" + resp['date_info'][d]['ymInfo'] + "_" + resp['date_info'][d]['utcInfo'];
-                		grph_div += "</div>";
-                		grph_div += "<div class='map_content'>";
-                		
-							var nameOfgrph = data_head + model_sel[m] + "_" + var_select + "_VRFY_" + vrfy_idx[v] + "." + resp['date_info'][d]['data'] + "_" +  resp['fcst_info']['utc_idx'][idx] + ".png";
-
-							var dt_arr = data_head.split("_");
-                			grph_div += "<img class='grph_img' src='" + "<?php echo base_url('/'); ?>" + graphDirHead + resp['date_info'][d]['ymInfo'] + "/" + var_select + "/" + nameOfgrph + "' onerror='no_image(this);' />" ;
-                			
-                		grph_div += "</div>";
-            		
-            		grph_div += "</div>";
-                } 
-            }
-        }
-        
-		$('#contValue').append(grph_div);
-	}
-
-
-    function no_image(th) {
-        console.log(th);
-		$(th).attr("src", "<?php echo base_url('assets/img/nodata.gif');?>");
-    }

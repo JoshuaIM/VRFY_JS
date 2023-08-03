@@ -7,7 +7,7 @@
 	<script src="<?php echo base_url('assets/js/vrfy_js/common_func.js');?>"></script>
 	
 	<script src="<?php echo base_url('assets/js/vrfy_js/map_stn/call_graph_ajax.js');?>"></script>
-	<script src="<?php echo base_url('assets/js/vrfy_js/map_stn/show_map_graph.js');?>"></script>
+	<script src="<?php echo base_url('assets/js/vrfy_js/map_stn/graph_ajax.js');?>"></script>
 
 
 <!-- // 공간분포 예측기간 slider 타일 생성 함수.  -->
