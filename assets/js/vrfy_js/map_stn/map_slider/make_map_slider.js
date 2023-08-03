@@ -127,3 +127,25 @@ function makeMedmSliderTile(init_hour, utc_txt) {
 
     return fcstTable;
 }
+
+
+function make_tmx_tmn_slider_tile(utc_txt)
+{
+    let fcstTable = "<tr>";
+    for(var i=0; i<utc_txt.length; i++) {
+            fcstTable += "<td class='sliderLabel' id='ImageL_" + i + "'>" + utc_txt[i] + "</td>";
+        }
+    fcstTable += "</tr>";
+    
+    fcstTable += "<tr>";
+        for(var i=0; i<utc_txt.length; i++) {
+            fcstTable += "<td class='slider' id='Image_" + i + "' title='" + utc_txt[i] + "' > &nbsp; </td>";
+        }
+    fcstTable += "</tr>";
+    
+    fcstTable += "</table>";
+    
+    fcstTable += "</div>";
+
+    return fcstTable;
+}

@@ -11,8 +11,8 @@
             success : function(resp)
             {
 console.log("resp", resp);
-console.log('data', set_data);
-console.log('graphDirHead', graphDirHead);
+// console.log('data', set_data);
+// console.log('graphDirHead', graphDirHead);
 
                 // 그래프 표출 영역 초기화.
                 $('#fcstValue').empty();
@@ -31,16 +31,28 @@ console.log('graphDirHead', graphDirHead);
                 }
 
                 let dir_path = "";
-                if( peri === "FCST" ) {
+                if( peri === "FCST" )
+                {
                     dir_path = graphDirHead.split("./")[1];
-                } else if( peri === "BANGJAE" ) {
+                }
+                else if( peri === "BANGJAE" )
+                {
+                    // assets/js/vrfy_js/ts_stn/bangjae/bangjae_ui_options.js
+                    setBangjaeInitDate(resp['date_info'][0]['data']);
                     dir_path = bangjae_graph_dir.split("./")[1];
-                } else if( peri === "SEASON" ) {
+                }
+                else if( peri === "SEASON" )
+                {
+                    // assets/js/vrfy_js/ts_stn/bangjae/bangjae_ui_options.js
+                    setSeasonInitDate(resp['date_info'][0]['data']);
                     dir_path = season_graph_dir.split("./")[1];
-                } else if( peri === "ALLMONTH" ) {
+                }
+                else if( peri === "ALLMONTH" )
+                {
+                    // assets/js/vrfy_js/ts_stn/bangjae/bangjae_ui_options.js
+                    setAllmonthInitDate(resp['date_info'][0]['data']);
                     dir_path = allmonth_graph_dir.split("./")[1];
                 }
-console.log('call dir_path', dir_path);
 
                 // 표출 항목이 있을 경우 start.
                 if( resp["fcst_info"] ) {
@@ -50,18 +62,26 @@ console.log('call dir_path', dir_path);
                     fcstTable += "<table class='map_utc_table' >";
                     
                     // assets/js/vrfy_js/map_slider/make_map_slider.js
-                    if ( type === "SHRT" || type === "SSPS" )
+                    if( var_select === "TMX" || var_select === "TMN" )
                     {
-                        fcstTable += makeShrtSliderTile(init_hour, forecast_info_txt);
-                    }
-                    else if( type === "MEDM" )
-                    {
-                        fcstTable += makeMedmSliderTile(init_hour, forecast_info_txt);
+                        fcstTable += make_tmx_tmn_slider_tile(forecast_info_txt);
                     }
                     else
                     {
-                        fcstTable = "";
+                        if ( type === "SHRT" || type === "SSPS" )
+                        {
+                            fcstTable += makeShrtSliderTile(init_hour, forecast_info_txt);
+                        }
+                        else if( type === "MEDM" )
+                        {
+                            fcstTable += makeMedmSliderTile(init_hour, forecast_info_txt);
+                        }
+                        else
+                        {
+                            fcstTable = "";
+                        }
                     }
+
                     $('#fcstValue').append(fcstTable);
 
                     maxstep = resp['fcst_info']['utc_txt'].length -1;
@@ -120,7 +140,7 @@ console.log('call dir_path', dir_path);
             success : function(resp)
             {
 console.log("resp", resp);
-console.log('data', set_data);
+// console.log('data', set_data);
 // console.log('graphDirHead', graphDirHead);
 
                 // 그래프 표출 영역 초기화.
