@@ -5,6 +5,7 @@
 	const sub_type = "<?php echo $sub_type; ?>";
 	var dateType = "<?php echo $dateType; ?>";
 	const data_type = "<?php echo $vrfyType; ?>";
+	const grph_type = "<?php echo $grph_type; ?>";
 
 // 그래픽 Title의 검증지수 한글화.
 	let vrfy_data = <?php echo json_encode($vrfyTech['data_vrfy']); ?>;
