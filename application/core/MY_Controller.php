@@ -211,7 +211,7 @@ class MY_Controller extends CI_Controller {
         $data_to_template['varArray'] = $this->ssps_var_array;
         $data_to_template['varnameArray'] = $this->ssps_var_name_array;
 
-        $data_to_template['vrfyTech'] = $this->common_func->getSspsVrfyTech($var_name);
+        $data_to_template['vrfyTech'] = $this->common_func->get_vrfy_tech($var_name);
         
         $bangjae_data_path = $this->datafile_dir . $type . "/" .  $this->data_group_dir . $this->bangjae_dir; 
         $bangjae_date = $this->common_func->getDateDirectoryArray($bangjae_data_path);

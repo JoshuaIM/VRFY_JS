@@ -114,62 +114,12 @@
 
 ////////////////////////////////////////////
 // 요소선택 변경 시 검증지수 체크박스를 다시 세팅하기 위한 메서드.
-	function selVar(var_name)
+	function select_var_ajax(var_value)
 	{
-
-		// 단기 시간적설이 SN3로 변경되며 검증지수가 증가하였는데 중기와 중복되지 않기 위해 함수를 분리.
-		let url_address = "";
-		if ( type === "SSPS" )
-		{
-			url_address = '<?php echo site_url();?>/main/callSspsVrfyTech'
-		}
-		else
-		{
-			url_address = '<?php echo site_url();?>/main/callVrfyTech'
-		}
-
-		$.ajax({
-                type : "POST",
-                    data :
-                    {
-						"varName" : var_name
-                    },
-                    dataType: "json",
-                    url : url_address,
-					// 변수에 저장하기 위함.
-                    async:false,
-                    success : function(resp)
-                    {
-// console.log('selVar(resp) :', resp);
-
-                        // 검증지수 체크박스 삭제.
-                    	$('#vrfySelect').empty();
-
-                	 	// 단기-격자-시계열(shrt_ts_grd)는 검증지수 선택이 단일 선택이므로 pType으로 함수 분류.
-                		var pType = "<?php echo $vrfyType; ?>";
-
-            			vrfy_data = resp['data_vrfy'];
-            			vrfy_txt = resp['txt_vrfy'];
-            			vrfy_title = resp['title_vrfy'];
-
-                		// 검증 지수 셀렉트박스 생성.
-						makeVrfySelect(vrfy_data, vrfy_txt, pType, dateType);
-
-                    	// 초기시각 세팅.
-                    	//makeUTCopt(val.value, dateType);
-                    },
-                    error : function(error) 
-                    {
-                        console.log("error Message: ");
-                        console.log(error);
-                    }
-            })
-
-        // 데이터 표출.
-        getDataArray();
+		const url = "<?php echo site_url();?>/main/callVrfyTech";
+		// assets/js/vrfy_js/common_func.js
+		set_vrfy_list(url, var_value);
 	}
-
-
 
 
 </script>

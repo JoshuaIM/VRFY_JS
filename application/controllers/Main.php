@@ -26,14 +26,4 @@ class Main extends CI_Controller {
         echo json_encode($vrfyTech);
     }
 
-    // 산악용
-    // View에서 Ajax로 호출하여 요소(변수)별 검증지수 배열 찾기. "getSspsVrfyTech()" 메서드 호출.
-    public function callSspsVrfyTech()
-    {
-        $varName = $this->input->post('varName');
-        $vrfyTech = $this->common_func->getSspsVrfyTech($varName);
-        echo json_encode($vrfyTech);
-    }
-
-
 }

@@ -1,9 +1,3 @@
-
-    function get_data_head_replace(data_head)
-    {
-
-    }
-
 // (UI)초기시각 UTC 선택 값 (중복 선택)
     function get_init_hour_option()
     {

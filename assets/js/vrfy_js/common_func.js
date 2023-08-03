@@ -69,8 +69,6 @@ function listingSubLocSSPS(subLocVal) {
 
 
 
-
-
 // 요소선택의 변수에 따라 00+12UTC 체크박스 생성 또는 삭제.
 	function makeUTCopt(selVar, dateType) {
 		if( selVar == "T3H" || selVar == "TMN" || selVar == "TMX" || selVar == "T1H" ) {
@@ -92,3 +90,42 @@ function listingSubLocSSPS(subLocVal) {
 	}
 	
 	
+
+////////////////////////////////////////////
+// 요소선택 변경 시 검증지수 체크박스를 다시 세팅하기 위한 메서드.
+	function set_vrfy_list(url, var_name)
+	{
+		$.ajax({
+				type : "POST",
+					data :
+					{
+						"varName" : var_name
+					},
+					dataType: "json",
+					url : url,
+					// 변수에 저장하기 위함.
+					async:false,
+					success : function(resp)
+					{
+// console.log('selVar(resp) :', resp);
+
+						// 검증지수 체크박스 삭제.
+						$('#vrfySelect').empty();
+
+						vrfy_data = resp['data_vrfy'];
+						vrfy_txt = resp['txt_vrfy'];
+						vrfy_title = resp['title_vrfy'];
+
+						// 검증 지수 셀렉트박스 생성.
+						makeVrfySelect(vrfy_data, vrfy_txt, dateType);
+					},
+					error : function(error) 
+					{
+						console.log("error Message: ");
+						console.log(error);
+					}
+			})
+
+		// 데이터 표출.
+		getDataArray();
+	}
