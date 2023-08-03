@@ -200,18 +200,46 @@
 	*/
 
 	/* ???? ???? ???? */
-	.verifIndexArea, .grphZoomOut {
+	.verifIndexArea {
+		float: left;
+		margin-top: 3px;
+		/* height: 20px; */
+		font-size: 15px;
+		width: 90%;
+	}
+	.vrfy_info {
+		float: left;
+		margin-top: 2px;
+		/* height: 20px; */
+		width: 70px;
+	}
+	.vrfy_line_space {
+		height: 3px;
+	}
+	.vrfy_rnsn_line {
+		/* margin: 0 -20px 10px 73px; */
+		margin-left: 73px;
+		margin-right: -20px;
+		font-size: 13px;
+	}
+	.vrfy_rnsn_tab {
+		/* margin: 0 -20px 10px 5px; */
+		margin-left: 5px;
+		margin-right: -20px;
+		font-size: 13px;
+	}
+	/* ???? ???? ?? ??? */
+	.verifIndexArea input {
+		margin-left: 20px;
+		width: 17px;
+		height: 17px;
+		vertical-align:-3px;
+	}
+	.grphZoomOut {
         float: left;
         margin-top: 3px;
         height: 30px;
         font-size: 15px;
-    }
-	/* ???? ???? ?? ??? */
-	.verifIndexArea input {
-		margin-left: 20px;
-        width: 17px;
-        height: 17px;
-        vertical-align:-3px;
     }
     .grphZoomOut input {
 		margin-left: 10px;
@@ -775,3 +803,4 @@
 		width: 13px;
 		height: 13px;
 	}
+	

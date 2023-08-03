@@ -9,9 +9,9 @@ function makeVrfySelect(vrfy_data, vrfy_txt, data_type) {
     
     let split_pType = data_type.split("_");
     if( split_pType[0] === "gemd" && split_pType[2] === "similarity" ) {
-        selBox += "<b>활용도: </b>"; 
+        selBox += "<div class='vrfy_info'><b>활용도: </b></div>"; 
     } else {
-        selBox += "<b>검증지수: </b>"; 
+        selBox += "<div class='vrfy_info'><b>검증지수: </b></div>"; 
     }
 
     
@@ -61,10 +61,10 @@ function makeVrfySelect(vrfy_data, vrfy_txt, data_type) {
                 if( vrfy_id === "1" ) {
                     rn1_num = rn1_num +1;
                         if( rn1_num % 2 === 1 && rn1_num != 1 ) {
-                            selBox += "<br>";
-                            selBox += "<text style='margin:10px -20px 0px 73px; font-size:13px;'>" + ( (vrfy_name==="BIS")?"FBI":vrfy_name ) + "( </text>";
+                            selBox += "<div class='vrfy_line_space'></div>";
+                            selBox += "<text class='vrfy_rnsn_line'>" + ( (vrfy_name==="BIS")?"FBI":vrfy_name ) + "( </text>";
                         } else {
-                            selBox += "<text style='margin:10px -20px 0px 5px; font-size:13px;'>" + ( (vrfy_name==="BIS")?"FBI":vrfy_name ) + "( </text>";
+                            selBox += "<text class='vrfy_rnsn_tab'>" + ( (vrfy_name==="BIS")?"FBI":vrfy_name ) + "( </text>";
                         }
                 }
                     let vrfy_txt_id = parseInt(vrfy_id) -1;
@@ -80,10 +80,10 @@ function makeVrfySelect(vrfy_data, vrfy_txt, data_type) {
                 if( vrfy_id === "1" ) {
                     rn1_num = rn1_num +1;
                         if( rn1_num % 2 == 1 && rn1_num != 1 ) {
-                            selBox += "<br>";
-                            selBox += "<text style='margin:10px -20px 0px 73px; font-size:13px;'>" + ( (vrfy_name==="BIS")?"FBI":vrfy_name ) + "( </text>";
+                            selBox += "<div class='vrfy_line_space'></div>";
+                            selBox += "<text class='vrfy_rnsn_line'>" + ( (vrfy_name==="BIS")?"FBI":vrfy_name ) + "( </text>";
                         } else {
-                            selBox += "<text style='margin:10px -20px 0px 5px; font-size:13px;'>" + ( (vrfy_name==="BIS")?"FBI":vrfy_name ) + "( </text>";
+                            selBox += "<text class='vrfy_rnsn_tab'>" + ( (vrfy_name==="BIS")?"FBI":vrfy_name ) + "( </text>";
                         }
                 }
                     let vrfy_txt_id = parseInt(vrfy_id) -1;
@@ -156,7 +156,7 @@ function makeVrfySelectUtilizeMap(vrfy_data, vrfy_txt, pType, dateType) {
     var selBox = "";
     
     // 활용도 표출
-    selBox += "<b>활용도: </b>"; 
+    selBox += "<div class='vrfy_info'><b>활용도: </b></div>"; 
         if( dateType == "month" ) {
             var js_func = " onclick='setUtilize(this.value); getDataArray();'";
         } else {

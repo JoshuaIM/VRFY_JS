@@ -12,7 +12,7 @@
 			<div id="fcstValue" class="col-lg-12" ></div>
 
 			<!-- 결과물 표출 영역 -->
-			<div id="contValue" class="col-lg-11" ></div>
+			<div id="contValue" class="col-lg-12" ></div>
 		<?php
 		}
 		else
