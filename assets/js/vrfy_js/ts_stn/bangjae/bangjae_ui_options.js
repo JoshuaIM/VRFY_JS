@@ -21,13 +21,6 @@ function originalON() {
     $(".season_date").css("display", "none");
     $(".allmonth_date").css("display", "none");
 }
-// function bangjaeOFF() {
-//     $(".original_date").show();
-//     // 방재기간 연도 선택 박스 초기화    
-//     $("#sel_year").children("option").remove()
-    
-//     $(".bangjae_date").css("display", "none");
-// }
 
 // 방재기간 선택 박스 ON
 function bangjaeON() {
@@ -37,23 +30,9 @@ function bangjaeON() {
     $(".allmonth_date").css("display", "none");
     
     // 방재기간 연도 선택 박스 초기화    
-    // $("#sel_year").children("option").remove()
     $("#select_bangjae_date").empty();
 
-    // // application/views/main/ts_stn.php 전역변수로 저장됨.
-	// switch (peri) {
-	// 	case "SPRING" : makeBangJaeYearOptions(SPRING); break;
-	// 	case "WINTER" : makeBangJaeYearOptions(WINTER); break;
-    // }
-
-    // makeBangJaeDateMap(BANGJAE);
-//     let bangJae_date_map = makeBangJaeDateMap(BANGJAE);
-// console.log(bangJae_date_map);
-
     let year_arr = getOnlyYearArr(BANGJAE);
-console.log('year_arr', year_arr);
-console.log('BANGJAE', BANGJAE);
-console.log('BANGJAEMAP', BANGJAEMAP);
     makeBangJaeYearOptions(year_arr);
 
     makeBangJaeSeasonOptions(BANGJAEMAP);
@@ -68,7 +47,6 @@ function seasonON() {
     $(".allmonth_date").css("display", "none");
     
     // 계절별 연도 선택 박스 초기화    
-    // $("#sel_year").children("option").remove()
     $("#select_season_date").empty();
 
     let year_arr = getOnlyYearArr(SEASON);
@@ -173,17 +151,6 @@ function setBangjaeInitDate(fileName) {
     $('#bangjae_startD').attr("value", split_date[0].substring(0,8));
     $('#bangjae_endD').attr("value",split_date[1].substring(0,8));
 }
-
-// function setBangjaeInitDateMap(rangeMon) {
-//     // 초기화
-//     $('#bangjae_startD').attr("value", "");
-//     $('#bangjae_endD').attr("value", "");
-
-//     let split_date = rangeMon.split("_");
-
-//     $('#bangjae_startD').attr("value", split_date[0].substring(0,8));
-//     $('#bangjae_endD').attr("value",split_date[1].substring(0,8));
-// }
 
 
 function setNodataBangjaeInitDate(bangjae_date) {
