@@ -4,7 +4,6 @@ function set_timeseries_data(get_chart, dataInfo, var_select)
 
     // 하나의 차트에 들어갈 데이터 라인의 수.
     const cht_line_num = dataInfo.length;
-
     const cht_arr_num = is_month_ts_view(dataInfo);
 
     // TODO : 데이터가 하나도 없을 시. ( 위에 "if( dataInfo.length == 0 )" 를 추가했으므로 필요없을 수 있음 )
@@ -74,7 +73,25 @@ function set_timeseries_data(get_chart, dataInfo, var_select)
             }
             else
             {
-                chtdata = dataInfo[mm]['data'];
+                if( sub_type === "ACCURACY" )
+                {
+                    const target_arr_num = cht_arr_num[mm];
+                    const state_arr_num = cht_arr_num[0];
+                    if( target_arr_num ==  state_arr_num )
+                    {
+                        chtdata = dataInfo[mm]['data'];
+                    }
+                    else
+                    {
+                        const state_fc_head = dataInfo[0]['fHeadUtc'];
+                        chtdata = get_accuracy_data(state_fc_head, dataInfo[mm]);
+                    }
+                }
+                else
+                {
+                    chtdata = dataInfo[mm]['data'];
+                }
+
             }
             
             // 집계표에 사용되는 AVE값까지 포함되어 있으므로 시계열 표출 시 삭제 함. 
@@ -218,4 +235,30 @@ function set_month_timeseries_data(get_chart, dataInfo, var_select)
     } // End of "if( cht_line_num == 0 )"
 
     return chart
+}
+
+
+
+function get_accuracy_data(state_fc_head, data)
+{
+    const target_fc_head = data['fHeadUtc'];
+    const target_data = data['data'];
+    let chtdata = new Array();
+    let tm_num = 0;
+    for (let i=0; i<state_fc_head.length; i++)
+    {
+        for (let d=tm_num; d<target_fc_head.length; d++)
+        {
+            if ( state_fc_head[i] == target_fc_head[d] )
+            {
+                chtdata.push(target_data[d]);
+                tm_num = d;
+                break;
+            }
+        }
+    }
+    // AVE 값 대신 넣어둠.
+    // 데이터 추출 시 마지막 값은 AVE 값이므로.
+    chtdata.push(null);
+    return chtdata;
 }
