@@ -42,4 +42,3 @@
 
 <!-- // 예측성능표 표출 기능 -->
 	<script src="<?php echo base_url('assets/js/vrfy_js/ts_stn/performCompTable/performCompTable.js');?>"></script>
-	
