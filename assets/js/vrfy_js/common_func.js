@@ -8,51 +8,27 @@ function hideNview() {
 }
 
 
-// DatePicker 적용 함수.
-function changeDatePicker(setStrDate, setEndDate) {
-    
-	var strDate = setStrDate;
-	var endDate = setEndDate;
-	
-	if( !setStrDate || !setEndDate ) {
-		strDate = new Date(currentStrDate);
-		endDate = new Date(currentEndDate);
+// assets/month_picker_plug/month_picker.js
+// Month Picker 적용 함수.
+function changeDatePicker()
+{
+	const strDate = new Date(currentStrDate);
+	const endDate = new Date(currentEndDate);
+	set_month_picker(strDate, '#sInitDate');
+	set_month_picker(endDate, '#eInitDate');
+}
+// 날짜 변경 시 month picker 에서 호출.
+function check_month()
+{
+	const start_date = parseInt($('#sInitDate').val());
+	const end_date = parseInt($('#eInitDate').val());
+	if (start_date > end_date)
+	{
+		$('#sInitDate').val($('#eInitDate').val());
 	}
-
-	// datepicker 초기화 ( default date 초기화를 위함. )
-	$('#sInitDate').datepicker( "destroy" );
-	$('#eInitDate').datepicker( "destroy" );
-	
-	$('#sInitDate').datepicker({
-		dateFormat:'yymm', 
-		changeYear: true, 
-		autoclose: true, 
-		//yearRange: "2018:2020",
-		yearRange: "2020:" + thisYear,
-		defaultDate: strDate
-	});
-	$('#sInitDate').datepicker('setDate', strDate);
-	
-	  $('#eInitDate').datepicker({
-		  dateFormat:'yymm', 
-		  changeYear: true, 
-		  autoclose: true, 
-		//yearRange: "2018:2020",
-		yearRange: "2020:" + thisYear,
-		  defaultDate: endDate
-	  });
-	$('#eInitDate').datepicker('setDate', endDate);
+	getDataArray();
 }
 
-
-// 캘린더 아이콘 클릭 시 표출.
-function openSCalendar(){
-	$("#sInitDate").datepicker("show");
-}
-// 캘린더 아이콘 클릭 시 표출.
-function openECalendar(){
-	$("#eInitDate").datepicker("show");
-}
 
 // 임의기간과 구별하기 위한 함수. (월자료는 선택 즉시 작동 But 임의기간은 PLOT 버튼 클릭 시 작동)
 function listingSubLoc(subLocVal) {
@@ -65,6 +41,29 @@ function listingSubLocSSPS(subLocVal) {
 	// js/vrfy_js/get_station_name.js
 	setSubLocationSSPS(subLocVal);
 	getDataArray();
+}
+
+function set_month_picker(init_date, select_box_id)
+{
+	const yyyy = init_date.getFullYear();
+	let mm = init_date.getMonth() +1;
+	if(mm < 10) {
+		mm = "0" + mm;
+	}
+
+	const options = {
+		pattern: "yyyymm",
+		// global : currentEndDate
+		selectedYear: currentEndDate.substr(0,4),
+		selectedMonth: mm,
+		startYear: 2020,
+		finalYear: yyyy,
+		monthNames: ['1 월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+		openOnFocus: true,
+		disableMonths : []
+	};
+	$(select_box_id).monthpicker(options);
+	$(select_box_id).val(yyyy + mm);
 }
 
 

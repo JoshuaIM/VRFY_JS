@@ -31,6 +31,9 @@ function setShrt3H1HDisplay(sDate, eDate, var_select, peri) {
 // 1시간 자료인지 3시간 자료인지 체크.
 function shrtMonthCheck(chkDate) {
 
+	// 2020년 12월 부터 1시간 자료 표출.
+	var changeDateFormat = "2020-12-01";
+	
 	var is3H = true;
 	
 	var checkD = new Date(chkDate);

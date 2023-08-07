@@ -37,42 +37,18 @@
     <link href="<?php echo base_url('assets/css/style.css');?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/style-responsive.css');?>" rel="stylesheet">
     
-    <!-- datepicker and calendar ->> Using ipop datepicker -->
-            <!-- <script src="<?php echo base_url('assets/lib/jquery_ipop/js/jquery-ui.min.js');?>"></script> -->
-    <link href="<?php echo base_url('assets/lib/jquery_ipop/css/jquery-ui.css');?>" rel="stylesheet">
-    <script src="<?php echo base_url('assets/lib/jquery_ipop/js/jquery.min.js');?>"></script>
-    <script src="<?php echo base_url('assets/lib/jquery_ipop/js/jquery-ui.js');?>"></script> 
+    <!-- month picker and calendar -->
+    <link href="<?php echo base_url('assets/month_picker_plug/jquery-ui.css');?>" rel="stylesheet">
+    <script src="<?php echo base_url('assets/month_picker_plug/jquery.min.js');?>"></script>
+    <script src="<?php echo base_url('assets/month_picker_plug/jquery-ui.min.js');?>"></script>
+    <script src="<?php echo base_url('assets/month_picker_plug/month_picker.js');?>"></script>
     
-    
-    <!-- month_calendar 사용할 것이면 주석 풀것 -->
-        <!-- <script src="<?php echo base_url('assets/month_calendar/jquery.mousewheel.min.js');?>"></script> -->
-    <!-- <script src="<?php echo base_url('assets/month_calendar/calendar_mon_ahmax.js');?>"></script>
-    <link href="<?php echo base_url('assets/month_calendar/calendar_mon_ahmax.css');?>" rel="stylesheet"> -->
-    <!-- month_calendar 사용할 것이면 주석 풀것 -->
+    <!-- <link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet"> -->
+    <!-- <script src="https://code.jquery.com/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script> -->
 
-
-    
-    <!-- month_picker 사용할 것이면 주석 풀것 -->
-    <!-- 주석 풀면 안됨 -->
-    <!-- <link href="<?php echo base_url('assets/month_picker/stylesheets/stylesheet.css');?>" rel="stylesheet"> -->
-    
-    <!-- <link href="<?php echo base_url('assets/month_picker/MonthPicker.min.css');?>" rel="stylesheet">
-    <link href="<?php echo base_url('assets/month_picker/examples.css');?>" rel="stylesheet">
-    
-    <script src="<?php echo base_url('assets/month_picker/jquery-1.12.1.min.js');?>"></script>
-    <script src="<?php echo base_url('assets/month_picker/jquery-ui.min.js');?>"></script>
-    <script src="<?php echo base_url('assets/month_picker/jquery.maskedinput.min.js');?>"></script>
-    <script src="<?php echo base_url('assets/month_picker/MonthPicker.js');?>"></script>
-    <script src="<?php echo base_url('assets/month_picker/examples.js');?>"></script> -->
-    <!-- month_picker 사용할 것이면 주석 풀것 -->
-
-
-    
     <!-- js placed at the end of the document so the pages load faster -->
     <script src="<?php echo base_url('assets/lib/bootstrap/js/bootstrap.min.js');?>"></script>
-    
-    <!-- TODO : 메뉴 아코디언 막음. -->
-    <!-- <script src="<?php echo base_url('assets/lib/jquery.dcjqaccordion.2.7.js');?>" class="include" type="text/javascript" ></script>  -->
     
     <script src="<?php echo base_url('assets/lib/jquery.scrollTo.min.js');?>"></script>
     <script src="<?php echo base_url('assets/lib/jquery.nicescroll.js');?>" type="text/javascript"></script>

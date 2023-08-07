@@ -75,8 +75,14 @@
         /*
         width: 89%;
         */
-        overflow: auto;
+        /* overflow: auto; */
+		height: 850px;
+		overflow-x: scroll;
+  		overflow-y: scroll;
     }
+	#contValue {
+		height: 790px;
+	}
     .top_wrapper {
     	/* joshua add margin-left */
         margin-left: 230px;
@@ -161,8 +167,8 @@
         height: 24px;
     }
     .date_wave {
-        margin-left:5px; 
-        margin-right:5px;
+        /* margin-left:5px; 
+        margin-right:5px; */
     }
     .chartName {
         color: white;
@@ -188,7 +194,9 @@
     .subsub i {
 		margin-left: 20px;
     }
-    
+	.totalDownBtn {
+		margin-left: 10px;
+	}
     
 /* ???? ??? ?? + ???? ???? */
 	/*
@@ -804,3 +812,4 @@
 		height: 13px;
 	}
 	
+

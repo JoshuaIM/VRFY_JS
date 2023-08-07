@@ -11,7 +11,9 @@
     $thisYear = date("Y");
 ?>
 
-<body style="overflow-x:hidden; overflow-y:auto;">
+<!-- <body style="overflow-x:hidden; overflow-y:auto;"> -->
+<body style="overflow-x:hidden; overflow-y:hidden;">
+<!-- <body class="cont_cover" style="overflow-x:scroll; overflow-y:scroll;"> -->
 
     <section id="container">
 
