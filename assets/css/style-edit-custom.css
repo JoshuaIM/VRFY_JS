@@ -76,12 +76,15 @@
         width: 89%;
         */
         /* overflow: auto; */
-		height: 850px;
+		/* height: 850px; */
+		height: 800px;
 		overflow-x: scroll;
   		overflow-y: scroll;
+		/* position: relative; */
     }
 	#contValue {
-		height: 790px;
+		/* height: 790px; */
+		height: 740px;
 	}
     .top_wrapper {
     	/* joshua add margin-left */
@@ -816,27 +819,27 @@
 	
 
 	/* test */
-	/* .tooltip-container {
+	.info-tooltip-container {
 		position: relative;
 		display: inline-block;
 		margin-right: 3px;
 		float: left;
 	  }
 	  
-	.tooltip {
+	.info-tooltip {
 	visibility: hidden;
 	position: absolute;
-	bottom: 100%;
-	left: 50%;
+	top: 100%;
+	left: 100%;
 	transform: translateX(-50%);
-	background-color: #333;
-	color: #fff;
+	background-color: #fff;
+	color: #333;
 	padding: 5px;
 	border-radius: 5px;
 	font-size: 12px;
 	white-space: nowrap;
 	}
 	  
-	.icon:hover + .tooltip {
+	.info-icon:hover + .info-tooltip {
 	visibility: visible;
-	} */
+	}
