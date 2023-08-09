@@ -7,27 +7,34 @@ function set_timeseries_data(get_chart, dataInfo, var_select)
     const cht_arr_num = is_month_ts_view(dataInfo);
 
     // TODO : 데이터가 하나도 없을 시. ( 위에 "if( dataInfo.length == 0 )" 를 추가했으므로 필요없을 수 있음 )
-    if ( cht_line_num == 0 )
+    if (cht_line_num == 0)
     {
         chart.series[0].name= "No Data";
         chart.series[0].setData([], true);
     }
     // 데이터가 하나 일 경우 series의 name이 제대로 기입이 안되므로 억지로 집어넣어준다.
-    else if ( cht_line_num == 1 )
+    else if (cht_line_num == 1 )
     {
         let chtdata = new Array();
         // 강수확률은 값의 /100 적용.
-        if( var_select == "POP" ) {
+        if (var_select === "POP" )
+        {
             // IE에서 .map() 함수 사용 못함.
             const pop_d = dataInfo[0]['data'];
-                for(let x=0; x<pop_d.length; x++) {
-                    if( pop_d[x] ) {
+                for (let x=0; x<pop_d.length; x++)
+                {
+                    if (pop_d[x])
+                    {
                         chtdata.push( parseFloat( (pop_d[x]/100).toFixed(3) ) );
-                    } else {
+                    }
+                    else
+                    {
                         chtdata.push( pop_d[x] );
                     }
                 }
-        } else {
+        }
+        else
+        {
             chtdata = dataInfo[0]['data'];
         }
         
@@ -73,11 +80,11 @@ function set_timeseries_data(get_chart, dataInfo, var_select)
             }
             else
             {
-                if( sub_type === "ACCURACY" )
+                if (sub_type === "ACCURACY")
                 {
                     const target_arr_num = cht_arr_num[mm];
                     const state_arr_num = cht_arr_num[0];
-                    if( target_arr_num ==  state_arr_num )
+                    if (target_arr_num ==  state_arr_num)
                     {
                         chtdata = dataInfo[mm]['data'];
                     }
@@ -128,13 +135,11 @@ function set_timeseries_data(get_chart, dataInfo, var_select)
                 // chart.xAxis[0].update({ categories: data_utc_arr });
                 chart.addSeries({data: chtdata, name: lineName, marker: {symbol: 'circle'}, color: modl_color}, false);
             }
-        
         }
-        
     }
-
     return chart;
 }
+
 function get_chart_line_info(data_info)
 {
     let info_arr = new Array();
