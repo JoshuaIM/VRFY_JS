@@ -331,6 +331,11 @@ ul.sidebar-menu {
     margin-top: 80px;
 }
 
+ul.sidebar-menu li ul.sub li a {
+    line-height: 31px;
+    height: 31px;
+}
+
 #sidebar > ul > li > ul.sub {
     /*display: none;*/
     display: block;
@@ -489,30 +494,6 @@ ul.sidebar-menu li a.active i {
 .black-bg {
     background: #22242a;
     border-bottom: 1px solid #393d46;
-}
-
-.wrapper {
-    display: inline-block;
-    margin-top: 60px;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-bottom: 15px;
-    padding-top: 0px;
-    width: 100%;
-}
-
-.top_wrapper {
-    display: inline-block;
-    margin-top: 0px;
-    /* default
-    height: 100px;
-    */
-    height: 74px;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-bottom: 15px;
-    padding-top: 0px;
-    width: 100%;
 }
 
 a.logo {

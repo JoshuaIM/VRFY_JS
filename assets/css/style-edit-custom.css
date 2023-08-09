@@ -2,26 +2,6 @@
 * Template Name: Joshua Custom
 * Author: 2c
 */
-
-	#sidebar {
-		width: 160px;
-		height: 100%;
-		position: fixed;
-		/* default
-		background: #2f323a;
-			ver-1 ????��
-		background: #36589C;
-		background: #79a8a9;
-		background: #3f4040;
-		background: #3d3d3d;
-		*/
-		background: #52616a;
-	}
-	
-	ul.sidebar-menu li ul.sub li a {
-	    line-height: 31px;
-	    height: 31px;
-	}
   
   
 /* add sidebar sub-bar joshua navigation */
@@ -62,6 +42,8 @@
     
 /* add sidebar sub-bar joshua navigation END*/
     .wrapper {
+		display: inline-block;
+		
     	/* joshua add margin-left */
     	/* def 2019-09-26
     	margin-left: 230px;
@@ -69,7 +51,11 @@
     	*/
         margin-top: 0px;
         margin-left: 200px;
+
         padding-left: 0px;
+		padding-right: 15px;
+		padding-bottom: 15px;
+		padding-top: 0px;
         
         width: 87%;
         /*
@@ -87,6 +73,18 @@
 		height: 740px;
 	}
     .top_wrapper {
+		display: inline-block;
+		margin-top: 0px;
+		/* default
+		height: 100px;
+		*/
+		height: 74px;
+		padding-left: 15px;
+		padding-right: 15px;
+		padding-bottom: 15px;
+		padding-top: 0px;
+		width: 100%;
+
     	/* joshua add margin-left */
         margin-left: 230px;
     }
