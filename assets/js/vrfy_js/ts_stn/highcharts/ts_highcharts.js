@@ -41,9 +41,9 @@ function set_timeseries_data(get_chart, dataInfo, var_select)
         });
         chtdata = chtdata2;
         
-        const lineName = dataInfo[0]['month'] + "_" + dataInfo[0]['utc'] + "_" + dataInfo[0]['model'];
-        // 모델 컬러 추가. 2023-01-11
-        const modl_color = dataInfo[0]['modl_color'];
+        const chart_line_info = get_chart_line_info(dataInfo[0]);
+        const lineName = chart_line_info['line_name'];
+        const modl_color = chart_line_info['modl_color'];
         
         chart.series[0].setData( chtdata, true );
         // 카테고리 추가(00, 12 UTC 멀티 표출 때문). 2023-04-14
@@ -105,10 +105,9 @@ function set_timeseries_data(get_chart, dataInfo, var_select)
             });
             chtdata = chtdata2;
 
-            const lineName = dataInfo[mm]['month'] + "_" + dataInfo[mm]['utc'] + "_" + dataInfo[mm]['model'];
-            // 모델 컬러 추가. 2023-01-11
-            let modl_color = dataInfo[mm]['modl_color'];
-            
+            const chart_line_info = get_chart_line_info(dataInfo[mm]);
+            const lineName = chart_line_info['line_name'];
+            const modl_color = chart_line_info['modl_color'];
             if ( mm == 0 )
             {
                 chart.series[0].name = lineName;
@@ -136,7 +135,25 @@ function set_timeseries_data(get_chart, dataInfo, var_select)
 
     return chart;
 }
-
+function get_chart_line_info(data_info)
+{
+    let info_arr = new Array();
+    if (sub_type === "SIMILARITY")
+    {
+        info_arr = {
+            line_name : data_info['var'],
+            modl_color : data_info['variable_color']
+        };
+    }
+    else
+    {
+        info_arr = {
+            line_name : data_info['month'] + "_" + data_info['utc'] + "_" + data_info['model'],
+            modl_color : data_info['modl_color']
+        };
+    }
+    return info_arr;
+}
 
 
 
