@@ -274,6 +274,7 @@ class MY_Controller extends CI_Controller {
             'rangeMon' => $range_mon,
             'vrfy_idx' => $vrfy_idx,
             'location' => $location,
+            'sub_type' => $sub_type
         ];
 
         if ( $type === "GEMD" && $sub_type === "ACCURACY" ) 

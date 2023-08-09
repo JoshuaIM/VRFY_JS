@@ -188,7 +188,23 @@ class Tstbcommon_func {
                                 } // End of "File Line" foreach.
                             } // End of "File exist" if 문.
                             else {
-                                array_push($dataArr, $tmpfn);
+                                if ($fnParam['sub_type'] === "SIMILARITY")
+                                {
+                                    $dArray = [
+                                        'fileName' => $tmpfn,
+                                        'tableFileName' => null,
+                                        'tableData' => null,
+                                        'fHeadUtc' => null,
+                                        'fDataNum' => null,
+                                        'dataInfo' => null,
+                                        'data' => null
+                                    ];
+                                    array_push($dataArr, $dArray);
+                                }
+                                else
+                                {
+                                    array_push($dataArr, $tmpfn);
+                                }
                             }
 
                         } // End of "VAR" foreach.
