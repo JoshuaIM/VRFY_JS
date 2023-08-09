@@ -50,8 +50,10 @@ class MY_Controller extends CI_Controller {
     protected $ssps_var_array = ["T1H", "REH", "VEC", "WSD", "PTY", "RN1"];
     protected $ssps_var_name_array = ["기온", "습도",  "풍향", "풍속", "강수유무", "시간 강수량"];
 
-    protected $gemd_var_array = ["T1H", "TMX", "TMN", "REH", "WSD", "SKY", "PTY", "RN1", "SN3"];
-    protected $gemd_var_name_array = ["기온", "최고기온", "최저기온" ,"습도", "풍속", "하늘상태", "강수유무", "시간강수량", "3시간적설"];
+    // protected $gemd_var_array = ["T1H", "TMX", "TMN", "REH", "WSD", "SKY", "PTY", "RN1", "SN3"];
+    // protected $gemd_var_name_array = ["기온", "최고기온", "최저기온" ,"습도", "풍속", "하늘상태", "강수유무", "시간강수량", "3시간적설"];
+    protected $gemd_var_array = ["T1H", "REH", "WSD", "SKY", "PTY", "RN1", "SN3", "TMX", "TMN"];
+    protected $gemd_var_name_array = ["기온", "습도", "풍속", "하늘상태", "강수유무", "시간강수량", "3시간적설", "최고기온", "최저기온" ];
 
 
     /**
