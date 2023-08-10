@@ -32,8 +32,16 @@ function check_month()
 
 // 임의기간과 구별하기 위한 함수. (월자료는 선택 즉시 작동 But 임의기간은 PLOT 버튼 클릭 시 작동)
 function listingSubLoc(subLocVal) {
-	// js/vrfy_js/get_station_name.js
-	setSubLocation(subLocVal);
+	if (sub_type === "SIMILARITY")
+	{
+		// js/vrfy_js/get_station_name.js
+		setSubLocationSimilarity(subLocVal);
+	}
+	else
+	{
+		// js/vrfy_js/get_station_name.js
+		setSubLocation(subLocVal);
+	}
 	getDataArray();
 }
 
