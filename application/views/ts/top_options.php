@@ -11,23 +11,16 @@
         	<select id="data_period" name="PERIOD" class="dateSelBox" onChange="changeBangjaeType(this.value); getDataArray();">
         		<option value="FCST" selected>예측기간(월별)</option>	
 				<?php 
-				if ( $type != "SSPS" )
+				if ( $type != "GEMD" )
 				{
 				?>
-					<?php 
-					if ( $type != "GEMD" )
-					{
-					?>
-						<option value="MONTH">월별</option>	
-					<?php
-					}
-					?>
-					<option value="SEASON">계절별</option>	
-					<option value="BANGJAE">방재기간별</option>	
-					<option value="ALLMONTH">전체기간</option>	
+					<option value="MONTH">월별</option>	
 				<?php
 				}
 				?>
+				<option value="SEASON">계절별</option>	
+				<option value="BANGJAE">방재기간별</option>	
+				<option value="ALLMONTH">전체기간</option>	
         	</select>
 
 			<!-- 방재기간 선택 시 ON -->

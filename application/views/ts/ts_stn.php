@@ -18,17 +18,10 @@
 	let currentEndDate = "<?php echo $dataDate; ?>";			
 
 // 변수 타입 스트링으로 모두 변환하기 위해 json_encode 안씀.
-	<?php 
-	if ( $type != "SSPS" )
-	{
-	?>
-		let BANGJAE = [<?php echo '"'.implode('","', $bangjaeDate).'"' ?>];
-		let SEASON = [<?php echo '"'.implode('","', $seasonDate).'"' ?>];
-		let BANGJAEMAP = <?php echo json_encode($bangjaeArrMap); ?>;
-		let SEASONMAP = <?php echo json_encode($seasonArrMap); ?>;
-	<?php
-	}
-	?>
+	let BANGJAE = [<?php echo '"'.implode('","', $bangjaeDate).'"' ?>];
+	let BANGJAEMAP = <?php echo json_encode($bangjaeArrMap); ?>;
+	let SEASON = [<?php echo '"'.implode('","', $seasonDate).'"' ?>];
+	let SEASONMAP = <?php echo json_encode($seasonArrMap); ?>;
 
 	let glob_data = new Array();
 
@@ -49,6 +42,7 @@
 	// 첫 페이지
 	$(document).ready(function()
 	{
+console.log('SEASON', SEASON);
 		// TOP-메뉴 예측기간, 월별, 방재, 계절, 전체기간 선택에 따른 date select box 형식 제어
 		originalON();
 
@@ -97,18 +91,18 @@
 		// 줌 체크박스 보이기/숨기기.
 		setZoomButton(peri);
 
+		let model_sel = new Array();
 		// 메인 동작 함수.
 		if ( type === "SSPS" )
 		{
-			let model_sel = ["SSPS"];
-			call_ssps_timeseries_ajax(data_head, var_select, model_sel, init_hour, location, vrfy_idx, peri);
+			model_sel = ["SSPS"];
 		}
 		else
 		{
 			// (UI)모델 및 기법 선택 값 (중복 선택)
-			let model_sel = get_model_option();
-			call_timeseries_ajax(data_head, var_select, model_sel, init_hour, location, vrfy_idx, peri);
+			model_sel = get_model_option();
 		}
+		call_timeseries_ajax(data_head, var_select, model_sel, init_hour, location, vrfy_idx, peri);
     }
 
 
