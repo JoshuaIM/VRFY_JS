@@ -212,13 +212,14 @@ console.log("resp", resp);
                             const var_unit = get_grph_unit(var_select, vrfy_id);
                                 const vUnit = var_unit.split("#");
                             const unitName = vUnit[0];
-                            const unitSymb = vUnit[1];
+                            let unitSymb = vUnit[1];
     
                             // 그래픽 Y축 Title 정보.
                             let yaxis_title = "";
                             if( unitSymb ) {
                                 yaxis_title = unitName + " ( " + unitSymb + " )";
                             } else {
+                                unitSymb = "";
                                 yaxis_title = unitName;
                             }
     
