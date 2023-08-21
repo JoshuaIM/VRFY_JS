@@ -186,33 +186,25 @@ class Tstbcommon_func {
                                     } // End of $fnParam['location'][0] == "mean"인지 확인하는 if 문.
 
                                 } // End of "File Line" foreach.
-                            } // End of "File exist" if 문.
-                            else {
-                                if ($fnParam['sub_type'] === "SIMILARITY")
-                                {
-                                    $dArray = [
-                                        'fileName' => $tmpfn,
-                                        'tableFileName' => null,
-                                        'tableData' => null,
-                                        'fHeadUtc' => null,
-                                        'fDataNum' => null,
-                                        'dataInfo' => null,
-                                        'data' => null
-                                    ];
-                                    array_push($dataArr, $dArray);
-                                }
-                                else
-                                {
-                                    array_push($dataArr, $tmpfn);
-                                }
                             }
-
+                            // "File exist" false 의 경우
+                            else
+                            {
+                                $dArray = [
+                                    'fileName' => $tmpfn,
+                                    'tableFileName' => null,
+                                    'tableData' => null,
+                                    'fHeadUtc' => null,
+                                    'fDataNum' => null,
+                                    'dataInfo' => null,
+                                    'data' => null
+                                ];
+                                array_push($dataArr, $dArray);
+                            } // End of "File exist" if 문.
                         } // End of "VAR" foreach.
                     } // End of "MODEL" foreach.
                 } // End of "RANGEMON" foreach.
-
             } // End of "UTC" foreach.
-
         } // End of "VRFY IDX" foreach.
         
         return $dataArr;
@@ -550,10 +542,10 @@ class Tstbcommon_func {
                     ];
                     
                     array_push($resData, $vrfy_loc);
-
                 }
 
             }
+
         }
         
         return $resData;

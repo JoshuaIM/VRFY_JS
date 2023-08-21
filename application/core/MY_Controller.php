@@ -303,8 +303,8 @@ class MY_Controller extends CI_Controller {
 
         $arrange_data = $this->get_arrange_data($peri, $location[0], $sub_type, $all_data, $fnParam);
         
-        return $arrange_data;
         // return $all_data;
+        return $arrange_data;
     }
 
 
