@@ -11,7 +11,7 @@
             async: false,
             success : function(resp)
             {
-console.log("resp", resp);
+// console.log("resp", resp);
 // console.log('data', set_data);
 
                 // csv 내려받기 기능을 위해 데이터 값 광역변수에 저장.
@@ -132,7 +132,7 @@ console.log("resp", resp);
                         }
                         const vrfy_name = get_vrfy_title(vrfy_data, vrfy_title, vftc[0]);
                                 
-                        if ( peri === "FCST" )
+                        if ( peri === "FCST" || peri === "MONTH" )
                         {
                             selCont += "<h5><b class='chartName'>" + var_select + "</b> <b class='vrfyName'>[ " + vrfy_name + "_" + stn_name + " ]  " + each_utc + "UTC</b></h5>";
                         }

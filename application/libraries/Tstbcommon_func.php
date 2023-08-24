@@ -634,66 +634,6 @@ class Tstbcommon_func {
         
         return $resData;
     }
-    // public function arrangeFcstData($data, $param) {
-        
-    //     $resData = array();
-    //     foreach ($param['vrfy_idx'] as $vf) {
-
-    //         foreach ($param['location'] as $lc) {
-                
-    //             $mon_utc_modl = array();
-    //             foreach ($param['rangeMon'] as $mon) {
-
-    //                 $modl_size_num = sizeof($param['model_sel']);
-    //                 foreach ($param['model_sel'] as $modl) {
-                        
-    //                     $dn = $vf . "_" . $lc . "_" . substr($mon['data'], 0, 6) . "_" . $mon['utcInfo'] . "_" . $modl;
-                        
-    //                     // TODO: $tmp(search결과 array key값)이 없을 경우와 1번째 배열의 결과값 0 둘다 if문에서는 false 이다... PHP잘못된 디자인의 프랙탈.
-    //                     // 그러므로 in_array를 사용하여 배열값을 확인하고 -> 있으면 결과값이 1이므로. array_search를 사용한다.
-    //                     $dExist = in_array( $dn, array_column($data, 'dataInfo') );
-    //                     if($dExist) {
-    //                         $tmp = array_search( $dn, array_column($data, 'dataInfo') );
-                            
-    //                         // TODO : 2022-12-02 ECMWF 예측기간(+150h)을 나머지 기간(+135h) 로 맞춰주는 작업.
-    //                         $data_arr = array();
-    //                         $fHeadUtc = array();
-    //                         $data_arr = $data[$tmp]['data'];
-    //                         $fHeadUtc = $data[$tmp]['fHeadUtc'];
-
-    //                         $dataArray = [
-    //                             // 파일명 검사용.
-    //                             'search' => $dExist . " || ",
-    //                             'fileName' => $data[$tmp]['fileName'],
-    //                             'fHeadUtc' => $fHeadUtc,
-    //                             'fDataNum' => $data[$tmp]['fDataNum'],
-    //                             'vrfy_loc' => $vf . "_" . $lc,
-    //                             'month' => substr($mon['data'], 0, 6),
-    //                             //'ym_range' => $mon['ymRange'],
-    //                             'utc' => $mon['utcInfo'],
-    //                             'model' => $modl,
-    //                             'modl_color' => $this->getModelColor($modl),
-    //                             'num' => $modl_size_num,
-    //                             'data' => $data_arr
-    //                         ];
-                            
-    //                         array_push($mon_utc_modl, $dataArray);
-    //                     } // End of "tmp(search결과값)" if문
-    //                 } // End of "model_sel" foreach.
-    //             } // End of "rangeMon" foreach.
-                
-    //             $vrfy_loc = [
-    //                 'var_name' => $param['var_select'],
-    //                 'vrfy_loc' => $vf . "_" . $lc,
-    //                 'data' => $mon_utc_modl
-    //             ];
-                
-    //             array_push($resData, $vrfy_loc);
-    //         }
-    //     }
-        
-    //     return $resData;
-    // }
 
     
 
@@ -746,11 +686,13 @@ class Tstbcommon_func {
                                 // 권역평균 선택 시.
                                 if($fnParam['location'][0] == "mean") {
                                     
-                                    $dinfo = $vrfy . "_mean_" . substr($mon['data'], 0, 6) . "_" . $mon['utcInfo'] . "_" . $modl;
+                                    // $dinfo = $vrfy . "_mean_" . substr($mon['data'], 0, 6) . "_" . $mon['utcInfo'] . "_" . $modl;
+                                    $dinfo = $vrfy . "_mean_" . substr($mon['data'], 0, 6) . "_" . $utc . "_" . $modl;
                                     $dArray = [
                                         // 파일명 검사용.
                                         'monthInfo' => $mon['ymInfo'],
-                                        'utcInfo' => $mon['utcInfo'],
+                                        // 'utcInfo' => $mon['utcInfo'],
+                                        'utcInfo' => $utc,
                                         'fileName' => $tmpfn,
                                         'dataInfo' => $dinfo,
                                     ];
@@ -938,168 +880,8 @@ class Tstbcommon_func {
     
     
     
-//////////////////////////////////////////////////////////////////////////////
-/////   임의기간 발표*발효, 단기*중기 모두 사용
-//////////////////////////////////////////////////////////////////////////////
-
-// 지점: 단기-중기 시계열 표출 시 사용되는 메서드.
-// UI로부터 파라메터를 받아서 데이터 생산 쉘을 호출 후 데이터를 추출하는 메서드.
-    public function getArbiData($fnParam) {
-        $dataArr = array();
-        
-        // 순서: 검증지수 - 지점  - UTC - 모델
-        foreach ($fnParam['vrfy_idx'] as $vrfy) {
-            foreach ($fnParam['rangeMon'] as $mon) {
-                foreach ($fnParam['model_sel'] as $modl) {
-                    
-//                    if( $fnParam['peri_type'] == "TARGET" ) {
-                        // 파일명 조합.
-//                        $tmpfn = $fnParam['dir_name'] . $fnParam['data_head'] . $fnParam['peri_type'] . "_" . $modl . '_' . $fnParam['var_select'] . '_VRFY_' . $vrfy . '.' . $mon['range_mon'];
-//                    } else {
-                        // 파일명 조합.
-//                        $tmpfn = $fnParam['dir_name'] . $fnParam['data_head'] . $modl . '_' . $fnParam['var_select'] . '_VRFY_' . $vrfy . '.' . $mon['range_mon'];
-//                    }
-                        $tmpfn = $fnParam['dir_name'] . $fnParam['data_head'] . $modl . '_' . $fnParam['var_select'] . '_VRFY_' . $vrfy . '.' . $mon['range_mon'];
-                    
-                    // 파일이 존재할 경우
-                    if( file_exists($tmpfn) ) {
-                        
-                        // 줄 단위 파일 읽기.
-                        $fileLine = explode("\n", file_get_contents($tmpfn));
-                        
-                        // 데이터 파일 헤더의 UTC 정보 제공. ( 그래프 X축의 forecast 시간 표출용 )
-                        $fHeadUtc = $this->getArbiFileHeadUtc($fileLine[1], $fnParam['peri_type']);
-                        
-                        // 데이터 파일 자료수 정보 제공. ( 집계표에서 사용. )
-                        $fDataNum = "";
-                        // 자료수 정보는 파일 마지막에 있으므로 배열을 거꾸로 돌려서 찾고 찾으면 foreach 탈출.
-                        foreach ( array_reverse($fileLine) as $revLine) {
-                            $locId = trim(substr($revLine, 0, 5));
-                            if( $locId == "NUM" ) {
-                                $fDataNum = $this->getFileDataNum($revLine);
-                                break;
-                            }
-                        }
-                        
-                        // 파일별 지점 찾아 해당 데이터 얻기.
-                        foreach ($fileLine as $line) {
-                            // 매 줄 앞 5칸만 잘라내어 트림. (지점 번호 또는 AVE, NUM 정보 등등)
-                            $loc = trim(substr($line, 0, 5));
-                            
-                            foreach ($fnParam['location'] as $mat) {
-                                if( $loc == $mat ) {
-                                    // data의 정보.
-                                    //$dinfo = $vrfy . "_" . $loc . "_" . substr($mon['data'], 0, 6) . "_" . $mon['utcInfo'] . "_" . $modl;
-                                    $dinfo = $vrfy . "_" . $loc . "_" . $mon['utc_info'] . "_" . $modl;
-                                    $mkArr = $this->splitFcstData($line);
-                                    
-                                    $dArray = [
-                                        // 파일명 검사용.
-                                        'fileName' => $tmpfn,
-                                        'fHeadUtc' => $fHeadUtc,
-                                        'fDataNum' => $fDataNum,
-                                        'dataInfo' => $dinfo,
-                                        'data' => $mkArr
-                                    ];
-                                    array_push($dataArr, $dArray);
-                                }
-                            } // End of "Location" foreach.
-                        } // End of "File Line" foreach.
-                    } // End of "File exist" if 문.
-                } // End of "MODEL" foreach.
-            } // End of "RANGEMON" foreach.
-        } // End of "VRFY IDX" foreach.
-        
-        return $dataArr;
-    }
-    
-
-
-// 임의기간의 경우 시작시간 또는 목표시간 데이터 파일 헤더의 UTC 정보 제공.
-    public function getArbiFileHeadUtc($hourLine, $peri_type) {
-        
-        $utcInfo = array();
-        
-        $rep_whitesp = trim( preg_replace('/\s+/', '#', $hourLine) );
-        
-        $hourStr = explode("#", $rep_whitesp);
-        
-        // 첫번째 배열은 'STNID  '이므로 필요 없음.
-        for( $h=1; $h<sizeof($hourStr); $h++ ) {
-            // 앞의 기호 값 저장.
-            $comp = substr( $hourStr[$h], 0, 1 );
-            // 앞의 '+' 또는 '-' 문자와 맨뒤의 'H' 제외.
-            $n = substr( $hourStr[$h], 1, 3 );
-            // 예측시간 헤더가 숫자이면 int로 변화하여 표출하고 아니면 그대로 표출.
-            if( is_numeric($n) ) {
-                $tmpH = (int)$n;
-                $resH = $comp . strval($tmpH) . "H";
-            } else {
-                $resH = $comp . $n . "H";
-            }
-
-            array_push($utcInfo, $resH);
-        }
-        
-        return $utcInfo;
-    }
-    
-      
-        
-// 지점: 단기-중기 시계열 표출 시 사용되는 메서드.
-// 추출 된 데이터들을 표출에 맞는 형식으로 변환해주는 메서드.
-    public function arrangeArbiData($data, $param) {
-        
-        $resData = array();
-        foreach ($param['vrfy_idx'] as $vf) {
-            foreach ($param['location'] as $lc) {
-                
-                $mon_utc_modl = array();
-                foreach ($param['rangeMon'] as $mon) {
-                    foreach ($param['model_sel'] as $modl) {
-                        
-                        $dn = $vf . "_" . $lc . "_" . $mon['utc_info'] . "_" . $modl;
-
-                        // TODO: $tmp(search결과 array key값)이 없을 경우와 1번째 배열의 결과값 0 둘다 if문에서는 false 이다... PHP잘못된 디자인의 프랙탈.
-                        // 그러므로 in_array를 사용하여 배열값을 확인하고 -> 있으면 결과값이 1이므로. array_search를 사용한다.
-                        $dExist = in_array( $dn, array_column($data, 'dataInfo') );
-                        if($dExist) {
-                            $tmp = array_search( $dn, array_column($data, 'dataInfo') );
-                            $dataArray = [
-                                // 파일명 검사용.
-                                'search' => $dExist . " || ",
-                                'fileName' => $data[$tmp]['fileName'],
-                                'fHeadUtc' => $data[$tmp]['fHeadUtc'],
-                                'fDataNum' => $data[$tmp]['fDataNum'],
-                                'vrfy_loc' => $vf . "_" . $lc,
-                                'utc' => $mon['utc_info'],
-                                'model' => $modl,
-                                'data' => $data[$tmp]['data']
-                            ];
-                            
-                            array_push($mon_utc_modl, $dataArray);
-                        } // End of "tmp(search결과값)" if문
-                    } // End of "model_sel" foreach.
-                } // End of "rangeMon" foreach.
-                
-                $vrfy_loc = [
-                    'var_name' => $param['var_select'],
-                    'vrfy_loc' => $vf . "_" . $lc,
-                    'rangeInfo' => $param['rangeInfo'],
-                    'data' => $mon_utc_modl
-                ];
-                
-                array_push($resData, $vrfy_loc);
-            }
-        }
-        
-        return $resData;
-    }
-    
-
-
-    // 2023-01-17 복수 모델 선택 중 ECMWF가 포함되었을 시 135H 으로 맞추기 위해 선별하는 작업.
-    // 2023-03-20 "sizeof($data) > 100" 추가 -> 중기자료는 ECMWF도 자료수가 같다. 그러므로 중기자료는 제외시키기 위함. (중기자료수 = 96개)
+// 2023-01-17 복수 모델 선택 중 ECMWF가 포함되었을 시 135H 으로 맞추기 위해 선별하는 작업.
+// 2023-03-20 "sizeof($data) > 100" 추가 -> 중기자료는 ECMWF도 자료수가 같다. 그러므로 중기자료는 제외시키기 위함. (중기자료수 = 96개)
     public function extractModlData($data, $var, $modl_name, $modl_arr_size) {
         if( ($modl_name == "ECMW_NPPM" && $modl_arr_size > 1 && sizeof($data) > 100 ) ) {
             if( $var != "TMN" && $var != "TMX" ) {
@@ -1119,7 +901,7 @@ class Tstbcommon_func {
 
 
 
-    // 2022-12-02 ECMWF 예측기간(+150h)을 나머지 기간(+135h) 로 맞춰주는 작업.
+// 2022-12-02 ECMWF 예측기간(+150h)을 나머지 기간(+135h) 로 맞춰주는 작업.
     public function suitForecastFormat($data, $type) {
         $sp_data = $data;
         $size = sizeof($sp_data);
@@ -1130,7 +912,7 @@ class Tstbcommon_func {
 
         return $res;
     }
-    // 단기 SN1이 SN3로 변경되며 ECMWF 예측기간(+47h)을 나머지 기간(+44h) 로 맞춰주는 작업.
+// 단기 SN1이 SN3로 변경되며 ECMWF 예측기간(+47h)을 나머지 기간(+44h) 로 맞춰주는 작업.
     public function suitForecastFormatSN3($data, $type) {
         $sp_data = $data;
         $size = sizeof($sp_data);

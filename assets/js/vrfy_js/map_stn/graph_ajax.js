@@ -10,7 +10,7 @@
             async: false,
             success : function(resp)
             {
-console.log("resp", resp);
+// console.log("resp", resp);
 // console.log('data', set_data);
 // console.log('graphDirHead', graphDirHead);
 
@@ -139,7 +139,7 @@ console.log("resp", resp);
             async: false,
             success : function(resp)
             {
-console.log("resp", resp);
+// console.log("resp", resp);
 // console.log('data', set_data);
 // console.log('graphDirHead', graphDirHead);
 

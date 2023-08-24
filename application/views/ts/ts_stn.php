@@ -42,7 +42,6 @@
 	// 첫 페이지
 	$(document).ready(function()
 	{
-console.log('SEASON', SEASON);
 		// TOP-메뉴 예측기간, 월별, 방재, 계절, 전체기간 선택에 따른 date select box 형식 제어
 		originalON();
 
