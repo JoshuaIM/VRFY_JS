@@ -17,9 +17,11 @@
                 // csv 내려받기 기능을 위해 데이터 값 광역변수에 저장.
                 glob_data = resp;
     
-                if ( type === "GEMD" )
+                // if ( type === "GEMD" )
+                if (sub_type === "SIMILARITY")
                 {
-                    def_forecast_range = resp[0]['data'][0]['fHeadUtc'];
+                    // def_forecast_range = resp[0]['data'][0]['fHeadUtc'];
+                    def_forecast_range = get_similarity_headUTC(resp);
                 }
                 else
                 {
@@ -104,7 +106,6 @@
                         }
 
                         let selCont = "";
-    
 
                         // assets/js/vrfy_js/shrt_change_3to1_func.js
                         let selContNdataFont = setShrt3H1HDisplay(start_init, end_init, var_select, peri); 
@@ -134,7 +135,16 @@
                                 
                         if ( peri === "FCST" || peri === "MONTH" )
                         {
+                            if (sub_type === "SIMILARITY")
+                            {
+                                let month_info = resp[vl]['month']['ymInfo'];
+                                let model_name = get_similarity_modl_name(dataInfo);   
+                                selCont += "<h5><b class='chartName'>" + month_info + " " + model_name + " : " + var_select + "</b> <b class='vrfyName'>[ " + vrfy_name + "_" + stn_name + " ]  " + each_utc + "UTC</b></h5>";
+                            }
+                            else
+                            {
                             selCont += "<h5><b class='chartName'>" + var_select + "</b> <b class='vrfyName'>[ " + vrfy_name + "_" + stn_name + " ]  " + each_utc + "UTC</b></h5>";
+                            }
                         }
                         else if ( peri === "BANGJAE" || peri === "SEASON" )
                         {
@@ -186,7 +196,20 @@
                             }
 
                         //---- 시계열 차트 시작
-                            selCont += "<div id='" +vrfy_loc + "_" + each_utc + "_div' class='cht_div'></div>";
+                            let cht_name = "";
+                            if (sub_type === "SIMILARITY")
+                            {
+                                let month_info = resp[vl]['month']['ymInfo'];
+                                let model_name = get_similarity_modl_name(dataInfo);
+                                cht_name = month_info + "_" + model_name + "_" + vrfy_loc + "_" + each_utc;
+                            }
+                            else
+                            {
+                                cht_name = vrfy_loc + "_" + each_utc;
+                            }
+
+                            // selCont += "<div id='" +vrfy_loc + "_" + each_utc + "_div' class='cht_div'></div>";
+                            selCont += "<div id='" + cht_name + "_div' class='cht_div'></div>";
                             
                             selCont += "</div></div>";
                             
@@ -224,8 +247,6 @@
                             }
     
                             // 빈 하이차트 만들기 - assets/js/vrfy_js/highcharts/highcharts_frame.js
-                            let cht_name = vrfy_loc + "_" + each_utc;
-
                             let data_utc_arr = "";
                             if ( peri === "MONTH" )
                             {
@@ -240,7 +261,8 @@
                             // 빈 하이차트 만들기 - assets/js/vrfy_js/highcharts/highcharts_frame.js
     
                             // 모델X초기시각X기간 값을 하이차트에 Append 하기 위해 객체 생성.
-                            let chart = $('#' + vrfy_loc + "_" + each_utc + "_div").highcharts();
+                            // let chart = $('#' + vrfy_loc + "_" + each_utc + "_div").highcharts();
+                            let chart = $('#' + cht_name + "_div").highcharts();
             
                             if ( peri === "MONTH" )
                             {
@@ -265,4 +287,35 @@
                 }
             })
             
+        }
+
+
+        function get_similarity_modl_name(dataInfo)
+        {
+            let model_name = "";
+            for (let m=0; m<dataInfo.length; m++)
+            {
+                if (dataInfo[m]['model'])
+                {
+                    const model_split = dataInfo[m]['model'].split("_");
+                    model_name = model_split[0];
+                    break;
+                }
+            }
+            return model_name;
+        }
+
+
+        function get_similarity_headUTC(data_resp)
+        {
+            let fHeadUtc = "";
+            for (let vl=0; vl<data_resp.length; vl++)
+            {
+                if (data_resp[vl]['data'][0])
+                {
+                    fHeadUtc = data_resp[vl]['data'][0]['fHeadUtc'];
+                    break;
+                }
+            }
+            return fHeadUtc;
         }
