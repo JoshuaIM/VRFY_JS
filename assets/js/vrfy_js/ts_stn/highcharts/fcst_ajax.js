@@ -10,8 +10,8 @@
             async: false,
             success : function(resp)
             {
-console.log("resp", resp);
-console.log('data', set_data);
+// console.log("resp", resp);
+// console.log('data', set_data);
 
                 // csv 내려받기 기능을 위해 데이터 값 광역변수에 저장.
                 glob_data = resp;
@@ -164,9 +164,9 @@ console.log('data', set_data);
                             const startDate = $("#" + peri_low + "_startD").val();
                             const endDate = $("#" + peri_low + "_endD").val();
 
-                            const type_tile = (peri === "BANGJAE") ? "방재기간" : "";
+                            const type_title = (peri === "BANGJAE") ? "방재기간" : "";
 
-                            const addText = " - " + selectYear + " " + selectSeason + " " + type_tile + "(" + startDate + "~" + endDate + ")"
+                            const addText = " - " + selectYear + " " + selectSeason + " " + type_title + "(" + startDate + "~" + endDate + ")"
                             selCont += "<h5><b class='chartName'>" + var_select + "</b> <b class='vrfyName'>[ " + vrfy_name + "_" + stn_name + " ] " + each_utc + "UTC " + addText + "</b></h5>";
                         }
                         else if ( peri === "ALLMONTH" )
