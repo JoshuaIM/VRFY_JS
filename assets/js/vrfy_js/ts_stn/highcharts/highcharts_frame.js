@@ -2,7 +2,7 @@ function makeEmptyHighcharts( isZoom, peri, cht_name, yaxis_title, data_utc_arr,
 
     // 활용도(CORR, COSS 만 적용) : 최대*최저기온 및 3시간 적설의 경우 중간 빈 값들이 들어가는 부분을 제외하고 연결해주기 위해(connectNulls) 옵션 설정 예외처리.
     let cht_type_split = cht_name.split("_");
-    let cht_type = cht_type_split[0];
+    let cht_type = cht_type_split[2];
 
     // 북한의 경우 3시간 자료이므로 선 그래프가 없음, 고로 전체그래프보기 시 값 표출이 없으므로, 북한 지역만 포인터 지우지 않고 표기.
     let new_isZoom = false;
@@ -52,6 +52,7 @@ function makeEmptyHighcharts( isZoom, peri, cht_name, yaxis_title, data_utc_arr,
             title: {
                 text: yaxis_title
             },
+            max : ( cht_type === "CORR" || cht_type === "COSS" ) ? 1 : null
             // max: 1
             // set_yaxis_max_txt
         },

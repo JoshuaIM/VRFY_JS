@@ -262,6 +262,7 @@
     
                             // 모델X초기시각X기간 값을 하이차트에 Append 하기 위해 객체 생성.
                             // let chart = $('#' + vrfy_loc + "_" + each_utc + "_div").highcharts();
+                            // let chart = $('#' + cht_name + "_div").highcharts();
                             let chart = $('#' + cht_name + "_div").highcharts();
             
                             if ( peri === "MONTH" )
