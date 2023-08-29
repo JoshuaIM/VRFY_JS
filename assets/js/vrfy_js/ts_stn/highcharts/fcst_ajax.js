@@ -164,7 +164,7 @@ console.log('data', set_data);
                             const startDate = $("#" + peri_low + "_startD").val();
                             const endDate = $("#" + peri_low + "_endD").val();
 
-                            const type_tile = (peri === "BANGJAE") ? "방재기간" : "계절별";
+                            const type_tile = (peri === "BANGJAE") ? "방재기간" : "";
 
                             const addText = " - " + selectYear + " " + selectSeason + " " + type_tile + "(" + startDate + "~" + endDate + ")"
                             selCont += "<h5><b class='chartName'>" + var_select + "</b> <b class='vrfyName'>[ " + vrfy_name + "_" + stn_name + " ] " + each_utc + "UTC " + addText + "</b></h5>";
