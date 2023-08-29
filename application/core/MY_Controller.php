@@ -30,6 +30,7 @@ class MY_Controller extends CI_Controller {
     protected $bangjae_dir = "BNGJ/";
     protected $season_dir = "SEAS/";
     protected $allmonth_dir = "ALLD/";
+    protected $test_dir = "TEST/";
 
     protected $pngfile_dir = "./GIFD/";
 
@@ -40,7 +41,10 @@ class MY_Controller extends CI_Controller {
 
     protected $allmonth_start = "20211201";
     protected $allmonth_end = "20230228";
-    
+
+    protected $test_start = "20230601";
+    protected $test_end = "20230731";
+
     protected $shrt_var_array = ["T1H", "TMX", "TMN", "REH", "VEC", "WSD", "SKY", "PTY", "POP", "RN1", "SN3"];
     protected $shrt_var_name_array = ["기온", "최고기온", "최저기온", "습도",  "풍향", "풍속", "하늘상태", "강수유무", "강수확률", "시간 강수량", "3시간 적설"];
 
@@ -303,6 +307,7 @@ class MY_Controller extends CI_Controller {
 
         $arrange_data = $this->get_arrange_data($peri, $location[0], $sub_type, $all_data, $fnParam);
         
+        // return $fnParam;
         // return $all_data;
         return $arrange_data;
     }
@@ -407,6 +412,10 @@ class MY_Controller extends CI_Controller {
         {
             $tail_dir = $this->allmonth_dir;
         }
+        else if ( $peri === "TEST" )
+        {
+            $tail_dir = $this->test_dir;
+        }
 
         $fdir = $this->datafile_dir . $type_dir . "/" . $this->data_group_dir . $tail_dir; 
         return $fdir;
@@ -427,7 +436,11 @@ class MY_Controller extends CI_Controller {
         }
         else if ( $peri === "ALLMONTH" )
         {
-            $range_mon = $this->common_func->getAllMonthDateRangeArr($fdir, $var_select, $this->allmonth_start);
+            $range_mon = $this->common_func->getAllMonthDateRangeArr($fdir, $this->allmonth_start);
+        }
+        else if ( $peri === "TEST" )
+        {
+            $range_mon = $this->common_func->getAllMonthDateRangeArr($fdir, $this->test_start);
         }
         else
         {

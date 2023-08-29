@@ -259,7 +259,7 @@ class Common_func {
 
 
 
-    public function getAllMonthDateRangeArr($dataPath, $var_select, $start_month)
+    public function getAllMonthDateRangeArr($dataPath, $start_month)
     {
         $monRangeArr = array();
 

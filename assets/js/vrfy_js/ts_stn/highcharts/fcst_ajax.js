@@ -1,7 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //  예측기간별 자료  Ajax 이용 그래픽 표출 메서드.
     function call_ajax_ts_data(ajax_url_fcst, set_data) {
-
         $.ajax({
             type : "POST",
             data : set_data,
@@ -11,8 +10,8 @@
             async: false,
             success : function(resp)
             {
-// console.log("resp", resp);
-// console.log('data', set_data);
+console.log("resp", resp);
+console.log('data', set_data);
 
                 // csv 내려받기 기능을 위해 데이터 값 광역변수에 저장.
                 glob_data = resp;
@@ -104,6 +103,15 @@
                             start_init = "202305";
                             end_init = "202305";
                         }
+                        else if ( peri === "TEST" )
+                        {
+                            // 전체기간 정보 표출
+                            setAllmonthInitDate(file_name);
+
+                            // OverWrite
+                            start_init = "202307";
+                            end_init = "202307";
+                        }
 
                         let selCont = "";
 
@@ -155,7 +163,10 @@
                             const selectSeason = $("#select_" + peri_low + "_season option:selected").text();
                             const startDate = $("#" + peri_low + "_startD").val();
                             const endDate = $("#" + peri_low + "_endD").val();
-                            const addText = " - " + selectYear + " " + selectSeason + " 방재기간(" + startDate + "~" + endDate + ")"
+
+                            const type_tile = (peri === "BANGJAE") ? "방재기간" : "계절별";
+
+                            const addText = " - " + selectYear + " " + selectSeason + " " + type_tile + "(" + startDate + "~" + endDate + ")"
                             selCont += "<h5><b class='chartName'>" + var_select + "</b> <b class='vrfyName'>[ " + vrfy_name + "_" + stn_name + " ] " + each_utc + "UTC " + addText + "</b></h5>";
                         }
                         else if ( peri === "ALLMONTH" )
@@ -163,6 +174,14 @@
                             const startDate = $("#allmonth_startD").val();
                             const endDate = $("#allmonth_endD").val();
                             const addText = " - 전체기간 (" + startDate + "~" + endDate + ")";
+
+                            selCont += "<h5><b class='chartName'>" + var_select + "</b> <b class='vrfyName'>[ " + vrfy_name + "_" + stn_name + " ]  " + each_utc + "UTC " + addText + "</b></h5>";
+                        }
+                        else if ( peri === "TEST" )
+                        {
+                            const startDate = $("#allmonth_startD").val();
+                            const endDate = $("#allmonth_endD").val();
+                            const addText = " - 테스트기간 (" + startDate + "~" + endDate + ")";
 
                             selCont += "<h5><b class='chartName'>" + var_select + "</b> <b class='vrfyName'>[ " + vrfy_name + "_" + stn_name + " ]  " + each_utc + "UTC " + addText + "</b></h5>";
                         }
