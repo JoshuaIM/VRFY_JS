@@ -103,14 +103,14 @@
                             start_init = "202305";
                             end_init = "202305";
                         }
-                        else if ( peri === "TEST" )
+                        else if ( peri === "TEMP" )
                         {
                             // 전체기간 정보 표출
                             setAllmonthInitDate(file_name);
 
                             // OverWrite
-                            start_init = "202307";
-                            end_init = "202307";
+                            start_init = "202306";
+                            end_init = "202306";
                         }
 
                         let selCont = "";
@@ -177,7 +177,7 @@
 
                             selCont += "<h5><b class='chartName'>" + var_select + "</b> <b class='vrfyName'>[ " + vrfy_name + "_" + stn_name + " ]  " + each_utc + "UTC " + addText + "</b></h5>";
                         }
-                        else if ( peri === "TEST" )
+                        else if ( peri === "TEMP" )
                         {
                             const startDate = $("#allmonth_startD").val();
                             const endDate = $("#allmonth_endD").val();

@@ -6,7 +6,7 @@ function changeBangjaeType(peri) {
         seasonON();
     } else if ( peri === "ALLMONTH") {
         allmonthON();
-    } else if ( peri === "TEST") {
+    } else if ( peri === "TEMP") {
         allmonthON();
     } else {
         originalON();

@@ -3,7 +3,10 @@
         <div class="dateSelect" >
 
         	<select id="data_period" name="PERIOD" class="dateSelBox" onChange="changeBangjaeType(this.value); getDataArray();">
-        		<option value="FCST" selected>예측기간(월별)</option>	
+				<option value="FCST" selected>
+					<?php ($type === "GEMD") ? print("월별") : print("예측기간(월별)"); ?>
+				</option>	
+
 				<?php 
 				if ( $type != "SSPS" )
 				{

@@ -280,6 +280,27 @@ class Common_func {
 
         return $monRangeArr;
     }
+    public function getAllMonthDateRangeArrTEMP($dataPath, $start_month)
+    {
+        $monRangeArr = array();
+
+        $recent = $this->getDirectoryDate($dataPath);
+        $recent_date = explode("-", $recent);
+        $yyyymm = $recent_date[0] . $recent_date[1];
+
+        $end = ( new DateTime($yyyymm . "01")) -> modify('last day of next month');
+        $last_date = $end->format("Ymd");
+
+        $file_date_name = $start_month . "_" . $last_date;
+
+        $ym_info = [
+            'ymInfo' => $yyyymm,
+            'data' => $file_date_name
+        ];
+        array_push($monRangeArr, $ym_info);
+
+        return $monRangeArr;
+    }
 
 
 

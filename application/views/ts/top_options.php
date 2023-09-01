@@ -11,7 +11,7 @@
         	<select id="data_period" name="PERIOD" class="dateSelBox" onChange="changeBangjaeType(this.value); getDataArray();">
         		<option value="FCST" selected>예측기간(월별)</option>	
 				<?php 
-				if ( $type != "GEMD" )
+				if ($type != "GEMD")
 				{
 				?>
 					<option value="MONTH">월별</option>	
@@ -21,11 +21,18 @@
 				<option value="SEASON">계절별</option>	
 				<option value="BANGJAE">방재기간별</option>	
 				<option value="ALLMONTH">전체기간</option>	
-				<option value="TEST">테스트기간</option>	
+				<?php 
+				if ($vrfyType === "shrt_ts_stn")
+				{
+				?>
+					<option value="TEMP">테스트기간</option>	
+				<?php
+				}
+				?>
         	</select>
 
 			<!-- 방재기간 선택 시 ON -->
-        	<select id="select_bangjae_date" name="SELYEAR" class="dateSelBox bangjae_date" onChange=" makeBangJaeSeasonOptions(BANGJAEMAP); getDataArray();" ></select>
+        	<select id="select_bangjae_date" name="SELYEAR" class="dateSelBox bangjae_date" onChange="makeBangJaeSeasonOptions(BANGJAEMAP); getDataArray();" ></select>
         	<select id="select_bangjae_season" name="SELSEASON" class="dateSelBox bangjae_date" onChange="getDataArray();" ></select>
             <div class="btn-group  bangjae_date" >
             	<input class="dateBox" id="bangjae_startD" type="text" style="width:85px; background:#E0E3DA" value="" readonly />
@@ -33,7 +40,7 @@
 			<!-- 방재기간 선택 시 ON -->
 
 			<!-- 계절별 선택 시 ON -->
-        	<select id="select_season_date" name="SELYEAR" class="dateSelBox season_date" onChange=" makeSeasonSeasonOptions(SEASONMAP); getDataArray();" ></select>
+        	<select id="select_season_date" name="SELYEAR" class="dateSelBox season_date" onChange="makeSeasonSeasonOptions(SEASONMAP); getDataArray();" ></select>
         	<select id="select_season_season" name="SELSEASON" class="dateSelBox season_date" onChange="getDataArray();" ></select>
             <div class="btn-group  season_date" >
             	<input class="dateBox" id="season_startD" type="text" style="width:85px; background:#E0E3DA" value="" readonly />

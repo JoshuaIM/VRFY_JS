@@ -38,7 +38,7 @@ function call_timeseries_ajax(data_head, var_select, model_sel, init_hour, locat
     {
         set_data = set_ajax_data(data_head, var_select, init_hour, model_sel, location, null, null, null, vrfy_idx, peri);
     }
-    else if( peri === "TEST" )
+    else if( peri === "TEMP" )
     {
         set_data = set_ajax_data(data_head, var_select, init_hour, model_sel, location, null, null, null, vrfy_idx, peri);
     }
