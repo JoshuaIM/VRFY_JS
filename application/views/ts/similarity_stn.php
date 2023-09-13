@@ -84,19 +84,44 @@
 		// // 247(표준검증지점)의 경우 글로벌 변수(data_head)값 변경.
 		// data_head = get_loc_dhead.get("datahead");
 		// (UI)지점 선택 값
-    	let location =  new Array();
-		let selLoc = $("select[name=LOCATION]").val(); 
-			if( selLoc.length > 1) {
-				alert("지점선택은 하나만 가능합니다.");
-				return false;
-			}
-			if( selLoc == "ALL" ) {
-				location.push( "ST308" );
-			} else if( selLoc == "247ALL" ) {
-				location.push( "ST247" );
-			} else {
-				location = selLoc[0].split('#');
-			}
+
+    	// let location =  new Array();
+		// let selLoc = $("select[name=LOCATION]").val(); 
+		// 	if( selLoc.length > 1) {
+		// 		alert("지점선택은 하나만 가능합니다.");
+		// 		return false;
+		// 	}
+		// 	if( selLoc == "ALL" ) {
+		// 		location.push( "ST308" );
+		// 	} else if( selLoc == "247ALL" ) {
+		// 		location.push( "ST247" );
+		// 	} else {
+		// 		location = selLoc[0].split('#');
+		// 	}
+
+    	// let location =  new Array();
+	// 	let selLoc = $("select[name=STATION]").val(); 
+	// console.log('selLoc', selLoc);
+
+		// 	if( selLoc.length > 1) {
+		// 		alert("지점선택은 하나만 가능합니다.");
+		// 		return false;
+		// 	}
+		// 	if( selLoc == "ALL" ) {
+		// 		location.push( "ST308" );
+		// 	} else if( selLoc == "247ALL" ) {
+		// 		location.push( "ST247" );
+		// 	} else {
+		// 		location = selLoc[0].split('#');
+		// 	}
+
+		// (UI)지점 및 표준검증지점에 따른 data_head 값 변경.
+		// assets/js/vrfy_js/common/get_option_value.js
+    	let get_loc_dhead =  get_location_datahead_option(data_head);
+    	// (UI)지점 선택 값
+		let location = get_loc_dhead.get("location");
+		// 247(표준검증지점)의 경우 글로벌 변수(data_head)값 변경.
+		// data_head = get_loc_dhead.get("datahead");
 
 		// (UI)검증지수 선택 값 (중복 선택)
 		let vrfy_idx = get_vrfy_option();
@@ -110,6 +135,7 @@
 		// (UI)모델 및 기법 선택 값 (중복 선택)
 		let model_sel = get_model_option();
 
+		// assets/js/vrfy_js/ts_stn/call_timeseries_ajax.js
 		call_timeseries_ajax(data_head, var_select, model_sel, init_hour, location, vrfy_idx, peri);
 		// call_similarity_timeseries_ajax(data_head, var_select, model_sel, init_hour, location, vrfy_idx, peri);
     }
@@ -150,7 +176,8 @@
 	<!-- 지점 선택 -->
 	<?php 
 		$stnData = ["stn" => "def"];
-		$this->load->view('common/sideMenu/stationSelectBoxSIMI', $stnData);
+		// $this->load->view('common/sideMenu/stationSelectBoxSIMI', $stnData);
+		$this->load->view('common/sideMenu/stationSelectBox', $stnData);
 	?>
 			
 </div>   

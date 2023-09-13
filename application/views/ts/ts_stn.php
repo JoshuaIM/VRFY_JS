@@ -101,6 +101,8 @@
 			// (UI)모델 및 기법 선택 값 (중복 선택)
 			model_sel = get_model_option();
 		}
+
+		// assets/js/vrfy_js/ts_stn/call_timeseries_ajax.js
 		call_timeseries_ajax(data_head, var_select, model_sel, init_hour, location, vrfy_idx, peri);
     }
 

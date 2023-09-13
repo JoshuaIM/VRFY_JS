@@ -10,8 +10,8 @@
             async: false,
             success : function(resp)
             {
-// console.log("resp", resp);
-// console.log('data', set_data);
+console.log("resp", resp);
+console.log('data', set_data);
 
                 // csv 내려받기 기능을 위해 데이터 값 광역변수에 저장.
                 glob_data = resp;
