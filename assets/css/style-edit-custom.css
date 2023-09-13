@@ -63,14 +63,16 @@
         */
         /* overflow: auto; */
 		/* height: 850px; */
-		height: 800px;
+		/* height: 800px; */
+		height: 89vh;
 		overflow-x: scroll;
   		overflow-y: scroll;
 		/* position: relative; */
     }
 	#contValue {
 		/* height: 790px; */
-		height: 740px;
+		/* height: 740px; */
+		/* height: 10%; */
 	}
     .top_wrapper {
 		display: inline-block;
