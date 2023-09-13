@@ -1,79 +1,105 @@
 function makeCSVfile() {
 
-    let csv = [];
+    const var_select = $("select[name=VAR]").val();
 
-    glob_data.forEach(arr => {
-        
-        const var_name = arr['var_name'];
-        let vrfy_name_split = arr['vrfy_loc'].split("_");
-        let stn_id = vrfy_name_split[1];
-        let stn_name = "";
-        if( stn_id === "AVE" ) {
-            // const sel_loc = $("select[name=LOCATION]").val();
-            const sel_loc = $("input:checkbox[name=STATION]").val();
-// console.log('sel_loc', sel_loc);
-            // if( sel_loc[0] === "247ALL" ) {
-            if( sel_loc === "247ALL" ) {
-                stn_id = "AVE247";
-                // assets/js/vrfy_js/get_station_name.js
-                let stn = get_station_name( stn_id );
-// console.log('stn', stn);
-
-                stn_split = stn.split("(");
-                stn_name = stn_split[0];
-            } else {
-                // assets/js/vrfy_js/get_station_name.js
-                stn_name = get_station_name( stn_id );
-            } 
-        } else {
-            // assets/js/vrfy_js/get_station_name.js
-            stn_name = get_station_name( stn_id );
-        }
-
-        let vrfy_name = get_vrfy_title(vrfy_data, vrfy_title, vrfy_name_split[0]);
-
-        let header = arr['var_name'] + " [ " + vrfy_name + "_" + stn_name + " ] " + arr['utc'] + "UTC";
-        csv.push(header);
-
-        let table_head = "년월,UTC,모델 - 기법,지점번호,지점명,변수,검증지수,자료수,";
-        for( let d=0; d<arr['data'].length; d++ ) {
-            if( d === 0 ) {
-                table_head += arr['data'][d]['fHeadUtc'] + ",";
-                table_head += "AVE";
-                csv.push(table_head);
-            }
-            table_data = arr['data'][d]['month'] + "," + arr['data'][d]['utc'] + "," + arr['data'][d]['model'] + "," + stn_id + "," + stn_name + "," + var_name + "," + vrfy_name + "," + arr['data'][d]['fDataNum'] + ",";
-            table_data += arr['data'][d]['data'];
-            csv.push(table_data);
-        }
-        csv.push("\n");
+    let vrfyname_arr = new Array();
+    $(".vrfyName").each(function(){
+        let text = $(this).text();
+        vrfyname_arr.push(text.replace(/\s/gi, ""));
     });
 
-    const today = new Date();
+    // 시계열 헤더 수집 (검증지수와 지점 정보 수집을 위함.) - 테이블 id 개수와 동일하다고 
+    let vrfy_arr = new Array();
+    let stn_arr = new Array();
+    for (let i=0; i<vrfyname_arr.length; i++)
+    {
+        const split_fir = vrfyname_arr[i].split("_");
+        const vrfy_split = split_fir[0].split("[");
+        vrfy_arr.push(vrfy_split[1]);
+        const stn_split = split_fir[1].split("]");
+        stn_arr.push(stn_split[0]);
+    }
+
+    // 검증자료 값 테이블 id 수집
+    let item_id = new Array();
+    $(".fcstTable").each(function(){
+        item_id.push($(this).attr("id"));
+    });
+
+    let head_val = "";
+    let csv = new Array();
+    // item_id, vrfy_arr, stn_arr 는 모두 같은 배열의 개수를 가지고 있다고 가정.
+    for (let id=0; id<item_id.length; id++)
+    {
+        const table = document.getElementById(item_id[id]);
+        const tr_elements = table.getElementsByClassName("tb_data");
+        if (id === 0)
+        {
+            const head_elements = table.getElementsByClassName("tb_head");
+            for (let h=0; h<head_elements.length; h++)
+            {
+                const td_elements = head_elements[h].getElementsByTagName("td");
+                for (let d=0; d<td_elements.length; d++)
+                {
+                    if (d ===0)
+                    {
+                        // td_val += "검증지수" + " | " + "지 점" + " | ";
+                        head_val += "요소,검증지수,지 점";
+                    }
+                    const cell_txt = td_elements[d].textContent || td_elements[d].innerText;
+                    // td_val += cell_txt + " | ";
+                    head_val += "," + cell_txt;
+                }                
+            }
+            csv.push(head_val);
+        }
     
-    const Y = today.getFullYear();
-    const M = ('0' + (today.getMonth() +1)).slice(-2);
-    const D = ('0' + today.getDate()).slice(-2);
-    const h = ('0' + today.getHours()).slice(-2);
-    const m = ('0' + today.getMinutes()).slice(-2);
-    const s = ('0' + today.getSeconds()).slice(-2);
+        for (let i=0; i<tr_elements.length; i++)
+        {
+            const td_elements = tr_elements[i].getElementsByTagName("td");
+            let td_val = "";
+            for (let j=0; j<td_elements.length; j++)
+            {
+                if (j ===0)
+                {
+                    // td_val += vrfy_arr[i] + " | " + stn_arr[i] + " | ";
+                    td_val += var_select + "," + vrfy_arr[id] + "," + stn_arr[id];
+                }
+                const cell_txt = td_elements[j].textContent || td_elements[j].innerText;
+                // td_val += cell_txt + " | ";
+                td_val += "," + cell_txt;
+            }
+            // td_val += "\n";
+            csv.push(td_val);
+        }
+    }
+console.log('csv', csv);
 
-    const filename = "VRFY_" + Y + "-" + M + "-" + D + "_" +  h + "_" + m + "_" + s + ".csv";
+    // const today = new Date();
+    
+    // const Y = today.getFullYear();
+    // const M = ('0' + (today.getMonth() +1)).slice(-2);
+    // const D = ('0' + today.getDate()).slice(-2);
+    // const h = ('0' + today.getHours()).slice(-2);
+    // const m = ('0' + today.getMinutes()).slice(-2);
+    // const s = ('0' + today.getSeconds()).slice(-2);
+
+    // const filename = "VRFY_" + Y + "-" + M + "-" + D + "_" +  h + "_" + m + "_" + s + ".csv";
 
 
-    // 한글 처리를 위한 BOM 추가
-    const BOM = '\uFEFF' ;
+    // // 한글 처리를 위한 BOM 추가
+    // const BOM = '\uFEFF' ;
 
-    csv = BOM + csv.join('\n');
+    // csv = BOM + csv.join('\n');
 
-    let csvFile = new Blob([csv], {type: 'text/csv'});
+    // let csvFile = new Blob([csv], {type: 'text/csv'});
 
-    downloadLink = document.createElement("a");
-    downloadLink.download = filename;
-    downloadLink.href = window.URL.createObjectURL(csvFile);
-    downloadLink.style.display = "none";
+    // downloadLink = document.createElement("a");
+    // downloadLink.download = filename;
+    // downloadLink.href = window.URL.createObjectURL(csvFile);
+    // downloadLink.style.display = "none";
 
-    document.body.appendChild(downloadLink);
+    // document.body.appendChild(downloadLink);
 
-    downloadLink.click();
+    // downloadLink.click();
 }
