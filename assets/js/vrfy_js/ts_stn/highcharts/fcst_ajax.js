@@ -10,8 +10,8 @@
             async: false,
             success : function(resp)
             {
-console.log("resp", resp);
-console.log('data', set_data);
+// console.log("resp", resp);
+// console.log('data', set_data);
 
                 // csv 내려받기 기능을 위해 데이터 값 광역변수에 저장.
                 glob_data = resp;
@@ -140,19 +140,24 @@ console.log('data', set_data);
                             stn_name = stn_split[0];
                         }
                         const vrfy_name = get_vrfy_title(vrfy_data, vrfy_title, vftc[0]);
-                                
+
+                        // 유사도의 경우 시계열 헤더 앞에 모델 정보 삽입하기 위함.
+                        let add_model_name = "";
+                            if (sub_type === "SIMILARITY")
+                            {
+                                add_model_name = get_similarity_modl_name(dataInfo) + " : ";   
+                            }
+
+                        let add_head = "";
                         if ( peri === "FCST" || peri === "MONTH" )
                         {
+                            // 예측기간(월별) 유사도의 경우 모델 정보와 월 정보를 삽입.
                             if (sub_type === "SIMILARITY")
                             {
                                 let month_info = resp[vl]['month']['ymInfo'];
-                                let model_name = get_similarity_modl_name(dataInfo);   
-                                selCont += "<h5><b class='chartName'>" + month_info + " " + model_name + " : " + var_select + "</b> <b class='vrfyName'>[ " + vrfy_name + "_" + stn_name + " ]  " + each_utc + "UTC</b></h5>";
+                                add_head = month_info + " " + add_model_name;
                             }
-                            else
-                            {
-                            selCont += "<h5><b class='chartName'>" + var_select + "</b> <b class='vrfyName'>[ " + vrfy_name + "_" + stn_name + " ]  " + each_utc + "UTC</b></h5>";
-                            }
+                            selCont += "<h5><b class='chartName'>" + add_head + var_select + "</b> <b class='vrfyName'>[ " + vrfy_name + "_" + stn_name + " ]  " + each_utc + "UTC</b></h5>";
                         }
                         else if ( peri === "BANGJAE" || peri === "SEASON" )
                         {
@@ -167,7 +172,7 @@ console.log('data', set_data);
                             const type_title = (peri === "BANGJAE") ? "방재기간" : "";
 
                             const addText = " - " + selectYear + " " + selectSeason + " " + type_title + "(" + startDate + "~" + endDate + ")"
-                            selCont += "<h5><b class='chartName'>" + var_select + "</b> <b class='vrfyName'>[ " + vrfy_name + "_" + stn_name + " ] " + each_utc + "UTC " + addText + "</b></h5>";
+                            selCont += "<h5><b class='chartName'>" + add_model_name + var_select + "</b> <b class='vrfyName'>[ " + vrfy_name + "_" + stn_name + " ] " + each_utc + "UTC " + addText + "</b></h5>";
                         }
                         else if ( peri === "ALLMONTH" )
                         {
@@ -175,7 +180,7 @@ console.log('data', set_data);
                             const endDate = $("#allmonth_endD").val();
                             const addText = " - 전체기간 (" + startDate + "~" + endDate + ")";
 
-                            selCont += "<h5><b class='chartName'>" + var_select + "</b> <b class='vrfyName'>[ " + vrfy_name + "_" + stn_name + " ]  " + each_utc + "UTC " + addText + "</b></h5>";
+                            selCont += "<h5><b class='chartName'>" + add_model_name + var_select + "</b> <b class='vrfyName'>[ " + vrfy_name + "_" + stn_name + " ]  " + each_utc + "UTC " + addText + "</b></h5>";
                         }
                         else if ( peri === "TEMP" )
                         {
