@@ -1,14 +1,12 @@
-function makeCSVfile_similarity() {
+function makeCSVfile() {
+
+    const var_select = $("select[name=VAR]").val();
 
     let vrfyname_arr = new Array();
-    let vrfyheader_arr = new Array();
     $(".vrfyName").each(function(){
         let text = $(this).text();
-        vrfyheader_arr.push(text);
         vrfyname_arr.push(text.replace(/\s/gi, ""));
     });
-
-    let csv = new Array();
 
     // 시계열 헤더 수집 (검증지수와 지점 정보 수집을 위함.) - 테이블 id 개수와 동일하다고 
     let vrfy_arr = new Array();
@@ -20,12 +18,6 @@ function makeCSVfile_similarity() {
         vrfy_arr.push(vrfy_split[1]);
         const stn_split = split_fir[1].split("]");
         stn_arr.push(stn_split[0]);
-
-        if (i === 0)
-        {
-            const temp_txt = vrfyheader_arr[i].split("-");
-            csv.push(temp_txt[1]);
-        }
     }
 
     // 검증자료 값 테이블 id 수집
@@ -35,6 +27,7 @@ function makeCSVfile_similarity() {
     });
 
     let head_val = "";
+    let csv = new Array();
     // item_id, vrfy_arr, stn_arr 는 모두 같은 배열의 개수를 가지고 있다고 가정.
     for (let id=0; id<item_id.length; id++)
     {
@@ -51,7 +44,7 @@ function makeCSVfile_similarity() {
                     if (d ===0)
                     {
                         // td_val += "검증지수" + " | " + "지 점" + " | ";
-                        head_val += ",검증지수,지 점";
+                        head_val += "요소,검증지수,지 점";
                     }
                     const cell_txt = td_elements[d].textContent || td_elements[d].innerText;
                     // td_val += cell_txt + " | ";
@@ -70,7 +63,7 @@ function makeCSVfile_similarity() {
                 if (j ===0)
                 {
                     // td_val += vrfy_arr[i] + " | " + stn_arr[i] + " | ";
-                    td_val += "," + vrfy_arr[id] + "," + stn_arr[id];
+                    td_val += var_select + "," + vrfy_arr[id] + "," + stn_arr[id];
                 }
                 const cell_txt = td_elements[j].textContent || td_elements[j].innerText;
                 // td_val += cell_txt + " | ";
@@ -80,33 +73,33 @@ function makeCSVfile_similarity() {
             csv.push(td_val);
         }
     }
-// console.log('csv', csv);
+console.log('csv', csv);
 
-    const today = new Date();
+    // const today = new Date();
     
-    const Y = today.getFullYear();
-    const M = ('0' + (today.getMonth() +1)).slice(-2);
-    const D = ('0' + today.getDate()).slice(-2);
-    const h = ('0' + today.getHours()).slice(-2);
-    const m = ('0' + today.getMinutes()).slice(-2);
-    const s = ('0' + today.getSeconds()).slice(-2);
+    // const Y = today.getFullYear();
+    // const M = ('0' + (today.getMonth() +1)).slice(-2);
+    // const D = ('0' + today.getDate()).slice(-2);
+    // const h = ('0' + today.getHours()).slice(-2);
+    // const m = ('0' + today.getMinutes()).slice(-2);
+    // const s = ('0' + today.getSeconds()).slice(-2);
 
-    const filename = "VRFY_" + Y + "-" + M + "-" + D + "_" +  h + "_" + m + "_" + s + ".csv";
+    // const filename = "VRFY_" + Y + "-" + M + "-" + D + "_" +  h + "_" + m + "_" + s + ".csv";
 
 
-    // 한글 처리를 위한 BOM 추가
-    const BOM = '\uFEFF' ;
+    // // 한글 처리를 위한 BOM 추가
+    // const BOM = '\uFEFF' ;
 
-    csv = BOM + csv.join('\n');
+    // csv = BOM + csv.join('\n');
 
-    let csvFile = new Blob([csv], {type: 'text/csv'});
+    // let csvFile = new Blob([csv], {type: 'text/csv'});
 
-    downloadLink = document.createElement("a");
-    downloadLink.download = filename;
-    downloadLink.href = window.URL.createObjectURL(csvFile);
-    downloadLink.style.display = "none";
+    // downloadLink = document.createElement("a");
+    // downloadLink.download = filename;
+    // downloadLink.href = window.URL.createObjectURL(csvFile);
+    // downloadLink.style.display = "none";
 
-    document.body.appendChild(downloadLink);
+    // document.body.appendChild(downloadLink);
 
-    downloadLink.click();
+    // downloadLink.click();
 }

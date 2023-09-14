@@ -96,7 +96,22 @@
             </div> -->
             <div class="btn-group">
             	<button class="nowBtn original_date" type="button" onclick="readyAndNowFunc();">NOW</button>
-            	<button class="totalDownBtn" type="button" onclick="makeCSVfile();">DOWNLOAD CSV FILE</button>
+
+				<?php
+					if ( $sub_type === "SIMILARITY" )
+					{
+				?>
+					<button class="totalDownBtn" type="button" onclick="makeCSVfile_similarity();">DOWNLOAD CSV FILE</button>
+				<?php
+					}
+					else
+					{
+				?>
+					<button class="totalDownBtn" type="button" onclick="makeCSVfile();">DOWNLOAD CSV FILE</button>
+				<?php
+					}
+				?>
+
             </div>
 
 			<div class="btn-group viewPerformTable">

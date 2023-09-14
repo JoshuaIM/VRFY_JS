@@ -21,6 +21,7 @@
 	<script src="<?php echo base_url('assets/js/vrfy_js/ts_stn/highcharts/highcharts_frame.js');?>"></script>
 <!-- // CSV 파일 생성에 사용되는 함수.  -->
 	<script src="<?php echo base_url('assets/js/vrfy_js/ts_stn/CSVdownload/makeCSVfile.js');?>"></script>
+	<script src="<?php echo base_url('assets/js/vrfy_js/ts_stn/CSVdownload/makeCSVfile_similarity.js');?>"></script>
 
 <!-- // 2020년 12월 기준 이전 날짜에는 단기 3시간 자료 이후에는 단기 1시간 자료를 표출하기 위해 사용되는 함수. -->
 	<script src="<?php echo base_url('assets/js/vrfy_js/ts_stn/shrt_change_3to1_func.js');?>"></script>
