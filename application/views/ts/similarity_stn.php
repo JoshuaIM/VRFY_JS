@@ -1,3 +1,13 @@
+<style>
+	/* 멀티 요소선택으로 지점선택 박스 크기 조정 */
+	.js2-panel {
+		height: 200px;
+	} 
+	.checkStation {
+		height: 120px;
+	}
+</style>
+
 <script type="text/javascript">
 
 // 사이트 확인 (month or arbi)

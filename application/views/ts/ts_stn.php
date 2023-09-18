@@ -61,13 +61,17 @@
     	const var_select = $("select[name=VAR]").val();
         
 		// 시간강수량의 경우 검증지수 개수가 너무 많아서 표출 영역 늘림.
-		if( var_select === "RN1" || var_select === "RN3" ) {
+		if (var_select === "RN1" || var_select === "RN3" || var_select === "SN3")
+		{
 			$(".top_wrapper").css("margin-bottom", "60px");
-		} else if( var_select === "SN3" ) {
-			$(".top_wrapper").css("margin-bottom", "60px");
-		} else {
-			$(".top_wrapper").css("margin-bottom", "0px");
+			$(".wrapper").css("height", "82vh");
 		}
+		else
+		{
+			$(".top_wrapper").css("margin-bottom", "0px");
+			$(".wrapper").css("height", "88vh");
+		}
+
 		
 		// (UI)초기시각 UTC 선택 값 (중복 선택)
     	let init_hour = get_init_hour_option();
