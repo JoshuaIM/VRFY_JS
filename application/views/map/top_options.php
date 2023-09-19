@@ -23,7 +23,7 @@
         	<select id="select_bangjae_date" name="SELYEAR" class="dateSelBox bangjae_date" onChange=" makeBangJaeSeasonOptions(BANGJAEMAP); getDataArray();" ></select>
         	<select id="select_bangjae_season" name="SELSEASON" class="dateSelBox bangjae_date" onChange="getDataArray();" ></select>
             <div class="btn-group  bangjae_date" >
-            	<input class="dateBox" id="bangjae_startD" type="text" style="width:85px; background:#E0E3DA" value="" readonly />
+            	<input class="dateBox" id="bangjae_startD" type="text" style="background:#E0E3DA" value="" readonly />
             </div>
 			<!-- 방재기간 선택 시 ON -->
 
@@ -31,19 +31,19 @@
         	<select id="select_season_date" name="SELYEAR" class="dateSelBox season_date" onChange=" makeSeasonSeasonOptions(SEASONMAP); getDataArray();" ></select>
         	<select id="select_season_season" name="SELSEASON" class="dateSelBox season_date" onChange="getDataArray();" ></select>
             <div class="btn-group  season_date" >
-            	<input class="dateBox" id="season_startD" type="text" style="width:85px; background:#E0E3DA" value="" readonly />
+            	<input class="dateBox" id="season_startD" type="text" style="background:#E0E3DA" value="" readonly />
             </div>
 			<!-- 계절별 선택 시 ON -->
 
 			<!-- 전체기간 선택 시 ON -->
             <div class="btn-group  allmonth_date" >
-            	<input class="dateBox" id="allmonth_startD" type="text" style="width:85px; background:#E0E3DA" value="" readonly />
+            	<input class="dateBox" id="allmonth_startD" type="text" style="background:#E0E3DA" value="" readonly />
             </div>
 			<!-- 전체기간 선택 시 ON -->
 
             <div class="btn-group original_date" >
-				<input class="dateBox" id="sInitDate" name="sInitDate" type="text" style="width:85px;" />
-				<!-- <input class="dateBox" id="sInitDate" name="sInitDate" type="text" onChange="chkCalendar(this);" style="width:85px;" /> -->
+				<input class="dateBox" id="sInitDate" name="sInitDate" type="text" onclick="set_target(this.id);" />
+				<!-- <input class="dateBox" id="sInitDate" name="sInitDate" type="text" onChange="chkCalendar(this);" /> -->
             	<!-- <input class="dateBox" id="cal1" /> -->
             </div>
             <!-- <div class="btn-group original_date" >
@@ -56,25 +56,25 @@
         
 			<!-- 방재기간 선택 시 ON -->
             <div class="btn-group  bangjae_date" >
-            	<input class="dateBox" id="bangjae_endD" type="text" style="width:85px; background:#E0E3DA" value="" readonly />
+            	<input class="dateBox" id="bangjae_endD" type="text" style="background:#E0E3DA" value="" readonly />
             </div>
 			<!-- 방재기간 선택 시 ON -->
 
 			<!-- 계절별 선택 시 ON -->
             <div class="btn-group  season_date" >
-            	<input class="dateBox" id="season_endD" type="text" style="width:85px; background:#E0E3DA" value="" readonly />
+            	<input class="dateBox" id="season_endD" type="text" style="background:#E0E3DA" value="" readonly />
             </div>
 			<!-- 계절별 선택 시 ON -->
 
 			<!-- 전체기간 선택 시 ON -->
             <div class="btn-group  allmonth_date" >
-            	<input class="dateBox" id="allmonth_endD" type="text" style="width:85px; background:#E0E3DA" value="" readonly />
+            	<input class="dateBox" id="allmonth_endD" type="text" style="background:#E0E3DA" value="" readonly />
             </div>
 			<!-- 전체기간 선택 시 ON -->
 
             <div class="btn-group original_date">
-            	<input class="dateBox" id="eInitDate" name="eInitDate" type="text" style="width:85px;" />
-            	<!-- <input class="dateBox" id="eInitDate" name="eInitDate" type="text" onChange="chkCalendar(this);" style="width:85px;" /> -->
+            	<input class="dateBox" id="eInitDate" name="eInitDate" type="text" onclick="set_target(this.id);" />
+            	<!-- <input class="dateBox" id="eInitDate" name="eInitDate" type="text" onChange="chkCalendar(this);" /> -->
             </div>
             <!-- <div class="btn-group original_date" >
             	<button class="dateBtn" type="button" id="innerBtn" onclick="openECalendar();" >

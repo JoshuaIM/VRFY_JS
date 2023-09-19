@@ -17,6 +17,9 @@
 	let currentStrDate = "<?php echo $dataDate; ?>";			
 	let currentEndDate = "<?php echo $dataDate; ?>";
 
+	// 캘린더 클릭 위치 추적용 - id 저장.
+	let click_date_from = "";
+
 	const graphDirHead = "<?php echo $dataDirectoryHead; ?>";
 	const bangjae_graph_dir = "<?php echo $bangjaeDataDirectoryHead; ?>";
 	const season_graph_dir = "<?php echo $seasonDataDirectoryHead; ?>";
@@ -51,7 +54,11 @@
     
     
 	// 데이터 표출 시 UI 정보 수집 함수.
-    function getDataArray() {
+    function getDataArray()
+	{
+		// 캘린더 클릭 위치 추적용 - 초기화
+		click_date_from = "";
+
     	// 데이터 네임 앞 글자. 단기-지점
     	var data_head = "<?php echo $dataHead; ?>";
     	

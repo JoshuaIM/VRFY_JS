@@ -17,6 +17,9 @@
 	let currentStrDate = "<?php echo $dataDate; ?>";			
 	let currentEndDate = "<?php echo $dataDate; ?>";			
 
+	// 캘린더 클릭 위치 추적용 - id 저장.
+	let click_date_from = "";
+
 // 변수 타입 스트링으로 모두 변환하기 위해 json_encode 안씀.
 	let BANGJAE = [<?php echo '"'.implode('","', $bangjaeDate).'"' ?>];
 	let BANGJAEMAP = <?php echo json_encode($bangjaeArrMap); ?>;
@@ -54,6 +57,9 @@
     // 데이터 표출 시 UI 정보 수집 함수.
     function getDataArray()
 	{
+		// 캘린더 클릭 위치 추적용 - 초기화
+		click_date_from = "";
+
 		// 데이터 네임 앞 글자. 단기-지점
 		let data_head = "<?php echo $dataHead; ?>";
 

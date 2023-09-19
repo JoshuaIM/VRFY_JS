@@ -8,7 +8,6 @@
 		setTimeout(getDataArray, delay);
 	}
 
-
 // assets/month_picker_plug/month_picker.js
 // Month Picker 적용 함수.
 	function changeDatePicker()
@@ -18,14 +17,48 @@
 		set_month_picker(strDate, '#sInitDate');
 		set_month_picker(endDate, '#eInitDate');
 	}
+
+// top_options.php 의 sInitDate, eInitDate - onClick 이벤트.
+// 캘린더 클릭 위치 추적용 - id 저장.
+	function set_target(id)
+	{
+		click_date_from = id;
+	}
 // 날짜 변경 시 month picker 에서 호출.
 	function check_month()
 	{
+		const id = click_date_from;
 		const start_date = parseInt($('#sInitDate').val());
 		const end_date = parseInt($('#eInitDate').val());
-		if (start_date > end_date)
+		// currentendDate: 전역변수
+		const dest_date = parseInt(currentEndDate.replace("-", ""));
+		if (id === "eInitDate")
 		{
-			$('#sInitDate').val($('#eInitDate').val());
+			if (start_date > end_date)
+			{
+				$('#sInitDate').val($('#eInitDate').val());
+			}
+			else if( end_date > dest_date )
+			{
+				alert(currentEndDate + " 이 최근 날짜의 데이터 입니다.");
+				$('#eInitDate').val(dest_date.toString());
+			}
+		}
+		else if (id === "sInitDate")
+		{
+			if (start_date > end_date)
+			{
+				if( start_date > dest_date )
+				{
+					alert(currentEndDate + " 이 최근 날짜의 데이터 입니다.");
+					$('#sInitDate').val(dest_date.toString());
+					$('#eInitDate').val(dest_date.toString());
+				}
+				else
+				{
+					$('#eInitDate').val($('#sInitDate').val());
+				}
+			}
 		}
 		getDataArray();
 	}
