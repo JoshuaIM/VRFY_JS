@@ -1,5 +1,26 @@
 function makeCSVfile_similarity() {
 
+    const period = document.getElementById("data_period");
+    const period_val = period.options[period.selectedIndex].value;
+
+    let yyyymm_arr = new Array();
+    let model_arr = new Array();
+    $(".chartName").each(function(){
+        const text = $(this).text();
+        const text_split = text.split(":");
+        
+        const final_split = (text_split[0].trim()).split(" ");
+        if (period_val === "FCST")
+        {
+            yyyymm_arr.push(final_split[0]);
+            model_arr.push(final_split[1]);
+        }
+        else
+        {
+            model_arr.push(final_split[0]);
+        }
+    });
+
     let vrfyname_arr = new Array();
     let vrfyheader_arr = new Array();
     $(".vrfyName").each(function(){
@@ -9,10 +30,12 @@ function makeCSVfile_similarity() {
     });
 
     let csv = new Array();
+    // csv.push(period_txt);
 
     // 시계열 헤더 수집 (검증지수와 지점 정보 수집을 위함.) - 테이블 id 개수와 동일하다고 
     let vrfy_arr = new Array();
     let stn_arr = new Array();
+    let utc_arr = new Array();
     for (let i=0; i<vrfyname_arr.length; i++)
     {
         const split_fir = vrfyname_arr[i].split("_");
@@ -20,6 +43,17 @@ function makeCSVfile_similarity() {
         vrfy_arr.push(vrfy_split[1]);
         const stn_split = split_fir[1].split("]");
         stn_arr.push(stn_split[0]);
+        
+        const utc_fir = stn_split[1].trim();
+            if (utc_fir.indexOf("-"))
+            {
+                const utc_split = utc_fir.split("-");
+                utc_arr.push(utc_split[0].trim());
+            }
+            else
+            {
+                utc_arr.push(utc_fir);
+            }
 
         if (i === 0)
         {
@@ -50,63 +84,87 @@ function makeCSVfile_similarity() {
                 {
                     if (d ===0)
                     {
-                        // td_val += "검증지수" + " | " + "지 점" + " | ";
-                        head_val += ",검증지수,지 점";
+                        if (period_val === "FCST")
+                        {
+                            // 한칸 띄기(period 작성)
+                            head_val += ",년월,모델,검증지수,UTC,지 점";
+                        }
+                        else
+                        {
+                            head_val += ",모델,검증지수,UTC,지 점";
+                        }
                     }
                     const cell_txt = td_elements[d].textContent || td_elements[d].innerText;
-                    // td_val += cell_txt + " | ";
                     head_val += "," + cell_txt;
                 }                
             }
             csv.push(head_val);
         }
     
-        for (let i=0; i<tr_elements.length; i++)
+        if (utc_arr[id] === "12UTC")
         {
-            const td_elements = tr_elements[i].getElementsByTagName("td");
-            let td_val = "";
-            for (let j=0; j<td_elements.length; j++)
+            for (let i=0; i<tr_elements.length; i++)
             {
-                if (j ===0)
+                const td_elements = tr_elements[i].getElementsByTagName("td");
+                // 한칸 띄기(period 작성)
+                let td_val = "";
+                for (let j=0; j<td_elements.length; j++)
                 {
-                    // td_val += vrfy_arr[i] + " | " + stn_arr[i] + " | ";
-                    td_val += "," + vrfy_arr[id] + "," + stn_arr[id];
+                    if (j === 0)
+                    {
+                        const cell_txt = td_elements[j].textContent || td_elements[j].innerText;
+                        td_val += ((period_val === "FCST") ? "," + yyyymm_arr[id] : "") + "," + model_arr[id] + "," + vrfy_arr[id] + "," + utc_arr[id] + "," + stn_arr[id];
+                        td_val += "," + cell_txt;
+                    }
+                    else if (j === td_elements.length-1)
+                    {
+                        const cell_txt = get_missing_val(12) + "," + td_elements[j].textContent || td_elements[j].innerText;
+                        td_val += "," + cell_txt;
+                    }
+                    else
+                    {
+                        const cell_txt = td_elements[j].textContent || td_elements[j].innerText;
+                        td_val += "," + cell_txt;
+                    }
                 }
-                const cell_txt = td_elements[j].textContent || td_elements[j].innerText;
-                // td_val += cell_txt + " | ";
-                td_val += "," + cell_txt;
+                csv.push(td_val);
             }
-            // td_val += "\n";
-            csv.push(td_val);
+        }
+        else if (utc_arr[id] === "00UTC")
+            for (let i=0; i<tr_elements.length; i++)
+            {
+                const td_elements = tr_elements[i].getElementsByTagName("td");
+                // 한칸 띄기(period 작성)
+                let td_val = "";
+                for (let j=0; j<td_elements.length; j++)
+                {
+                    if (j ===0)
+                    {
+                        td_val += ((period_val === "FCST") ? "," + yyyymm_arr[id] : "") + "," + model_arr[id] + "," + vrfy_arr[id] + "," + utc_arr[id] + "," + stn_arr[id];
+                    }
+                    const cell_txt = td_elements[j].textContent || td_elements[j].innerText;
+                    td_val += "," + cell_txt;
+                }
+                csv.push(td_val);
+            }
+        {
+
         }
     }
 // console.log('csv', csv);
 
-    const today = new Date();
-    
-    const Y = today.getFullYear();
-    const M = ('0' + (today.getMonth() +1)).slice(-2);
-    const D = ('0' + today.getDate()).slice(-2);
-    const h = ('0' + today.getHours()).slice(-2);
-    const m = ('0' + today.getMinutes()).slice(-2);
-    const s = ('0' + today.getSeconds()).slice(-2);
-
-    const filename = "VRFY_" + Y + "-" + M + "-" + D + "_" +  h + "_" + m + "_" + s + ".csv";
-
-
-    // 한글 처리를 위한 BOM 추가
-    const BOM = '\uFEFF' ;
-
-    csv = BOM + csv.join('\n');
-
-    let csvFile = new Blob([csv], {type: 'text/csv'});
-
-    downloadLink = document.createElement("a");
-    downloadLink.download = filename;
-    downloadLink.href = window.URL.createObjectURL(csvFile);
-    downloadLink.style.display = "none";
-
-    document.body.appendChild(downloadLink);
-
-    downloadLink.click();
+    // assets/js/vrfy_js/ts_stn/CSVdownload/makeCSVfile.js
+    run_download_csv(csv);
 }
+
+function get_missing_val(missing_num)
+{
+    let missing_val = "";
+    for (let i=0; i<missing_num-1; i++)
+    {
+        missing_val += ",";
+    }
+    return missing_val;
+}
+
+
