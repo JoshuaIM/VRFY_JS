@@ -43,7 +43,6 @@ function makeShrtSliderTile(init_hour, utc_txt) {
                 fcstTable += "<td class='slider' id='Image_" + slider_num + "' title='" + utc_txt[slider_num] + "' > " + utc_txt[slider_num] + "</td>";
             } 
 
-        
         // if( fi%24 == 0 && fi != 120 ) {
         if( fi%24 == 0 && fi != 144 ) {
             fcstTable += "</tr>";
@@ -53,6 +52,7 @@ function makeShrtSliderTile(init_hour, utc_txt) {
             fcstTable += "<td class='slider' id='Image_0' title='" + utc_txt[0] + "' > AVE </td>";
             fcstTable += "</tr>";
         }
+
     }
     
     fcstTable += "</table>";

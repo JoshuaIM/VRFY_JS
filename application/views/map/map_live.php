@@ -111,7 +111,6 @@
 		if ( type === "SSPS" )
 		{
 			let model_sel = ["SSPS"];
-			// call_ssps_graph_ajax(data_head, var_select, model_sel, init_hour, location, vrfy_idx, peri);
 			call_graph_ajax(data_head, var_select, model_sel, init_hour, vrfy_idx, peri);
 		}
 		else
@@ -146,59 +145,6 @@
 		set_vrfy_list(url, var_value);
 	}
 
-
-	function display_grph(var_select, model_sel, vrfy_idx, resp, idx, data_head, dir_path)
-	{
-        $("td[id^='Image_']").removeClass("sliderSelected");
-        let frameIdx = (idx * 1);
-        $("#Image_"+frameIdx).addClass("sliderSelected");
-		
-		$('#contValue').empty();
-		
-		let grph_div = "";
-        for (let m=0; m<model_sel.length; m++)
-		{
-            for (let v=0; v<vrfy_idx.length; v++)
-			{
-            	for (let d=0; d<resp['date_info'].length; d++)
-				{
-            		grph_div += "<div class='img_area col-lg-3' >";
-                		grph_div += "<div class='map_header'>";
-                			let vrfy_name = get_vrfy_title(vrfy_data, vrfy_title, vrfy_idx[v]);
-                			grph_div += model_sel[m] + "_" + vrfy_name + "_" + resp['date_info'][d]['ymInfo'] + "_" + resp['date_info'][d]['utcInfo'];
-                		grph_div += "</div>";
-                		grph_div += "<div class='map_content'>";
-                		
-							let nameOfgrph = data_head + model_sel[m] + "_" + var_select + "_VRFY_" + vrfy_idx[v] + "." + resp['date_info'][d]['data'] + "_" +  resp['fcst_info']['utc_idx'][idx] + ".png";
-                			grph_div += "<img class='grph_img' src='" + "<?php echo base_url('/'); ?>" + dir_path + resp['date_info'][d]['ymInfo'] + "/" + var_select + "/" + nameOfgrph + "' onerror='no_image(this);' />" ;
-                			
-                		grph_div += "</div>";
-            		
-            		grph_div += "</div>";
-                } 
-            }
-        }
-		$('#contValue').append(grph_div);
-	}
-
-
-    function no_image(th)
-	{
-// console.log(th);
-		$(th).attr("src", "<?php echo base_url('assets/img/nodata.gif');?>");
-    }
-
-
-// 2023-05-30
-// 활용도 하나만 보여주기
-    function setUtilize(val)
-	{
-    	$('input[name=UTILIZE_INDEX]').each(function() {
-			this.checked = false;
-		});
-
-    	$("input[name=UTILIZE_INDEX][value='" + val + "']").prop("checked", true);
-    }	
 
 </script>
 

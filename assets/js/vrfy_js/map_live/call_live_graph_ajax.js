@@ -1,6 +1,5 @@
 function call_graph_ajax(data_head, var_select, model_sel, init_hour, vrfy_idx, peri)
 {
-console.log('peri', peri);
     let start_init = "";
     let end_init = "";
     let bangjae_date = "";
@@ -40,7 +39,7 @@ console.log('peri', peri);
         set_data = set_ajax_data(data_head, var_select, init_hour, model_sel, null, null, null, vrfy_idx, peri);
     }
 
-    const ajax_url = site_url + "/map/shrt_stn/ajax_map_stn_data";
+    const ajax_url = site_url + "/map/shrt_live/ajax_map_stn_data";
     // assets/js/vrfy_js/map_stn/graph_ajax.js
     if( type === "GEMD" )
     {

@@ -1,7 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-
-
 /**
  * Class MY_Controller
  * @property 
@@ -17,6 +15,7 @@ class MY_Controller extends CI_Controller {
         $this->load->library('Tstbcommon_func');
         $this->load->library('Tsgrdcommon_func');
         $this->load->library('Mapcommon_func');
+        $this->load->library('Livemap_func');
         $this->load->library('Bangjae_func');
 
     }
@@ -369,6 +368,55 @@ class MY_Controller extends CI_Controller {
         // return $range_mon;
         // return $fnParam;
     }
+    protected function get_map_live_data($post_data)
+    {
+        $data_head = $post_data['data_head'];
+        $var_select = $post_data['var_select'];
+        $init_hour = $post_data['init_hour'];
+        $model_sel = $post_data['model_sel'];
+        $start_init = $post_data['start_init'];
+        $end_init = $post_data['end_init'];
+        $range_date = $post_data['range_date'];
+        $vrfy_idx = $post_data['vrfy_idx'];
+        $peri = $post_data['peri'];
+        $type = $post_data['type'];
+        $sub_type = $post_data['sub_type'];
+
+        /////////////////////////////////////////////////////////////////////
+        // 00UTC+12UTC의 경우 00#12
+        $infoUTC = array();
+        foreach ( $init_hour as $utc )
+        {
+            $targUTC = explode("#" , $utc);
+            array_push($infoUTC, $targUTC[0]);
+        }
+        /////////////////////////////////////////////////////////////////////
+
+        $fdir = $this->get_data_directory_path($peri, $data_head, $type, $sub_type); 
+
+        // $range_mon = $this->get_month_range_map($peri, $start_init, $end_init, $range_date, $fdir, $var_select, $init_hour);
+        $range_mon = $this->get_month_range($peri, $start_init, $end_init, $range_date, $fdir, $var_select);
+
+        $fnParam = [
+            'dir_head' => $fdir,
+            'data_head' => $data_head,
+            // 'peri_type' => $peri,
+            'model_sel' => $model_sel,
+            'var_select' => $var_select,
+            'infoUTC' => $infoUTC,
+            'rangeMon' => $range_mon,
+            'vrfy_idx' => $vrfy_idx,
+            'sub_type' => $sub_type
+        ];
+
+        // 데이터 수집 및 표출 위한 정리.
+        $all_data = $this->get_map_data($fnParam);
+
+        // $arrange_data = $this->get_arrange_data($peri, $location[0], $sub_type, $all_data, $fnParam);
+        
+        // return $fnParam;
+        return $all_data;
+    }
 
 
 
@@ -486,6 +534,21 @@ class MY_Controller extends CI_Controller {
         {
             $data = $this->tstbcommon_func->getFcstData($file_param);
         }
+        return $data;
+    }
+    // 실시간 공간분포 데이터 추출.
+    // protected function get_map_data($peri, $file_param)
+    protected function get_map_data($file_param)
+    {
+        // $data = array();
+        // if ( $peri === "MONTH" )
+        // {
+        //     $data = $this->tstbcommon_func->getMonData($file_param);
+        // }
+        // else
+        // {
+            $data = $this->livemap_func->get_map_live_data($file_param);
+        // }
         return $data;
     }
 

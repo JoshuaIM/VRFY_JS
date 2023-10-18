@@ -10,8 +10,9 @@
             async: false,
             success : function(resp)
             {
-// console.log("resp", resp);
+// console.log('ajax_url', ajax_url);
 // console.log('data', set_data);
+// console.log("resp", resp);
 // console.log('graphDirHead', graphDirHead);
 
                 // 그래프 표출 영역 초기화.
