@@ -34,7 +34,7 @@
         }
     }
 
-// 월별 그래프 표출 유무
+// 예측기간(월별) 그래프 표출 유무
 	function is_month_ts_view(dataInfo)
 	{
 		let cht_arr_num = new Array();
@@ -51,10 +51,12 @@
 			}
 			// 그래프 당 값 개수를 파악하여 표출을 할지 안할지 파악.
 			cht_arr_num.push(cht_line_chk);			
+
+            // TODO : 2023/10/20 모든 값 null 의 경우가 존재하여 해당 그래프가 포함 될 경우 다음 그래프 표출이 안되는 오류가 발생하여 모두 표출하도록 수정함.
 			// 배열 값 모두 null이면 표출 그래프 개수에서 -1
-			if( cht_line_chk < 1 ) {
-				cht_line_num = cht_line_num-1;
-			}
+			// if( cht_line_chk < 1 ) {
+			// 	cht_line_num = cht_line_num-1;
+			// }
 		}
 
 		return cht_arr_num;
