@@ -430,8 +430,8 @@ class Tstbcommon_func {
 // 데이터파일에서 읽어들인 1줄의 data를 7칸씩 잘라서 array로 만들어 반환하는 메서드.
 // STNID(첫번째 시작)은 5칸을 잘라야 한다.
     //public function splitFcstData($dataLine, $mapType) {
-    public function splitFcstData($dataLine) {
-        
+    public function splitFcstData($dataLine)
+    {
         $resData = array();
         
         // STNID는 5칸이므로 데이터에서 0-5칸 제외시킨다.
@@ -450,14 +450,17 @@ class Tstbcommon_func {
             //}
         
         // 첫번쨰는 빈칸이므로(STNID-첫번째값 사이 빈칸) 1부터 시작.
-        for( $d=1; $d<$loopNum; $d++) {
-            if($data[$d] == "-999.0") {
+        for ( $d=1; $d<$loopNum; $d++)
+        {
+            if ($data[$d] === "-999.0")
+            {
                 array_push($resData, null );
-            } else {
+            }
+            else
+            {
                 array_push($resData, floatval( $data[$d]) );
             }
         }
-        
         return $resData;
     }
     
@@ -927,24 +930,34 @@ class Tstbcommon_func {
 
 
 // 권역평균을 위해 만든 함수
-    public function getMeanData($mean_data_arr) {
-
+    public function getMeanData($mean_data_arr)
+    {
         // 한 파일의 모든 지역의 값 배열은 동일하다고 가정.
         $value_size = count($mean_data_arr[0]);
         // $location_size = count($mean_data_arr);
 
         $mean_arr = array();
-        for( $i=0; $i<$value_size; $i++ ) {
-
+        for ($i=0; $i<$value_size; $i++)
+        {
             $location_value_arr = array();
             // $value_count = 0;
-            foreach( $mean_data_arr as $loc ) {
-
-                if( $loc[$i] != null ) {
+            foreach ($mean_data_arr as $loc)
+            {
+                // if ($loc[$i] === "0" OR $loc[$i] === 0 OR $loc[$i] != null)
+                // if ($loc[$i] != null)
+                // {
+                // if( $loc[$i] != null )
+                // {
+                //     array_push($location_value_arr, $loc[$i]);                
+                // }
+                if ($loc[$i] === null)
+                {
+                } 
+                else
+                {
                     array_push($location_value_arr, $loc[$i]);                
                 }
             }
-
             // $mean_data = $this->getMeanRoundsData($location_value_arr, $value_count);
             $mean_data = $this->getMeanRoundsData($location_value_arr);
 
@@ -970,8 +983,8 @@ class Tstbcommon_func {
             // 소수점 첫째자리 반올림
             $rounds = (double)number_format($mean_data, 1);
         }
-
         return $rounds;
+        // return $total_size;
     }
 
 
