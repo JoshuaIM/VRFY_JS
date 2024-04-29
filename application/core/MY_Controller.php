@@ -38,7 +38,7 @@ class MY_Controller extends CI_Controller {
         "11" => ["1115", "0315"]
     ];
 
-    protected $allmonth_start = "20211201";
+    protected $allmonth_start = "0211201";
     protected $allmonth_end = "20230228";
 
     protected $temp_start = "20230601";

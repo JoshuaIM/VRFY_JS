@@ -50,7 +50,8 @@
                 {
                     location.push( "AVE" );
                 }
-            } else if( selLoc == "247ALL" ) {
+            // } else if( selLoc == "247ALL" ) {
+            } else if( selLoc == "EVLALL" ) {
                 if( sub_type === "SIMILARITY" )
                 {
                     location.push( "ST247" );
@@ -59,7 +60,8 @@
                 {
                     location.push( "AVE" );
                     // 글로벌 변수(data_head) 값 변경
-                    datahead = data_head.replace("DFS", "247");
+                    // datahead = data_head.replace("DFS", "247");
+                    datahead = data_head.replace("DFS", "EVL");
                 }
             } else {
                 // 권역의 전체가 선택 시

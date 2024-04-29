@@ -1,13 +1,15 @@
 	function get_station_name(stnid)
 	{
+console.log('get_station_name.js : stnid', stnid);
 		let stn_name = "";
 		switch (stnid) {
-			case "AVE247" 	: stn_name = "표준검증지점(247개)";		break;
-			case "AVE" 		: stn_name = "전체지점";				break;
-			case "mean" 	: stn_name = "권역평균";				break;
+			case "AVEEVL" 	: stn_name = "표준검증지점"; break;
+			case "AVE" 		: stn_name = "전체지점"; break;
+			case "mean" 	: stn_name = "권역평균"; break;
 
-			case "ST247" 	: stn_name = "표준검증지점(247개)";		break;
-			case "ST308" 	: stn_name = "전체지점";				break;
+			case "ST247" 	: stn_name = "표준검증지점(247개)"; break;
+			case "STEVL" 	: stn_name = "표준검증지점"; break;
+			case "ST308" 	: stn_name = "전체지점"; break;
 
 			// gropID 47200 - 북한
 			case "47003" : stn_name = "선봉";		break;
@@ -212,7 +214,7 @@
 
 		// 지점 멀티 선택 되게
 		let checkbox = "";
-		if (selValue === "ALL" || selValue === "247ALL")
+		if (selValue === "ALL" || selValue === "EVLALL")
 		{
 			checkbox += "<input type='checkbox' class='checkbox_stn' name='STATION' value='" + selValue + "' onclick='checkStation(this.name, this.value, this.id); getDataArray();' checked>" + selTxt;
 		}
@@ -243,42 +245,43 @@
 
 
 // 유사도 오류로 인해 잠시 사용
-	function setSubLocationSimilarity(selectValue) {
-		const selValue = selectValue.value;
-		const selTxt = selectValue.options[selectValue.selectedIndex].text;
+	// function setSubLocationSimilarity(selectValue) {
+	// 	console.log("here================");
+	// 	const selValue = selectValue.value;
+	// 	const selTxt = selectValue.options[selectValue.selectedIndex].text;
 		
-		// 서브 지점 리스트 삭제(초기화).
-		$('#subLocation').empty();
+	// 	// 서브 지점 리스트 삭제(초기화).
+	// 	$('#subLocation').empty();
 
-		// 기존 지점 멀티 선택 안되게 default (주석 풀기)
-		let option = "";
-		if (selValue === "ALL" || selValue === "247ALL")
-		{
-			option += "<option value='" + selValue + "' selected='selected'>&#128440; " + selTxt + "</option>";
-		}
-		else
-		{
-			option += "<option value='" + selValue + "' >&#128440; " + selTxt + " 전체</option>";
-			option += "<option value='mean#" + selValue + "' >&#128440; " + selTxt + " 평균</option>";
+	// 	// 기존 지점 멀티 선택 안되게 default (주석 풀기)
+	// 	let option = "";
+	// 	if (selValue === "ALL" || selValue === "247ALL")
+	// 	{
+	// 		option += "<option value='" + selValue + "' selected='selected'>&#128440; " + selTxt + "</option>";
+	// 	}
+	// 	else
+	// 	{
+	// 		option += "<option value='" + selValue + "' >&#128440; " + selTxt + " 전체</option>";
+	// 		option += "<option value='mean#" + selValue + "' >&#128440; " + selTxt + " 평균</option>";
 			
-			const splitValue = selValue.split("#");
-			for (let sp=0; sp<splitValue.length; sp++)
-			{
-				let l_id = splitValue[sp];
-				let l_txt = get_station_name(splitValue[sp]);
-				if (sp == 0)
-				{
-					option += "<option value='" + l_id + "' selected>&#128440; " + l_txt + "</option>";
-				}
-				else
-				{
-					option += "<option value='" + l_id + "' >&#128440; " + l_txt + "</option>";
-				}
-			}
-		}
-		$('#subLocation').append(option);
-		// 기존 지점 멀티 선택 안되게 default (주석 풀기)
-	}
+	// 		const splitValue = selValue.split("#");
+	// 		for (let sp=0; sp<splitValue.length; sp++)
+	// 		{
+	// 			let l_id = splitValue[sp];
+	// 			let l_txt = get_station_name(splitValue[sp]);
+	// 			if (sp == 0)
+	// 			{
+	// 				option += "<option value='" + l_id + "' selected>&#128440; " + l_txt + "</option>";
+	// 			}
+	// 			else
+	// 			{
+	// 				option += "<option value='" + l_id + "' >&#128440; " + l_txt + "</option>";
+	// 			}
+	// 		}
+	// 	}
+	// 	$('#subLocation').append(option);
+	// 	// 기존 지점 멀티 선택 안되게 default (주석 풀기)
+	// }
 
 
 
@@ -380,6 +383,44 @@
 		}
 	}
 
+
+	// 지점선택 체크박스의 체크 된 ID 값 반환.
+	// 예측 성능 비교표에서 사용
+	function getCheckedStationID()
+	{
+		let check_stn = new Array();
+		$('input[name="STATION"]:checked').each(function () {
+			const st_id = $(this).attr('id');
+			// 표준검증지점 또는 전체지점
+			if (!st_id)
+			{
+				// 표준검증지점 (데이터에서 "vrfy_loc"으로 값 추출 시 AVE로 변환 필요)
+				if ($(this).val() === "EVLALL")
+				{
+					// function get_station_name(stnid) 에서 네임 추출 시 사용
+					check_stn.push("AVEEVL");
+				}
+				// 전체지점
+				else
+				{
+					// function get_station_name(stnid) 에서 네임 추출 시 사용
+					check_stn.push("AVE");
+				}
+			}
+			// 각 지점
+			else if (st_id === "loc_each")
+			{
+				check_stn.push($(this).val());
+			}
+			// 권역 평균
+			else if (st_id === "loc_mean")
+			{
+				check_stn.push("mean");
+			}
+		});
+
+		return check_stn;
+	}
 
 
 

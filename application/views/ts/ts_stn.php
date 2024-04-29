@@ -84,10 +84,10 @@
   
 		// (UI)지점 및 표준검증지점에 따른 data_head 값 변경.
 		// assets/js/vrfy_js/common/get_option_value.js
-    	let get_loc_dhead =  get_location_datahead_option(data_head);
+    	let get_loc_dhead = get_location_datahead_option(data_head);
     	// (UI)지점 선택 값
 		let location = get_loc_dhead.get("location");
-		// 247(표준검증지점)의 경우 글로벌 변수(data_head)값 변경.
+		// 표준검증지점의 경우 글로벌 변수(data_head)값 변경.
 		data_head = get_loc_dhead.get("datahead");
 
 		// (UI)검증지수 선택 값 (중복 선택)

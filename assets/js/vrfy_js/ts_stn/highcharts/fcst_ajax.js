@@ -10,8 +10,8 @@
             async: false,
             success : function(resp)
             {
+console.log('data', set_data);
 console.log("resp", resp);
-// console.log('data', set_data);
 
                 // csv 내려받기 기능을 위해 데이터 값 광역변수에 저장.
                 glob_data = resp;
@@ -128,9 +128,12 @@ console.log("resp", resp);
                         selCont += "<div class='white-header'>";
 
                         let vrfy_loc = resp[vl]['vrfy_loc'];
-                        if ( data_head === "247_SHRT_STN_" )
+                        const data_head_split = data_head.split("_");
+console.log('data_h_s', data_head_split);
+                        
+                        if ( data_head_split[0] === "EVL" )
                         {
-                            vrfy_loc = vrfy_loc + "247";
+                            vrfy_loc = vrfy_loc + "EVL";
                         }
 
                         const vftc = vrfy_loc.split("_");

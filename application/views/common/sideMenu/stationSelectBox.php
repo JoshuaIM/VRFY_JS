@@ -9,7 +9,7 @@
             <hr class="submenu_hr">
             <!-- js/vrfy_js/month_common_func.js -->
             <select class="selectMainLoc" onchange="listingSubLoc(this);">
-                <option value="247ALL" selected>표준검증지점(247개)</option>
+                <option value="EVLALL" selected>표준검증지점</option>
                 <option value="ALL" >전체지점</option>
                 <option value="47003#47005#47008#47014#47016#47020#47022#47025#47028#47031#47035#47037#47039#47041#47046#47050#47052#47055#47058#47060#47061#47065#47067#47068#47069#47070#47075" >북한</option>
                 <option value="47098#47099#47102#47108#47112#47119#47201#47202#47203" >서울경기</option>
@@ -23,14 +23,9 @@
                 <option value="47184#47185#47188#47189#47299#329#885" >제주도</option>
                 <option value="47092#47110#47113#47128#47151#47163#47167#47139#47142#47153#47158#47161#47182" >공항</option>
             </select>
-            <!-- 기존 지점 선택(멀티X) -->
-            <!-- <select id="subLocation" name="LOCATION" class="selectMulti" size="9" onclick="getDataArray();" multiple="multiple" >
-                <option value="247ALL" selected='selected'>&#128440; 표준검증지점(247개)</option>
-            </select> -->
-            
             <!-- 멀티 지점 선택 -->
             <div id="subLocation" class="checkStation">
-                <input type="checkbox" class="checkbox_stn" name="STATION" value="247ALL" onclick="checkStation(this.name, this.value, this.id); getDataArray();" checked>표준검증지점(247개)
+                <input type="checkbox" class="checkbox_stn" name="STATION" value="EVLALL" onclick="checkStation(this.name, this.value, this.id); getDataArray();" checked>표준검증지점
             </div>
         </div>
 
@@ -65,7 +60,7 @@
             <hr class="submenu_hr">
             <!-- js/vrfy_js/month_common_func.js -->
             <select class="selectMainLoc" onchange="listingSubLoc(this);">
-                <!-- <option value="247ALL" selected>표준검증지점(247개)</option> -->
+                <option value="EVLALL" selected>표준검증지점</option>
                 <option value="ALL" selected>전체지점</option>
                 <option value="47003#47005#47008#47014#47016#47020#47022#47025#47028#47031#47035#47037#47039#47041#47046#47050#47052#47055#47058#47060#47061#47065#47067#47068#47069#47070#47075" >북한</option>
                 <option value="47098#47099#47102#47108#47112#47119#47201#47202#47203" >서울경기</option>
@@ -79,14 +74,10 @@
                 <option value="47184#47185#47188#47189#47299#329#885" >제주도</option>
                 <option value="47092#47110#47113#47128#47151#47163#47167#47139#47142#47153#47158#47161#47182" >공항</option>
             </select>
-            <!-- 기존 지점 선택(멀티X) -->
-            <!-- <select id="subLocation" name="LOCATION" class="selectMulti" size="9" onclick="getDataArray();" multiple >
-                <option value="ALL" selected>&#128440; 전체지점</option>
-            </select> -->
             
             <!-- 멀티 지점 선택 -->
             <div id="subLocation" class="checkStation">
-                <input type="checkbox" class="checkbox_stn" name="STATION" value="ALL" onclick="checkStation(this.name, this.value, this.id); getDataArray();" checked>전체지점
+                <input type="checkbox" class="checkbox_stn" name="STATION" value="EVLALL" onclick="checkStation(this.name, this.value, this.id); getDataArray();" checked>전체지점
             </div>
         </div>
 
