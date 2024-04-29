@@ -13,7 +13,7 @@
         {
             const obj = { lat: data["lat"][i], lon: data["lon"][i], color: 'green' };
 
-            circles.push(obj);
+            // circles.push(obj);
         }
         // let circles = [
         // { lat: 37.5665, lon: 126.9780, color: 'red' },

@@ -41,8 +41,8 @@
                                 <a href="<?php echo base_url('ts/shrt_stn'); ?>" class="subsub <?php echo ( $vrfyType === 'shrt_ts_stn' ) ? 'active' : '';?>"><i class="fa fa-clock-o"></i>시계열</a></li>
                                 <li class="main_submenu">
                                 <a href="<?php echo base_url('map/shrt_stn'); ?>" class="subsub <?php echo ( $vrfyType === 'shrt_map_stn' ) ? 'active' : '';?>"><i class="fa fa-picture-o"></i>공간분포</a></li>
-                                <li class="main_submenu">
-                                <a href="<?php echo base_url('map/shrt_live'); ?>" class="subsub <?php echo ( $vrfyType === 'shrt_map_live' ) ? 'active' : '';?>"><i class="fa fa-picture-o"></i>실시간공간</a></li>
+                                <!-- <li class="main_submenu">
+                                <a href="<?php echo base_url('map/shrt_live'); ?>" class="subsub <?php echo ( $vrfyType === 'shrt_map_live' ) ? 'active' : '';?>"><i class="fa fa-picture-o"></i>실시간공간</a></li> -->
                         </ul>
                     </li>
                     
