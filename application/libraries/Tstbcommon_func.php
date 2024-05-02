@@ -35,16 +35,43 @@ class Tstbcommon_func {
                             // 정확도(GEMD)일 경우 예보편집 자료(디렉토리 경로가 다름)를 함께 표출하기 위해 사용.
                             $directory_head = $fnParam['dir_head'];
 
+                            // 2023.12 자료 부터 표준검증지점이 추가.
+                            // 파일 헤더가 247 >> EVL 로 변경, GEMD 의 경우 당분간 데이터 생산 전, 247로 생산 중 (예외처리)
+                            // 2023.12 이 전 자료 선택 시에는 247로 표출되어야 함. (예외처리)
+                            $data_head = $fnParam['data_head'];
+                            $data_head_split = explode("_", $fnParam['data_head']);
+
                             // 2023-05-25 추가문. 유사도에서는 "_VRFY_" 가 사용되지 않으므로 현재 함수를 공통으로 사용하기 위해 예외 처리 해줌.
                             $type_separator = "";
-                            
-                            if( $modl === "SSPS" ) {
+
+                            if ($modl === "SSPS")
+                            {
                                 $type_separator = "_VRFY_";
-                            } else if( $modl === "GEMD" ) {
-                                // 정확도(GEMD)일 경우
+                            } 
+                            // 정확도(GEMD)일 경우
+                            else if ($modl === "GEMD")
+                            {
                                 $type_separator = "_VRFY_";
                                 $directory_head = $fnParam['gemd_dir_head'];
-                            } else {
+
+                                if ($data_head_split[0] === "EVL")
+                                {
+                                    // TODO: 당분간 예외 처리 >> 무조건 247로 표출되도록
+                                    for ($h=0; $h<sizeof($data_head_split); $h++)
+                                    {
+                                        if ($h === 0)
+                                        {
+                                            $data_head = "247";
+                                        }
+                                        else
+                                        {
+                                            $data_head .= "_" . $data_head_split[$h];
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
                                 $exp_modl = explode("_", $modl);
                                 // 유사도(GEMD)가 아니면
                                 if(  $exp_modl[1] != "GEMD" ) {
@@ -58,6 +85,31 @@ class Tstbcommon_func {
                             $ymDir = $mon['ymInfo'];
                             $modl_ym_dir = "/" . $ymDir . "/";
                             
+                            //==============================================================================================
+                            // TODO: 2023.12 이전 자료의 경우 표준검증지점 247로 표출되며 파일헤더는 247로 표출되어야 함.
+                            // TODO: utc 분리 위해 사용
+                            $explode_mon = explode("_", $mon['data']);
+                            if ($data_head_split[0] === "EVL" && (int)$explode_mon[0] < 20231201 )
+                            {
+                                for ($h=0; $h<sizeof($data_head_split); $h++)
+                                {
+                                    if ($h === 0)
+                                    {
+                                            $data_head = "247";
+                                        }
+                                    else
+                                    {
+                                            $data_head .= "_" . $data_head_split[$h];
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                $data_head = $data_head;
+                            }
+                            //==============================================================================================
+                            
+
                             // 파일명 조합.
                             // $tmpfn = $fnParam['dir_head'] . $modl_ym_dir . $fnParam['var_select'] . "/" . $fnParam['data_head'] . $modl . '_' . $fnParam['var_select'] . '_VRFY_' . $vrfy . '.' . $mon['data'];
 
@@ -65,11 +117,13 @@ class Tstbcommon_func {
                             $explode_mon = explode("_", $mon['data']);
                             // 2023-05-23
                             // $tmpfn = $fnParam['dir_head'] . $modl_ym_dir . $fnParam['var_select'] . "/" . $fnParam['data_head'] . $modl . '_' . $fnParam['var_select'] . '_VRFY_' . $vrfy . '.' . $explode_mon[0] . $utc . "_" . $explode_mon[1] . $utc;
-                            $tmpfn = $directory_head . $modl_ym_dir . $var . "/" . $fnParam['data_head'] . $modl . '_' . $var . $type_separator . $vrfy . '.' . $explode_mon[0] . $utc . "_" . $explode_mon[1] . $utc;
+                            // $tmpfn = $directory_head . $modl_ym_dir . $var . "/" . $fnParam['data_head'] . $modl . '_' . $var . $type_separator . $vrfy . '.' . $explode_mon[0] . $utc . "_" . $explode_mon[1] . $utc;
+                            $tmpfn = $directory_head . $modl_ym_dir . $var . "/" . $data_head . $modl . '_' . $var . $type_separator . $vrfy . '.' . $explode_mon[0] . $utc . "_" . $explode_mon[1] . $utc;
                             
                             // 2023-05-23
                             // $tmpfn_table = $fnParam['dir_head'] . $modl_ym_dir . $fnParam['var_select'] . "/TBL/TBL_" . $fnParam['data_head'] . $modl . '_' . $fnParam['var_select'] . '_VRFY_' . $vrfy . '.' . $explode_mon[0] . $utc . "_" . $explode_mon[1] . $utc;
-                            $tmpfn_table = $directory_head . $modl_ym_dir . $var . "/TBL/TBL_" . $fnParam['data_head'] . $modl . '_' . $var . $type_separator . $vrfy . '.' . $explode_mon[0] . $utc . "_" . $explode_mon[1] . $utc;
+                            // $tmpfn_table = $directory_head . $modl_ym_dir . $var . "/TBL/TBL_" . $fnParam['data_head'] . $modl . '_' . $var . $type_separator . $vrfy . '.' . $explode_mon[0] . $utc . "_" . $explode_mon[1] . $utc;
+                            $tmpfn_table = $directory_head . $modl_ym_dir . $var . "/TBL/TBL_" . $data_head . $modl . '_' . $var . $type_separator . $vrfy . '.' . $explode_mon[0] . $utc . "_" . $explode_mon[1] . $utc;
 
                             // 파일이 존재할 경우
                             if( file_exists($tmpfn) ) {
