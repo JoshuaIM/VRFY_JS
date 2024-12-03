@@ -106,7 +106,7 @@
 			disableMonths : []
 		};
 		$(select_box_id).monthpicker(options);
-		$(select_box_id).val(yyyy + mm);
+		$(select_box_id).val(yyyy + '' +  mm);
 	}
 
 
