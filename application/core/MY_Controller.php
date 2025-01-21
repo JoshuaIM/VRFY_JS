@@ -302,9 +302,17 @@ class MY_Controller extends CI_Controller {
         }
 
         // 데이터 수집 및 표출 위한 정리.
-        $all_data = $this->get_data($peri, $fnParam);
+        if ($model_sel[0] === 'SSPS' && $location[0] === 'AVE')
+        {
+            $all_data = $this->tstbcommon_func->getSSPSFcstData($fnParam);
+            $arrange_data = $this->tstbcommon_func->arrangeSSPSFcstData($all_data, $fnParam);
+        }
+        else
+        {
+            $all_data = $this->get_data($peri, $fnParam);
+            $arrange_data = $this->get_arrange_data($peri, $location[0], $sub_type, $all_data, $fnParam);
+        }
 
-        $arrange_data = $this->get_arrange_data($peri, $location[0], $sub_type, $all_data, $fnParam);
         
         // return $fnParam;
         // return $all_data;

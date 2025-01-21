@@ -102,9 +102,16 @@
 
 		let model_sel = new Array();
 		// 메인 동작 함수.
-		if ( type === "SSPS" )
+		if ( type === 'SSPS')
 		{
-			model_sel = ["SSPS"];
+			if (location[0] === 'AVE')
+			{
+				model_sel = ['SSPS', '100MTN', 'EXCP8', 'MIXED'];
+			}
+			else
+			{
+				model_sel = ['SSPS'];
+			}
 		}
 		else
 		{

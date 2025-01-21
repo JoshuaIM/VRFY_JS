@@ -31,7 +31,9 @@ function fcstDataTableUseId( forecast_arr, data_arr, var_select, dataFontClass, 
         for(var mm=0; mm<data_arr.length; mm++) {
 
             let month = data_arr[mm]['month'];
-            let model = data_arr[mm]['model'];
+            // let model = data_arr[mm]['model'];
+            // assets/js/vrfy_js/ts_stn/get_station_name.js
+            let model = getSSPSLocationAveName(data_arr[mm]['model']);
             let total_data_num = data_arr[mm]['fDataNum'];
             // let data = data_arr[mm]['data'];
 

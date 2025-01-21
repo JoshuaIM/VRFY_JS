@@ -1,6 +1,6 @@
 	function get_station_name(stnid)
 	{
-console.log('get_station_name.js : stnid', stnid);
+// console.log('get_station_name.js : stnid', stnid);
 		let stn_name = "";
 		switch (stnid) {
 			case "AVEEVL" 	: stn_name = "표준검증지점"; break;
@@ -423,6 +423,21 @@ console.log('get_station_name.js : stnid', stnid);
 	}
 
 
+
+	function getSSPSLocationAveName(model_name)
+	{
+		let loc_name = '';
+
+		switch(model_name)
+		{
+			case '100MTN'	: loc_name = '100대명산'; break;
+			case 'EXCP8'	: loc_name = '8지점제외'; break;
+			case 'MIXED'	: loc_name = '혼합'		; break;
+			default : loc_name = model_name;
+		}
+
+		return loc_name;
+	}
 
 
 

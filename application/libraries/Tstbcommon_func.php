@@ -1115,6 +1115,302 @@ class Tstbcommon_func {
 
 
 
+    public function getSSPSFcstData($fnParam)
+    {
+
+        // 예보활용도(utilize)에서 변수 선택이 복수가 되면서 기존 함수를 함께 사용할수 있도록 기존의 단일 요소 선택 값을 배열화 시킴. 2023-05-23
+        $variable = $fnParam['var_select'];
+        $var_arr = array();
+        if (is_array($variable) == 1)
+        {
+            $var_arr = $variable;
+        }
+        else
+        {
+            array_push($var_arr, $variable);
+        }
+
+        $dataArr = array();
+        
+        // 순서: 검증지수 - 지점  - 월 - UTC - 모델
+        foreach ($fnParam['vrfy_idx'] as $vrfy)
+        {
+            foreach ($fnParam['infoUTC'] as $utc)
+            {
+                foreach ($fnParam['rangeMon'] as $mon)
+                {
+                    foreach ($fnParam['model_sel'] as $modl_head)
+                    {
+
+                        $modl = 'SSPS';
+
+                        // 요소 배열 for문 추가. 2023-05-23
+                        foreach ($var_arr as $var) {
+
+                            // $modl_name = 'SSPS';
+                            $modl_name = $fnParam['model_sel'][0];
+
+                            // 정확도(GEMD)일 경우 예보편집 자료(디렉토리 경로가 다름)를 함께 표출하기 위해 사용.
+                            $directory_head = $fnParam['dir_head'];
+
+                            $data_head = $fnParam['data_head'];
+                            $data_head_split = explode("_", $fnParam['data_head']);
+
+                            $type_separator = "_VRFY_";
+
+                            $ymDir = $mon['ymInfo'];
+                            $modl_ym_dir = "/" . $ymDir . "/";
+                            
+                            for ($h=0; $h<sizeof($data_head_split); $h++)
+                            {
+                                // 기본 자료의 경우 파일명 헤더인 'DFS_' 그대로 사용
+                                if ($modl_head === 'SSPS')
+                                {
+                                    $data_head = $data_head;
+                                }
+                                else
+                                {
+                                    if ($h === 0)
+                                    {
+                                        $data_head = $modl_head;
+                                    }
+                                    else
+                                    {
+                                        $data_head .= "_" . $data_head_split[$h];
+                                    }
+                                }
+                            }
+                            //==============================================================================================
+                            
+
+                            // 파일명 조합.
+                            // TODO: utc 분리 위해 사용 (잠시)
+                            $explode_mon = explode("_", $mon['data']);
+                            $tmpfn = $directory_head . $modl_ym_dir . $var . "/" . $data_head . $modl . '_' . $var . $type_separator . $vrfy . '.' . $explode_mon[0] . $utc . "_" . $explode_mon[1] . $utc;
+                            
+                            $tmpfn_table = $directory_head . $modl_ym_dir . $var . "/TBL/TBL_" . $data_head . $modl . '_' . $var . $type_separator . $vrfy . '.' . $explode_mon[0] . $utc . "_" . $explode_mon[1] . $utc;
+
+                            // 파일이 존재할 경우
+                            if (file_exists($tmpfn))
+                            {
+                                // 줄 단위 파일 읽기.
+                                $fileLine = explode("\n", file_get_contents($tmpfn));
+                                
+                                // 테이블 파일 읽어서 값 가져오기.
+                                $tableLine = $this->getTableValue($tmpfn_table);
+
+                                // 데이터 파일 헤더의 UTC 정보 제공. ( 그래프 X축의 forecast 시간 표출용 )
+                                $fHeadUtc = $this->getFileHeadUtc($fileLine[1]);
+                                
+                                // 데이터 파일 자료수 정보 제공. ( 집계표에서 사용. )
+                                $fDataNum = "";
+                                // 자료수 정보는 파일 마지막에 있으므로 배열을 거꾸로 돌려서 찾고 찾으면 foreach 탈출.
+                                foreach (array_reverse($fileLine) as $revLine)
+                                {
+                                    $locId = trim(substr($revLine, 0, 5));
+                                    if ($locId == "NUM")
+                                    {
+                                        $fDataNum = $this->getFileDataNum($revLine);                                
+                                        break;
+                                    }
+                                }
+                                
+                                // 권역평균 선택 시 사용.
+                                if ($fnParam['location'][0] == "mean")
+                                {
+                                    $location_data_arr = array();
+                                    $location_size = count($fnParam['location']);
+                                }
+
+                                // 파일별 지점 찾아 해당 데이터 얻기.
+                                foreach ($fileLine as $line)
+                                {
+                                    // 매 줄 앞 5칸만 잘라내어 트림. (지점 번호 또는 AVE, NUM 정보 등등)
+                                    
+                                    $loc = trim(substr($line, 0, 5));
+
+                                    // 권역평균 선택 시.
+                                    if ($fnParam['location'][0] == "mean")
+                                    {
+                                        $dinfo = $vrfy . "_mean_" . substr($mon['data'], 0, 6) . "_" . $utc . "_" . $modl . "_" . $var;
+                                        $dArray = [
+                                            // 파일명 검사용.
+                                            'fileName' => $tmpfn,
+
+                                            'tableFileName' => $tmpfn_table,
+                                            'tableData' => $tableLine,
+
+                                            //'dateInfo' => $fHeadDate,
+                                            'fHeadUtc' => $fHeadUtc,
+                                            'fDataNum' => $fDataNum,
+                                            'dataInfo' => $dinfo,
+                                        ];
+                                        
+                                        for ($lo=0; $lo<$location_size; $lo++)
+                                        {
+                                            if ($loc == $fnParam['location'][$lo])
+                                            {
+                                                // data의 정보.
+                                                // $mkArr = $this->splitFcstData($line);
+                                                $temporary_data = $this->splitFcstData($line);
+                                                // 2023-05-23
+                                                // $var = $fnParam['var_select'];
+                                                $modl_name = $modl;
+                                                $modl_arr_size = sizeof($fnParam['model_sel']);
+                                                $mkArr = $this->extractModlData($temporary_data, $var, $modl_name, $modl_arr_size);
+
+                                                array_push($location_data_arr, $mkArr);
+                                                // array_push($dataArr, $mkArr);
+
+                                                if( $lo == $location_size-1 ) {
+                                                    $dArray['data'] = $this->getMeanData($location_data_arr);
+                                                    $dArray['all_location_data'] = $location_data_arr;
+                                                    array_push($dataArr, $dArray);
+                                                }
+                                            }
+                                        }
+
+                                    // 권역평균 외 모든 영역 선택 시.
+                                    } else {
+
+                                        foreach ($fnParam['location'] as $mat) {
+                                            if( $loc == $mat ) {
+                                                // data의 정보.
+                                                // $dinfo = $vrfy . "_" . $loc . "_" . substr($mon['data'], 0, 6) . "_" . $mon['utcInfo'] . "_" . $modl;
+                                                // 2023-05-23
+                                                // $dinfo = $vrfy . "_" . $loc . "_" . substr($mon['data'], 0, 6) . "_" . $utc . "_" . $modl;
+                                                $dinfo = $vrfy . "_" . $loc . "_" . substr($mon['data'], 0, 6) . "_" . $utc . "_" . $modl_head . "_" . $var;
+                                                // $mkArr = $this->splitFcstData($line);
+                                                $temporary_data = $this->splitFcstData($line);
+                                                // 2023-05-23
+                                                // $var = $fnParam['var_select'];
+                                                $modl_name = $modl;
+                                                $modl_arr_size = sizeof($fnParam['model_sel']);
+                                                $mkArr = $this->extractModlData($temporary_data, $var, $modl_name, $modl_arr_size);
+
+                                                $dArray = [
+                                                    // 파일명 검사용.
+                                                    'fileName' => $tmpfn,
+
+                                                    'tableFileName' => $tmpfn_table,
+                                                    'tableData' => $tableLine,
+
+                                                    //'dateInfo' => $fHeadDate,
+                                                    'fHeadUtc' => $fHeadUtc,
+                                                    'fDataNum' => $fDataNum,
+                                                    'dataInfo' => $dinfo,
+                                                    'data' => $mkArr
+                                                ];
+                                                array_push($dataArr, $dArray);
+                                            }
+                                        } // End of "Location" foreach.
+                                        
+                                    } // End of $fnParam['location'][0] == "mean"인지 확인하는 if 문.
+
+                                } // End of "File Line" foreach.
+                            }
+                            // "File exist" false 의 경우
+                            else
+                            {
+                                $dArray = [
+                                    'fileName' => $tmpfn,
+                                    'tableFileName' => null,
+                                    'tableData' => null,
+                                    'fHeadUtc' => null,
+                                    'fDataNum' => null,
+                                    'dataInfo' => null,
+                                    'data' => null
+                                ];
+                                array_push($dataArr, $dArray);
+                            } // End of "File exist" if 문.
+                        } // End of "VAR" foreach.
+                    } // End of "MODEL" foreach.
+                } // End of "RANGEMON" foreach.
+            } // End of "UTC" foreach.
+        } // End of "VRFY IDX" foreach.
+        
+        return $dataArr;
+    }
+
+    public function arrangeSSPSFcstData($data, $param)
+    {
+        $resData = array();
+        foreach ($param['vrfy_idx'] as $vf)
+        {
+            foreach ($param['location'] as $lc)
+            {
+                foreach ($param['infoUTC'] as $utc)
+                {
+                    $mon_utc_modl = array();
+                    foreach ($param['rangeMon'] as $mon)
+                    {
+                        $modl_size_num = sizeof($param['model_sel']);
+                        foreach ($param['model_sel'] as $modl_head)
+                        {
+                            $modl = 'SSPS';    
+                            // $dn = $vf . "_" . $lc . "_" . substr($mon['data'], 0, 6) . "_" . $utc . "_" . $modl . "_" . $param['var_select'];
+                            $dn = $vf . "_" . $lc . "_" . substr($mon['data'], 0, 6) . "_" . $utc . "_" . $modl_head . "_" . $param['var_select'];
+                            
+                            // TODO: $tmp(search결과 array key값)이 없을 경우와 1번째 배열의 결과값 0 둘다 if문에서는 false 이다... PHP잘못된 디자인의 프랙탈.
+                            // 그러므로 in_array를 사용하여 배열값을 확인하고 -> 있으면 결과값이 1이므로. array_search를 사용한다.
+                            $dExist = in_array( $dn, array_column($data, 'dataInfo') );
+                            if ($dExist)
+                            {
+                                $tmp = array_search( $dn, array_column($data, 'dataInfo') );
+                                
+                                // TODO : 2022-12-02 ECMWF 예측기간(+150h)을 나머지 기간(+135h) 로 맞춰주는 작업.
+                                $data_arr = array();
+                                $fHeadUtc = array();
+                                $data_arr = $data[$tmp]['data'];
+                                $fHeadUtc = $data[$tmp]['fHeadUtc'];
+
+                                $dataArray = [
+                                    // 파일명 검사용.
+                                    'search' => $dExist . " || ",
+                                    'fileName' => $data[$tmp]['fileName'],
+
+                                    'tableFileName' => $data[$tmp]['tableFileName'],
+                                    'tableData' => $data[$tmp]['tableData'],
+
+                                    'fHeadUtc' => $fHeadUtc,
+                                    'fDataNum' => $data[$tmp]['fDataNum'],
+                                    'vrfy_loc' => $vf . "_" . $lc,
+                                    'month' => substr($mon['data'], 0, 6),
+                                    'utc' => $utc . "UTC",
+                                    // 'model' => $modl,
+                                    'model' => $modl_head,
+                                    'modl_color' => $this->getModelColor($modl_head),
+                                    'num' => $modl_size_num,
+                                    'data' => $data_arr,
+                                    'dn' => $dn
+                                ];
+                                
+                                array_push($mon_utc_modl, $dataArray);
+                            } // End of "tmp(search결과값)" if문
+                        } // End of "model_sel" foreach.
+                    } // End of "rangeMon" foreach.
+                    
+                    $vrfy_loc = [
+                        'var_name' => $param['var_select'],
+                        'vrfy_loc' => $vf . "_" . $lc,
+                        'utc' => $utc,
+                        'data' => $mon_utc_modl
+                    ];
+                    
+                    array_push($resData, $vrfy_loc);
+                }
+
+            }
+
+        }
+        
+        return $resData;
+    }
+
+
+
+
+
 
     
     

@@ -129,7 +129,7 @@ console.log("resp", resp);
 
                         let vrfy_loc = resp[vl]['vrfy_loc'];
                         const data_head_split = data_head.split("_");
-console.log('data_h_s', data_head_split);
+// console.log('data_h_s', data_head_split);
                         
                         if ( data_head_split[0] === "EVL" )
                         {

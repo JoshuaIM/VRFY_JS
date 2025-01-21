@@ -137,7 +137,8 @@ function get_chart_line_info(data_info)
     else
     {
         info_arr = {
-            line_name : data_info['month'] + "_" + data_info['utc'] + "_" + data_info['model'],
+            // line_name : data_info['month'] + "_" + data_info['utc'] + "_" + data_info['model'],
+            line_name : data_info['month'] + "_" + data_info['utc'] + "_" + getSSPSLocationAveName(data_info['model']),
             modl_color : data_info['modl_color']
         };
     }
