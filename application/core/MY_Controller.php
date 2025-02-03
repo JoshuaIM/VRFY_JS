@@ -38,8 +38,10 @@ class MY_Controller extends CI_Controller {
         "11" => ["1115", "0315"]
     ];
 
-    protected $allmonth_start = "0211201";
-    protected $allmonth_end = "20230228";
+    // protected $allmonth_start = "0211201";
+    // protected $allmonth_end = "20230228";
+    protected $allmonth_start = "20231201";
+    protected $allmonth_end = "20241031";
 
     protected $temp_start = "20230601";
     protected $temp_end = "20230731";
@@ -304,8 +306,16 @@ class MY_Controller extends CI_Controller {
         // 데이터 수집 및 표출 위한 정리.
         if ($model_sel[0] === 'SSPS' && $location[0] === 'AVE')
         {
-            $all_data = $this->tstbcommon_func->getSSPSFcstData($fnParam);
-            $arrange_data = $this->tstbcommon_func->arrangeSSPSFcstData($all_data, $fnParam);
+            if ( $peri === "MONTH" )
+            {      
+                $all_data = $this->tstbcommon_func->getSSPSMonData($fnParam);
+                $arrange_data = $this->tstbcommon_func->arrangeSSPSMonData($all_data, $fnParam);
+            }
+            else
+            {
+                $all_data = $this->tstbcommon_func->getSSPSFcstData($fnParam);
+                $arrange_data = $this->tstbcommon_func->arrangeSSPSFcstData($all_data, $fnParam);
+            }
         }
         else
         {

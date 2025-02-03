@@ -1141,7 +1141,6 @@ class Tstbcommon_func {
                 {
                     foreach ($fnParam['model_sel'] as $modl_head)
                     {
-
                         $modl = 'SSPS';
 
                         // 요소 배열 for문 추가. 2023-05-23
@@ -1332,6 +1331,148 @@ class Tstbcommon_func {
         return $dataArr;
     }
 
+
+
+    public function getSSPSMonData($fnParam)
+    {
+        $dataArr = array();
+        
+        // 순서: 검증지수 - 지점(추가해야함) - 월 - UTC - 모델
+        foreach ($fnParam['vrfy_idx'] as $vrfy)
+        {
+            foreach ($fnParam['rangeMon'] as $mon)
+            {
+                foreach ($fnParam['infoUTC'] as $utc)
+                {
+                    foreach ($fnParam['model_sel'] as $modl_head)
+                    {
+                        $modl = 'SSPS';
+
+                        $modl_name = $fnParam['model_sel'][0];
+
+                        $directory_head = $fnParam['dir_head'];
+
+                        $data_head = $fnParam['data_head'];
+                        $data_head_split = explode("_", $fnParam['data_head']);
+
+                        $ymDir = $mon['ymInfo'];
+                        
+                        $modl_ym_dir = "/" . $ymDir . "/";
+                        
+                        for ($h=0; $h<sizeof($data_head_split); $h++)
+                        {
+                            // 기본 자료의 경우 파일명 헤더인 'DFS_' 그대로 사용
+                            if ($modl_head === 'SSPS')
+                            {
+                                $data_head = $data_head;
+                            }
+                            else
+                            {
+                                if ($h === 0)
+                                {
+                                    $data_head = $modl_head;
+                                }
+                                else
+                                {
+                                    $data_head .= "_" . $data_head_split[$h];
+                                }
+                            }
+                        }
+
+                        // 파일명 조합.
+                        // TODO: utc 분리 위해 사용 (잠시)
+                        $explode_mon = explode("_", $mon['data']);
+                        $tmpfn = $directory_head . $modl_ym_dir . $fnParam['var_select'] . "/" . $data_head . $modl . '_' . $fnParam['var_select'] . '_VRFY_' . $vrfy . '.' . $explode_mon[0] . $utc . "_" . $explode_mon[1] . $utc;
+                        
+                        // 파일이 존재할 경우
+                        if( file_exists($tmpfn) ) {
+                            
+                            // 줄 단위 파일 읽기.
+                            $fileLine = explode("\n", file_get_contents($tmpfn));
+                            
+                            // 권역평균 선택 시 사용.
+                            if($fnParam['location'][0] == "mean") {
+                                $location_data_arr = array();
+                                $location_size = count($fnParam['location']);
+                            }
+                            
+                            // 파일별 지점 찾아 해당 데이터 얻기.
+                            foreach ($fileLine as $line) {
+                                // 매 줄 앞 5칸만 잘라내어 트림. (지점 번호 또는 AVE, NUM 정보 등등)
+                                $loc = trim(substr($line, 0, 5));
+                                
+                                // 권역평균 선택 시.
+                                if($fnParam['location'][0] == "mean") {
+                                    
+                                    // $dinfo = $vrfy . "_mean_" . substr($mon['data'], 0, 6) . "_" . $mon['utcInfo'] . "_" . $modl;
+                                    $dinfo = $vrfy . "_mean_" . substr($mon['data'], 0, 6) . "_" . $utc . "_" . $modl_head;
+                                    $dArray = [
+                                        // 파일명 검사용.
+                                        'monthInfo' => $mon['ymInfo'],
+                                        // 'utcInfo' => $mon['utcInfo'],
+                                        'utcInfo' => $utc,
+                                        'fileName' => $tmpfn,
+                                        'dataInfo' => $dinfo,
+                                    ];
+                                    
+                                    for( $lo=0; $lo<$location_size; $lo++ ) {
+                                        if( $loc == $fnParam['location'][$lo] ) {
+                                            // data의 정보.
+                                            $mkArr = $this->splitMonthData($line);
+                                            array_push($location_data_arr, $mkArr);
+                                            // array_push($dataArr, $mkArr);
+
+                                            if( $lo == $location_size-1 ) {
+                                                $dArray['data'] = [$this->getMeanRoundsData($location_data_arr)];
+                                                // $dArray['data'] = $location_data_arr;
+                                                $dArray['all_location_data'] = $location_data_arr;
+                                                array_push($dataArr, $dArray);
+                                            }
+                                        }
+                                    }
+
+                                // 권역평균 외 모든 영역 선택 시.
+                                } else {
+                                
+                                    foreach ($fnParam['location'] as $mat) {
+                                        if( $loc == $mat ) {
+                                            // data의 정보.
+                                            $dinfo = $vrfy . "_" . $loc . "_" . substr($mon['data'], 0, 6) . "_" . $utc . "_" . $modl_head;
+
+                                            $mkArr = $this->splitMonthData($line);
+                                            
+                                            $dArray = [
+                                                // 파일명 검사용.
+                                                'monthInfo' => $mon['ymInfo'],
+                                                // 'utcInfo' => $mon['utcInfo'],
+                                                'utcInfo' => $utc,
+                                                'fileName' => $tmpfn,
+                                                'dataInfo' => $dinfo,
+                                                'data' => $mkArr
+                                            ];
+                                            array_push($dataArr, $dArray);
+                                        }
+                                    } // End of "Location" foreach.
+
+                                } // End of $fnParam['location'][0] == "mean"인지 확인하는 if 문.
+
+                            } // End of "File Line" foreach.
+
+                        } // End of "MONTH" foreach.
+
+                    } // End of "File exist" if 문.
+
+                }
+
+            } // End of "MODEL" foreach.
+
+        } // End of "VRFY IDX" foreach.
+        
+        return $dataArr;
+    }
+
+
+
     public function arrangeSSPSFcstData($data, $param)
     {
         $resData = array();
@@ -1348,7 +1489,6 @@ class Tstbcommon_func {
                         foreach ($param['model_sel'] as $modl_head)
                         {
                             $modl = 'SSPS';    
-                            // $dn = $vf . "_" . $lc . "_" . substr($mon['data'], 0, 6) . "_" . $utc . "_" . $modl . "_" . $param['var_select'];
                             $dn = $vf . "_" . $lc . "_" . substr($mon['data'], 0, 6) . "_" . $utc . "_" . $modl_head . "_" . $param['var_select'];
                             
                             // TODO: $tmp(search결과 array key값)이 없을 경우와 1번째 배열의 결과값 0 둘다 if문에서는 false 이다... PHP잘못된 디자인의 프랙탈.
@@ -1408,6 +1548,78 @@ class Tstbcommon_func {
     }
 
 
+
+    public function arrangeSSPSMonData($data, $param)
+    {
+        $resData = array();
+        foreach ($param['vrfy_idx'] as $vf)
+        {
+            foreach ($param['location'] as $lc)
+            {
+                foreach ($param['infoUTC'] as $utc)
+                {
+                    $mon_utc_modl = array();
+                    foreach ($param['model_sel'] as $modl_head)
+                    {
+                        $modl = 'SSPS';
+
+                        // 모아둔 month 데이터의 . (UTC는 별도)
+                        $mon_range= array();
+                        // month 데이터를 합친 배열. (UTC는 별도)
+                        $mon_integ = array();
+                        // $utc_info = "";
+                        foreach ($param['rangeMon'] as $mon)
+                        {
+                            $dn = $vf . "_" . $lc . "_" . substr($mon['data'], 0, 6) . "_" . $utc . "_" . $modl_head;
+                            
+                            // TODO: $tmp(search결과 array key값)이 없을 경우와 1번째 배열의 결과값 0 둘다 if문에서는 false 이다... PHP잘못된 디자인의 프랙탈.
+                            // 그러므로 in_array를 사용하여 배열값을 확인하고 -> 있으면 결과값이 1이므로. array_search를 사용한다.
+                            $dExist = in_array( $dn, array_column($data, 'dataInfo') );
+                            
+                            if ($dExist)
+                            {
+                                $tmp = array_search( $dn, array_column($data, 'dataInfo') );
+                                array_push($mon_integ, $data[$tmp]['data']);
+                            }
+                            else
+                            {
+                                array_push($mon_integ, null);
+                            }
+                            // End of if문
+                            
+                            $utc_info = $utc . "UTC";
+                            array_push( $mon_range, substr($mon['data'], 0, 6) );
+                        }
+                        // End of foreach 'rangeMon'.
+                        
+                        $dataArr = [
+                            'model' => $modl,
+                            'utcInfo' => $utc_info,
+                            'mon_range' => $mon_range,
+                            'modl_color' => $this->getModelColor($modl),
+                            'data' => $mon_integ
+                        ];
+                        
+                        array_push( $mon_utc_modl, $dataArr);                                
+                                
+                    } // End of "model_sel" foreach.
+                    
+                    $vrfy_loc = [
+                        'var_name' => $param['var_select'],
+                        'vrfy_loc' => $vf . "_" . $lc,
+                        'utc' => $utc,
+                        'data' => $mon_utc_modl
+                    ];
+
+                    array_push($resData, $vrfy_loc);
+                    
+                }
+
+            }
+        }
+        
+        return $resData;
+    }
 
 
 
