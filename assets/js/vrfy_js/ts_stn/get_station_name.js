@@ -432,7 +432,7 @@
 		{
 			case '100MTN'	: loc_name = '100대명산'; break;
 			case 'EXCP8'	: loc_name = '8지점제외'; break;
-			case 'MIXED'	: loc_name = '혼합'		; break;
+			case 'MIXED'	: loc_name = '최종'		; break;
 			default : loc_name = model_name;
 		}
 
