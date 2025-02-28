@@ -133,7 +133,9 @@ function makeMonthDataTable( data_arr, var_select, dataFontClass, each_utc, tabl
 
             selCont += "<tr class='tb_data'>";
 
-                 selCont += "<td>" + data_arr[m]['model'] + "</td>" + 
+                let model = getSSPSLocationAveName(data_arr[m]['model']);
+
+                 selCont += "<td>" + model + "</td>" + 
                              "<td>" + data_arr[m]['utcInfo'].replace("UTC","") + "</td>"; 
 
                 for(var d=0; d<data_arr[m]['data'].length; d++) {

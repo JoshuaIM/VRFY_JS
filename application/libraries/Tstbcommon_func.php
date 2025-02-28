@@ -1593,10 +1593,10 @@ class Tstbcommon_func {
                         // End of foreach 'rangeMon'.
                         
                         $dataArr = [
-                            'model' => $modl,
+                            'model' => $modl_head,
                             'utcInfo' => $utc_info,
                             'mon_range' => $mon_range,
-                            'modl_color' => $this->getModelColor($modl),
+                            'modl_color' => $this->getModelColor($modl_head),
                             'data' => $mon_integ
                         ];
                         

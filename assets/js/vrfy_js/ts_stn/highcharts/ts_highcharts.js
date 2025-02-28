@@ -192,7 +192,8 @@ function set_month_timeseries_data(get_chart, dataInfo, var_select)
             var chtdata = dataInfo[0]['data'];
         }
         
-        var lineName = dataInfo[0]['utcInfo'] + "_" + dataInfo[0]['model'];
+        // var lineName = dataInfo[0]['utcInfo'] + "_" + dataInfo[0]['model'];
+        var lineName = dataInfo[0]['utcInfo'] + "_" + getSSPSLocationAveName(dataInfo[0]['model']);
         // 모델 컬러 추가. 2023-01-11
         let modl_color = dataInfo[0]['modl_color'];
         
@@ -219,7 +220,8 @@ function set_month_timeseries_data(get_chart, dataInfo, var_select)
                     var chtdata = dataInfo[mm]['data'];
                 }
     
-                var lineName = dataInfo[mm]['utcInfo'] + "_" + dataInfo[mm]['model'];
+                // var lineName = dataInfo[mm]['utcInfo'] + "_" + dataInfo[mm]['model'];
+                var lineName = dataInfo[mm]['utcInfo'] + "_" + getSSPSLocationAveName(dataInfo[mm]['model']);
                 // 모델 컬러 추가. 2023-01-11
                 let modl_color = dataInfo[mm]['modl_color'];
                 
