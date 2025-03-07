@@ -3,7 +3,7 @@ function makeFCselectBox(init_hour, var_select) {
     let str = "<div class='forecastSelectArea'>";
     
     // str += "<input name='FC_INDEX' value='0#129' type='checkbox' onclick='' checked> +6H ~ 135H";    
-    str += "<input name='FC_INDEX' value='all' type='checkbox' onclick='forecastSingleiewBoxAndDo(this)' checked> +6H ~ 135H";    
+    str += "<input name='FC_INDEX' value='all' type='checkbox' onclick='forecastSingleiewBoxAndDo(this)' checked> +6H ~ +135H";    
 
         // if( var_select === "TMX" ) {
         //     str += "<input name='FC_INDEX' value='1#3|1#2' type='checkbox' onclick='forecastSingleiewBoxAndDo(this)' > (00UTC) : +8H ~ +87H , (12UTC) : +8H ~ +75H";    
@@ -113,10 +113,9 @@ function changeViewForecastRange(clickForecastRange) {
             const forecast_info = (range_val === "all") ? dataInfo[0]['fHeadUtc'] : cutForecastRange(each_utc, range_val, dataInfo[0]['fHeadUtc']);
 
             let vrfy_loc = glob_data[vl]['vrfy_loc'];
-                // let check_247 = $('#subLocation option:selected').val();
-                let check_247 = $("input:checkbox[name=STATION]").val();
-                if( check_247 === "247ALL" ) {
-                    vrfy_loc = vrfy_loc + "247";
+                let check_evl = $("input:checkbox[name=STATION]").val();
+                if( check_evl === "EVLALL" ) {
+                    vrfy_loc = vrfy_loc + "EVL";
                 }
 
         //---- 집계표 표출
@@ -172,6 +171,7 @@ function changeViewForecastRange(clickForecastRange) {
                 });
                 chtdata = chtdata2;
                                 
+console.log('chart', chart);
                 chart.series[0].setData( chtdata, true );
                 // 카테고리 추가(00, 12 UTC 멀티 표출 때문). 2023-04-14
                 chart.xAxis[0].update({ categories: forecast_info });
@@ -191,7 +191,7 @@ function changeViewForecastRange(clickForecastRange) {
                     if( var_select === "POP" ) {
                         var original_data = new Array();
                         var pop_d = data;
-                            for(var x=0; x<pop_d.length; x++) {
+                             for(var x=0; x<pop_d.length; x++) {
                                 if( pop_d[x] ) {
                                     chtdata.push( parseFloat( (pop_d[x]/100).toFixed(3) ) );
                                 } else {
